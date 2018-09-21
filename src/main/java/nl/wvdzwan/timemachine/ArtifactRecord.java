@@ -4,7 +4,7 @@ public class ArtifactRecord {
 
     private String groupId;
     private String artifactId;
-    private String version;
+    private String version = "";
 
     public ArtifactRecord(String groupId, String artifactId, String version) {
         this.groupId = groupId;
@@ -24,6 +24,8 @@ public class ArtifactRecord {
         }
     }
 
+    public void setVersion(String version) { this.version = version; }
+
     public String getGroupId() {
         return groupId;
     }
@@ -38,6 +40,10 @@ public class ArtifactRecord {
 
     public String getJarName() {
         return artifactId + "-" + version + ".jar";
+    }
+
+    public String getUnversionedIdentifier() {
+        return String.format("%s:%s", groupId, artifactId);
     }
 
     public String getIdentifier() {

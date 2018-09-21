@@ -14,6 +14,7 @@ import org.apache.maven.artifact.versioning.VersionRange;
 
 import org.apache.maven.model.Dependency;
 import org.apache.maven.model.Model;
+import picocli.CommandLine;
 import soot.*;
 import soot.jimple.toolkits.callgraph.CallGraph;
 import soot.jimple.toolkits.callgraph.Targets;
@@ -27,66 +28,60 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
+import java.util.concurrent.Callable;
 
-public class Main {
-    static Logger logger = LogManager.getLogger();
+@CommandLine.Command(
+        name = "timemachine",
+        description = "Creates a callgraph for a maven artifact including dependencies for a specific date in history.",
+        mixinStandardHelpOptions = true,
+        version = "timemahcine version 1.0"
+)
+public class Main implements Callable<Void> {
+    protected static Logger logger = LogManager.getLogger();
+
+    @CommandLine.Option(
+            names = {"-k", "--api-key"},
+            required = true,
+            description = "Libraries.io api key, see https://libraries.io/account"
+    )
+    protected String apiKey;
+
+    @CommandLine.Parameters(
+            index = "0",
+            paramLabel = "package identifier",
+            description = "Maven artifact to analyze (format: [groupId]:[artifactId] eg. com.company.app:my-app)."
+    )
+    protected String packageIdentifier;
 
 
-    private static class VersionRangeNotFulFilledException extends Exception {
-        public VersionRangeNotFulFilledException(String message) {
-            super(message);
-        }
-    }
+    @CommandLine.Parameters(
+            index = "1",
+            paramLabel = "date",
+            description = "Date (format: [YYYY-MM-DD]) to resolve dependency tree for."
+    )
+    protected LocalDate dateStramp;
 
-    public static boolean isVersionRange(String versionDefinition) {
-        final char[] rangeIndicators = {'[', ']', '(', ')', ','};
-
-        for (char character : rangeIndicators) {
-            if (versionDefinition.indexOf(character) > -1) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    public static VersionDate resolveVersionRange(String projectIdentifier, String versionRangeDef, LocalDateTime timestamp, LibrariesIoApi api)
-            throws
-            InvalidVersionSpecificationException,
-            VersionRangeNotFulFilledException {
-
-        Project project = api.getProjectInfo(projectIdentifier);
-
-        VersionRange versionRange = VersionRange.createFromVersionSpec(versionRangeDef);
-
-        Optional<VersionDate> maybeVersion = project.getVersions().stream()
-                .filter(v -> v.getPublished_at().isBefore(timestamp)) // Filter on timestamp
-                .filter(v -> versionRange.containsVersion(new DefaultArtifactVersion(v.getNumber()))) // Filter on version range definition
-                .max(Comparator.comparing(VersionDate::getPublished_at)); // Get last available version
-
-        if (!maybeVersion.isPresent()) {
-            throw new VersionRangeNotFulFilledException("No suitable artifact found!");
-        }
-        return maybeVersion.get();
-
-    }
 
     public static void main(String[] args) throws Exception {
+        CommandLine.call(new Main(), args);
+    }
 
-        String api_key = "";
-        String identifier = "";
-        String groupID = "";
-        String artifactID = "";
 
-        String timestamp = "2008-11-01";
+    public Void call() throws Exception {
 
-        String outputDir = artifactID + "@" + timestamp;
+        //String api_key = "notavalidkeyjustaplaceholderkey";
+        // identifier = "org.jdtaus.banking:jdtaus-banking-messages";
+        //String timestamp = "2018-09-14";
+
+        ArtifactRecord rootArtifact = new ArtifactRecord(packageIdentifier);
+
+        String outputDir = rootArtifact.getArtifactId() + "@" + dateStramp.toString();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        LocalDateTime datetime_limit = LocalDate.parse(timestamp, formatter).atTime(23, 59, 59);
+        LocalDateTime datetime_limit = dateStramp.atTime(23, 59, 59);
 
-        LibrariesIoApi api = new LibrariesIoApi(api_key);
+        LibrariesIoApi api = new LibrariesIoApi(apiKey);
 
-        Project project = api.getProjectInfo(identifier);
+        Project project = api.getProjectInfo(rootArtifact.getUnversionedIdentifier());
 
         Optional<VersionDate> optional_version = project.getVersions().stream()
                 .filter(v -> v.getPublished_at().isBefore(datetime_limit)) // Filter on timestamp
@@ -97,21 +92,20 @@ public class Main {
         }
 
         VersionDate versionDate = optional_version.get();
-
-        logger.info("Found version: {} for {} with timestamp {}", versionDate.getNumber(), identifier, versionDate.getPublished_at().toString());
+        rootArtifact.setVersion(versionDate.getNumber());
+        logger.info("Found version: {} for {} with timestamp {}", versionDate.getNumber(), rootArtifact.getUnversionedIdentifier(), versionDate.getPublished_at().toString());
 
 
         Map<String, ArtifactRecord> foundProjects = new LinkedHashMap<>();
 
 
-        ArtifactRecord rootProject = new ArtifactRecord(groupID, artifactID, versionDate.getNumber());
-        foundProjects.put(identifier, rootProject);
+        foundProjects.put(rootArtifact.getUnversionedIdentifier(), rootArtifact);
 
         // TODO include first resolve in loop
 
         ModelFactory modelFactory = new ModelFactory();
 
-        Model model = modelFactory.getModel(groupID, artifactID, versionDate.getNumber());
+        Model model = modelFactory.getModel(rootArtifact.getGroupId(), rootArtifact.getArtifactId(), rootArtifact.getVersion());
 
         List<Dependency> deps = model.getDependencies();
 
@@ -176,12 +170,51 @@ public class Main {
         String[] jarPaths = (String[]) Arrays.stream(jars).map(File::getAbsolutePath).toArray(size -> new String[size]);
         String classpath = String.join(":", jarPaths);
 
-        makeCallGraph(classpath, new File(destinationDir, rootProject.getJarName()));
+        makeCallGraph(classpath, new File(destinationDir, rootArtifact.getJarName()));
 
+        return null;
+    }
+
+    private class VersionRangeNotFulFilledException extends Exception {
+        public VersionRangeNotFulFilledException(String message) {
+            super(message);
+        }
+    }
+
+    public boolean isVersionRange(String versionDefinition) {
+        final char[] rangeIndicators = {'[', ']', '(', ')', ','};
+
+        for (char character : rangeIndicators) {
+            if (versionDefinition.indexOf(character) > -1) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public VersionDate resolveVersionRange(String projectIdentifier, String versionRangeDef, LocalDateTime timestamp, LibrariesIoApi api)
+            throws
+            InvalidVersionSpecificationException,
+            VersionRangeNotFulFilledException {
+
+        Project project = api.getProjectInfo(projectIdentifier);
+
+        VersionRange versionRange = VersionRange.createFromVersionSpec(versionRangeDef);
+
+        Optional<VersionDate> maybeVersion = project.getVersions().stream()
+                .filter(v -> v.getPublished_at().isBefore(timestamp)) // Filter on timestamp
+                .filter(v -> versionRange.containsVersion(new DefaultArtifactVersion(v.getNumber()))) // Filter on version range definition
+                .max(Comparator.comparing(VersionDate::getPublished_at)); // Get last available version
+
+        if (!maybeVersion.isPresent()) {
+            throw new VersionRangeNotFulFilledException("No suitable artifact found!");
+        }
+        return maybeVersion.get();
 
     }
 
-    protected static void makeCallGraph(String classpath, File mainJar) throws IOException {
+    protected void makeCallGraph(String classpath, File mainJar) throws IOException {
 
         List<String> argsList = new ArrayList<String>(Arrays.asList("-whole-program",
 //                "-pp",
