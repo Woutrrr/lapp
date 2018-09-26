@@ -1,20 +1,28 @@
 package nl.wvdzwan.timemachine;
 
+import java.util.Objects;
+
 public class ArtifactRecord {
 
     private String groupId;
     private String artifactId;
-    private String version = "";
+    private String version;
 
     public ArtifactRecord(String groupId, String artifactId, String version) {
-        this.groupId = groupId;
-        this.artifactId = artifactId;
+
+        this.groupId = Objects.requireNonNull(groupId, "groupId must not be null");
+        this.artifactId = Objects.requireNonNull(artifactId, "artifactId must not be null");
         this.version = version;
     }
 
     public ArtifactRecord(String identifier) {
-        String[] parts = identifier.split(":");
+        Objects.requireNonNull(identifier);
 
+        if (!isValidIdentifier(identifier)) {
+            throw new IllegalArgumentException("Malformed identifier string");
+        }
+
+        String[] parts = identifier.split(":");
 
         this.groupId = parts[0];
         this.artifactId = parts[1];
@@ -24,7 +32,9 @@ public class ArtifactRecord {
         }
     }
 
-    public void setVersion(String version) { this.version = version; }
+    public void setVersion(String version) {
+        this.version = version;
+    }
 
     public String getGroupId() {
         return groupId;
@@ -48,5 +58,25 @@ public class ArtifactRecord {
 
     public String getIdentifier() {
         return String.format("%s:%s:%s", groupId, artifactId, version);
+    }
+
+    public static boolean isValidIdentifier(String identifier) {
+        if (identifier == null) {
+            return false;
+        }
+
+        String[] parts = identifier.split(":", 3);
+
+        if (parts.length < 2) {
+            return false;
+        }
+
+        if (parts[0].length() == 0
+                || parts[1].length() == 0
+                || (parts.length == 3 && parts[2].length() == 0)) {
+            return false;
+        }
+
+        return true;
     }
 }
