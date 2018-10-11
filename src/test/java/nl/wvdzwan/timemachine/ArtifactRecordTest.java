@@ -12,7 +12,7 @@ class ArtifactRecordTest {
     void nullGroupIdConstructor() {
 
         assertThrows(NullPointerException.class, () -> {
-            ArtifactRecord record = new ArtifactRecord(null, "myapp", "1.2.3");
+            new ArtifactRecord(null, "myapp", "1.2.3");
         });
     }
 
@@ -20,13 +20,13 @@ class ArtifactRecordTest {
     void nullArtifactIdConstructor() {
 
         assertThrows(NullPointerException.class, () -> {
-            ArtifactRecord record = new ArtifactRecord("com.example.company", null, "1.2.3");
+            new ArtifactRecord("com.example.company", null, "1.2.3");
         });
-
     }
 
     @Test
     void identifierShouldNotBeNull() {
+
         assertThrows(NullPointerException.class, () -> {
             new ArtifactRecord(null);
         });
@@ -37,8 +37,7 @@ class ArtifactRecordTest {
         String[] invalidIdentifiers = {
                 "",
                 "a:",
-                "a::2",
-                "a:b:1:2"
+                "a::2"
         };
 
         for (String identifier : invalidIdentifiers) {

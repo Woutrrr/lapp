@@ -1,6 +1,7 @@
 package nl.wvdzwan.timemachine;
 
 import org.apache.http.HttpEntity;
+import org.apache.http.HttpHost;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
@@ -95,6 +96,7 @@ public class CustomRemoteRepository implements MavenRepository {
 
     private CloseableHttpClient createHttpClient() {
         return HttpClients.custom()
+                .useSystemProperties()
 //                .setConnectionManager(cm)
                 // TODO : setup connection manager?
                 .build();
@@ -111,7 +113,7 @@ public class CustomRemoteRepository implements MavenRepository {
         logger.info("Downloading jar of {} {} {}", groupId, artifactId, version);
 
         // https://repo1.maven.org/maven2/org/jdtaus/banking/jdtaus-banking-messages/1.14/jdtaus-banking-messages-1.14.jar
-        String url = String.format("https://repo1.maven.org/maven2/%1$s/%2$s/%3$s/%2$s-%3$s.jar",
+        String url = String.format("http://repo1.maven.org/maven2/%1$s/%2$s/%3$s/%2$s-%3$s.jar",
                 groupId.replace('.', '/'),
                 artifactId,
                 version);

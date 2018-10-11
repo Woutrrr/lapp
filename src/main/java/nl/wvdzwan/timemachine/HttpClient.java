@@ -5,9 +5,10 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.file.Files;
 
-public class HttpClient {
+public class HttpClient implements HttpClientInterface {
 
 
+    @Override
     public String get(String url) throws IOException {
 
         URL obj = new URL(url);
@@ -37,6 +38,7 @@ public class HttpClient {
      * @return Location of downloaded file
      * @throws IOException
      */
+    @Override
     public File getFile(String url) throws IOException {
         URL obj = new URL(url);
         HttpURLConnection con = (HttpURLConnection) obj.openConnection();

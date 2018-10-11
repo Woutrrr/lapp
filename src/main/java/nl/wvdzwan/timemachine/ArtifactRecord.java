@@ -1,5 +1,7 @@
 package nl.wvdzwan.timemachine;
 
+import org.apache.maven.model.Dependency;
+
 import java.util.Objects;
 
 public class ArtifactRecord {
