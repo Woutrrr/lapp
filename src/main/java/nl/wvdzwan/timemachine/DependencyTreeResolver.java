@@ -22,6 +22,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.LocalDateTime;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class DependencyTreeResolver {
     protected static Logger logger = LogManager.getLogger();
@@ -90,8 +91,20 @@ public class DependencyTreeResolver {
             Model dependencyProject = modelFactory.getModel(dep.getGroupId(), dep.getArtifactId(), version);
             List<Dependency> subDependencies = dependencyProject.getDependencies();
 
-            logger.debug("Dependencies of {}: {}", dependencyIdentifier, subDependencies);
-            toResolve.addAll(subDependencies);
+            List<String> acceptedScopes = Arrays.asList("compile", "runtime");
+            List<String> commonScopes = Arrays.asList("compile", "test");
+
+            // Just to inform/warn of uncommon scopes
+            subDependencies.stream()
+                    .filter(dependency -> !commonScopes.contains(dependency.getScope()))
+                    .forEach(dependency -> logger.warn("Uncommon scope " + dependency.getScope() + " for " + dependency.getGroupId() + ":" + dependency.getArtifactId() +":" + dependency.getVersion()));
+
+            List<Dependency> filteredDependencies = subDependencies.stream()
+                    .filter(dependency -> acceptedScopes.contains(dependency.getScope()))
+                    .collect(Collectors.toList());
+
+            logger.debug("Filtered dependencies of {}: {}", dependencyIdentifier, filteredDependencies);
+            toResolve.addAll(filteredDependencies);
 
         }
 
