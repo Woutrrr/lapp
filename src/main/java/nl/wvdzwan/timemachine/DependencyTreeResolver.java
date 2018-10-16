@@ -19,6 +19,7 @@ import java.io.File;
 import java.io.FilenameFilter;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.time.LocalDateTime;
 import java.util.*;
 
@@ -97,34 +98,36 @@ public class DependencyTreeResolver {
         return result;
     }
 
-    public File[] downloadJars(Map<String, ArtifactRecord> foundProjects, File destinationDir) throws IOException {
+    /**
+     * Download jar files for a list of projects
+     *
+     * @param projects Collection with projects to download jars for
+     * @param destinationDir destination to save jar files to
+     * @return List with paths of downloaded files
+     * @throws IOException
+     */
+    public ArrayList<Path> downloadJars(Collection<ArtifactRecord> projects, File destinationDir) throws IOException {
         ArtifactRepositoryLayout layout = new DefaultRepositoryLayout();
         CustomRemoteRepository remoteRepository = new CustomRemoteRepository("http://repo1.maven.org/maven2/", layout);
 
+        ArrayList<Path> downloadedJars = new ArrayList<>();
+        destinationDir.mkdirs();
 
+        for (ArtifactRecord project : projects) {
 
-        destinationDir.mkdir();
+            Path destination = (new File(destinationDir, project.getJarName())).toPath();
 
-        for (ArtifactRecord foundProject : foundProjects.values()) {
-            // Download jar
+            // Download jar to temporary location
+            File downloadedJar = remoteRepository.getJar(project);
 
-            File destination = new File(destinationDir, foundProject.getJarName());
+            Files.deleteIfExists(destination);
 
-            File downloadedJar = remoteRepository.getJar(foundProject);
-            Files.move(downloadedJar.toPath(), destination.toPath());
+            Files.move(downloadedJar.toPath(), destination);
+
+            downloadedJars.add(destination);
         }
 
-        // make call graph
-        FilenameFilter filter = new FilenameFilter() {
-            @Override
-            public boolean accept(File file, String s) {
-                return s.toLowerCase().endsWith(".jar");
-            }
-        };
-        File[] jars = destinationDir.listFiles(filter);
-
-        return jars;
-
+        return downloadedJars;
     }
 
     private class VersionRangeNotFulFilledException extends Exception {

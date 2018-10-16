@@ -14,11 +14,14 @@ import soot.util.dot.DotGraph;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Path;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.concurrent.Callable;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 @CommandLine.Command(
         name = "timemachine",
@@ -82,10 +85,13 @@ public class Main implements Callable<Void> {
 
         File destinationDir = new File(new File("output"), outputDir);
 
-        File[] jars = dependencyResolver.downloadJars(result.getProjects(), destinationDir);
+        ArrayList<Path> jars = dependencyResolver.downloadJars(result.getProjects().values(), destinationDir);
 
-        String[] jarPaths = (String[]) Arrays.stream(jars).map(File::getAbsolutePath).toArray(size -> new String[size]);
-        String classpath = String.join(":", jarPaths);
+
+        String classpath = jars.stream()
+                .map(Path::toFile)
+                .map(File::getAbsolutePath)
+                .collect(Collectors.joining(":"));
 
         makeCallGraph(classpath, new File(destinationDir, rootArtifact.getJarName()), outputDir);
 
