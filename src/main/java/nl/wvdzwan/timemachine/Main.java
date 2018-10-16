@@ -80,21 +80,21 @@ public class Main implements Callable<Void> {
 
         DependencyResolveResult result = dependencyResolver.resolve(rootArtifact, datetime_limit);
 
-        File destinationDir = new File(outputDir);
+        File destinationDir = new File(new File("output"), outputDir);
 
         File[] jars = dependencyResolver.downloadJars(result.getProjects(), destinationDir);
 
         String[] jarPaths = (String[]) Arrays.stream(jars).map(File::getAbsolutePath).toArray(size -> new String[size]);
         String classpath = String.join(":", jarPaths);
 
-        makeCallGraph(classpath, new File(destinationDir, rootArtifact.getJarName()));
+        makeCallGraph(classpath, new File(destinationDir, rootArtifact.getJarName()), outputDir);
 
         return null;
     }
 
 
 
-    protected void makeCallGraph(String classpath, File mainJar) throws IOException {
+    protected void makeCallGraph(String classpath, File mainJar, String graphOutputName) throws IOException {
 
         List<String> argsList = new ArrayList<String>(Arrays.asList("-whole-program",
 //                "-pp",
@@ -162,7 +162,7 @@ public class Main implements Callable<Void> {
                             explored.add(method);
                         }
 
-                        graph.plot("graph.dot");
+                        graph.plot(graphOutputName + ".dot");
 
 
                         System.out.println("--- end");
