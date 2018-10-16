@@ -30,6 +30,7 @@ public class ModelFactory {
         buildingRequest.setPomFile(pom);
         buildingRequest.setValidationLevel(ModelBuildingRequest.VALIDATION_LEVEL_MINIMAL);
         buildingRequest.setModelResolver(resolver);
+        buildingRequest.setSystemProperties(System.getProperties());
 
         ModelBuildingResult result = null;
         try {
