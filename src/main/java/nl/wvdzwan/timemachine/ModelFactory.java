@@ -28,6 +28,7 @@ public class ModelFactory {
 
         ModelBuildingRequest buildingRequest = new DefaultModelBuildingRequest();
         buildingRequest.setPomFile(pom);
+        buildingRequest.setValidationLevel(ModelBuildingRequest.VALIDATION_LEVEL_MINIMAL);
         buildingRequest.setModelResolver(resolver);
 
         ModelBuildingResult result = null;
