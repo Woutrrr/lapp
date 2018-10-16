@@ -62,13 +62,6 @@ public class Main implements Callable<Void> {
 
     public Void call() throws Exception {
 
-        //String api_key = "notavalidkeyjustaplaceholderkey";
-        // identifier = "org.jdtaus.banking:jdtaus-banking-messages";
-        //String timestamp = "2018-09-14";
-
-//        System.setProperty("http.proxyHost", "localhost");
-//        System.setProperty("http.proxyPort", "3128");
-
         ArtifactRecord rootArtifact = new ArtifactRecord(packageIdentifier);
 
         String outputDir = rootArtifact.getArtifactId() + "@" + dateStramp.toString();
