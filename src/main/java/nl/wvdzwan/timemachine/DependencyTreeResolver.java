@@ -103,7 +103,9 @@ public class DependencyTreeResolver {
                     .filter(dependency -> acceptedScopes.contains(dependency.getScope()))
                     .collect(Collectors.toList());
 
-            logger.debug("Filtered dependencies of {}: {}", dependencyIdentifier, filteredDependencies);
+            if (filteredDependencies.size() > 0) {
+                logger.debug("Filtered dependencies of {}:{} : {}", dependencyIdentifier, dep.getVersion(), filteredDependencies);
+            }
             toResolve.addAll(filteredDependencies);
 
         }
