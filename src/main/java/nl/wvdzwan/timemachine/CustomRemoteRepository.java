@@ -2,7 +2,9 @@ package nl.wvdzwan.timemachine;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpHost;
+import org.apache.http.HttpStatus;
 import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.HttpResponseException;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.CloseableHttpClient;
@@ -12,6 +14,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.artifact.repository.layout.ArtifactRepositoryLayout;
+import org.apache.maven.model.resolution.UnresolvableModelException;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -43,7 +46,7 @@ public class CustomRemoteRepository implements MavenRepository {
     }
 
     @Override
-    public File getPom(Artifact artifact) {
+    public File getPom(Artifact artifact) throws UnresolvableModelException {
 
 
         File pomFile = null;
@@ -55,12 +58,19 @@ public class CustomRemoteRepository implements MavenRepository {
 
         URI remote = URI.create(url + layout.pathOf(artifact) + ".pom");
 
-        downloadPom(pomFile, remote);
+        try{
+            downloadPom(pomFile, remote);
+        } catch (HttpResponseException e) {
+            logger.warn("Could not download pom for {}:{}:{}, got status code {}",
+                    artifact.getGroupId(), artifact.getArtifactId(), artifact.getVersion(), e.getStatusCode());
+
+            throw new UnresolvableModelException("Could not find pom in repository, got http status: " + e.getMessage(), artifact.getGroupId(), artifact.getArtifactId(), artifact.getVersion());
+        }
 
         return pomFile;
     }
 
-    protected File downloadPom(File localPath, URI remotePath) {
+    protected File downloadPom(File localPath, URI remotePath) throws HttpResponseException {
         logger.debug("Downloading {}", remotePath);
 
         // TODO : extract downloading coupling
@@ -75,6 +85,9 @@ public class CustomRemoteRepository implements MavenRepository {
 
                 HttpEntity entity = response.getEntity();
 
+                if (response.getStatusLine().getStatusCode() != HttpStatus.SC_OK) {
+                  throw new HttpResponseException(response.getStatusLine().getStatusCode(), response.getStatusLine().toString());
+                }
 
                 fo = new FileOutputStream(localPath);
                 entity.writeTo(fo);
@@ -88,6 +101,8 @@ public class CustomRemoteRepository implements MavenRepository {
                 response.close();
             }
 
+        } catch (HttpResponseException e) {
+            throw e;
         } catch (IOException e) {
             e.printStackTrace();
         }

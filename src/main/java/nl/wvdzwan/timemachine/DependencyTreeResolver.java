@@ -12,6 +12,7 @@ import org.apache.maven.artifact.versioning.InvalidVersionSpecificationException
 import org.apache.maven.artifact.versioning.VersionRange;
 import org.apache.maven.model.Dependency;
 import org.apache.maven.model.Model;
+import org.apache.maven.model.resolution.UnresolvableModelException;
 import org.eclipse.aether.collection.UnsolvableVersionConflictException;
 import org.eclipse.aether.graph.DependencyNode;
 
@@ -88,7 +89,13 @@ public class DependencyTreeResolver {
             logger.info("Add {}:{} to project list", dependencyIdentifier, version);
             result.add(new ArtifactRecord(dep.getGroupId(), dep.getArtifactId(), version));
 
-            Model dependencyProject = modelFactory.getModel(dep.getGroupId(), dep.getArtifactId(), version);
+            Model dependencyProject;
+            try {
+                dependencyProject = modelFactory.getModel(dep.getGroupId(), dep.getArtifactId(), version);
+            } catch (UnresolvableModelException e) {
+                logger.warn("Could not build model for {}:{}, skipping...", dependencyIdentifier, version);
+                continue;
+            }
             List<Dependency> subDependencies = dependencyProject.getDependencies();
 
             List<String> acceptedScopes = Arrays.asList("compile", "runtime");
