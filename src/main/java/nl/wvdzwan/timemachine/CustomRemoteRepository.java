@@ -118,12 +118,12 @@ public class CustomRemoteRepository implements MavenRepository {
     }
 
     @Override
-    public File getJar(ArtifactRecord artifact) {
+    public File getJar(ArtifactRecord artifact) throws JarNotFoundException {
         return getJar(artifact.getGroupId(), artifact.getArtifactId(), artifact.getVersion());
     }
 
     @Override
-    public File getJar(String groupId, String artifactId, String version) {
+    public File getJar(String groupId, String artifactId, String version) throws JarNotFoundException {
 
         logger.info("Downloading jar of {} {} {}", groupId, artifactId, version);
 
@@ -149,6 +149,9 @@ public class CustomRemoteRepository implements MavenRepository {
                 logger.debug("Status: {}", response.getStatusLine());
 
                 HttpEntity entity = response.getEntity();
+                if (response.getStatusLine().getStatusCode() != HttpStatus.SC_OK) {
+                    throw new JarNotFoundException("Jar not found, got http status: " + response.getStatusLine().toString(), groupId, artifactId, version);
+                }
 
                 if (entity != null) {
                     try (FileOutputStream outstream = new FileOutputStream(temp)) {

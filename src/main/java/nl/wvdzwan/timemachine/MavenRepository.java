@@ -12,8 +12,8 @@ public interface MavenRepository {
 
     File getPom(Artifact artifact) throws UnresolvableModelException;
 
-    File getJar(ArtifactRecord artifact);
-    File getJar(String groupId, String artifactId, String version);
+    File getJar(ArtifactRecord artifact) throws JarNotFoundException;
+    File getJar(String groupId, String artifactId, String version) throws JarNotFoundException;
 
 
 

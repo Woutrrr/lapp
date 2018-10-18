@@ -138,11 +138,16 @@ public class DependencyTreeResolver {
         for (ArtifactRecord project : projects) {
 
             Path destination = (new File(destinationDir, project.getJarName())).toPath();
-
-            // Download jar to temporary location
-            File downloadedJar = remoteRepository.getJar(project);
-
             Files.deleteIfExists(destination);
+
+            File downloadedJar;
+            try {
+                // Download jar to temporary location
+                downloadedJar = remoteRepository.getJar(project);
+            } catch (JarNotFoundException e) {
+                logger.warn("Unable to download jar for {}, skipping...", project.getIdentifier());
+                continue;
+            }
 
             Files.move(downloadedJar.toPath(), destination);
 
