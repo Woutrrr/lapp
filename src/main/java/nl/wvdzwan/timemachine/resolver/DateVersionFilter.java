@@ -1,6 +1,6 @@
 package nl.wvdzwan.timemachine.resolver;
 
-import nl.wvdzwan.timemachine.libio.LibrariesIOClient;
+import nl.wvdzwan.timemachine.libio.LibrariesIOInterface;
 import nl.wvdzwan.timemachine.libio.Project;
 import nl.wvdzwan.timemachine.libio.VersionDate;
 import org.eclipse.aether.RepositoryException;
@@ -17,10 +17,10 @@ import java.util.stream.Collectors;
 
 public class DateVersionFilter implements VersionFilter {
 
-    protected LibrariesIOClient api;
+    protected LibrariesIOInterface api;
     protected LocalDateTime date;
 
-    public DateVersionFilter(LibrariesIOClient api, LocalDate date) {
+    public DateVersionFilter(LibrariesIOInterface api, LocalDate date) {
         this.api = api;
         this.date = date.atTime(23, 59, 59);
     }

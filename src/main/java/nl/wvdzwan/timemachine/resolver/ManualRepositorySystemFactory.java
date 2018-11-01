@@ -19,6 +19,11 @@ package nl.wvdzwan.timemachine.resolver;
  * under the License.
  */
 
+import nl.wvdzwan.timemachine.HttpClient;
+import nl.wvdzwan.timemachine.HttpClientInterface;
+import nl.wvdzwan.timemachine.libio.LibrariesIOClient;
+import nl.wvdzwan.timemachine.libio.LibrariesIOInterface;
+import nl.wvdzwan.timemachine.libio.RateLimitedClient;
 import org.apache.maven.repository.internal.MavenRepositorySystemUtils;
 import org.eclipse.aether.RepositorySystem;
 import org.eclipse.aether.connector.basic.BasicRepositoryConnectorFactory;
@@ -40,7 +45,7 @@ public class ManualRepositorySystemFactory
 {
     private static final Logger LOGGER = LoggerFactory.getLogger( ManualRepositorySystemFactory.class );
 
-    public static RepositorySystem newRepositorySystem()
+    public static RepositorySystem newRepositorySystem(DefaultServiceLocator locator)
     {
         /*
          * Aether's components implement org.eclipse.aether.spi.locator.Service to ease manual wiring and using the
@@ -48,12 +53,14 @@ public class ManualRepositorySystemFactory
          * factories.
          */
 
-        DefaultServiceLocator locator = MavenRepositorySystemUtils.newServiceLocator();
+
         locator.addService( RepositoryConnectorFactory.class, BasicRepositoryConnectorFactory.class );
         locator.addService( TransporterFactory.class, FileTransporterFactory.class );
         locator.addService( TransporterFactory.class, HttpTransporterFactory.class );
         locator.setService( VersionResolver.class, CustomVersionResolver.class);
         locator.setService( VersionRangeResolver.class, CustomVersionRangeResolver.class );
+        locator.setService( HttpClientInterface.class, HttpClient.class );
+        locator.setService( LibrariesIOInterface.class, RateLimitedClient.class );
 
         locator.setErrorHandler( new DefaultServiceLocator.ErrorHandler()
         {

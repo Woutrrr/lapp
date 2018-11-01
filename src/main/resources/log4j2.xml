@@ -7,6 +7,7 @@
     </Appenders>
     <Loggers>
         <Logger name="nl.wvdzwan.timemachine.CustomRemoteRepository" level="info"/>
+        <Logger name="org.apache.http" level="info" />
         <Root level="debug">
             <AppenderRef ref="Console"/>
         </Root>

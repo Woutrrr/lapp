@@ -43,23 +43,29 @@ public class DependencyTreeResolver {
                 .filter(v -> v.getPublished_at().isBefore(datetime_limit)) // Filter on timestamp
                 .max((vd1, vd2) -> vd1.getPublished_at().compareTo(vd2.getPublished_at()));
 
+        DependencyResolveResult result = new DependencyResolveResult();
+
         if (!optional_version.isPresent()) {
-            throw new Exception("No suitable artifact found!");
+            logger.fatal("No suitable artifact found before {}", datetime_limit);
+            return result;
         }
 
         VersionDate versionDate = optional_version.get();
         rootArtifact.setVersion(versionDate.getNumber());
         logger.info("Found version: {} for {} with timestamp {}", versionDate.getNumber(), rootArtifact.getUnversionedIdentifier(), versionDate.getPublished_at().toString());
 
-
-        DependencyResolveResult result = new DependencyResolveResult();
         result.add(rootArtifact);
 
         // TODO include first resolve in loop
 
 
-
-        Model model = modelFactory.getModel(rootArtifact.getGroupId(), rootArtifact.getArtifactId(), rootArtifact.getVersion());
+        Model model;
+        try {
+            model = modelFactory.getModel(rootArtifact.getGroupId(), rootArtifact.getArtifactId(), rootArtifact.getVersion());
+        } catch (UnresolvableModelException e) {
+            logger.fatal("Cannot resolve model for base project from repository, got: {}", e.getMessage());
+            return result;
+        }
 
         List<Dependency> deps = model.getDependencies();
 

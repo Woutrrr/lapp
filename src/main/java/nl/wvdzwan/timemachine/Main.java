@@ -55,12 +55,13 @@ public class Main implements Callable<Void> {
     protected LocalDate dateStramp;
 
 
-    public static void main(String[] args) throws Exception {
+    public static void main(String[] args) {
         CommandLine.call(new Main(), args);
     }
 
 
     public Void call() throws Exception {
+        logger.info("Start analysis of {}", packageIdentifier);
 
         ArtifactRecord rootArtifact = new ArtifactRecord(packageIdentifier);
 
@@ -86,7 +87,7 @@ public class Main implements Callable<Void> {
                 .map(File::getAbsolutePath)
                 .collect(Collectors.joining(":"));
 
-        makeCallGraph(classpath, new File(destinationDir, rootArtifact.getJarName()), outputDir);
+        //makeCallGraph(classpath, new File(destinationDir, rootArtifact.getJarName()), outputDir);
 
         return null;
     }

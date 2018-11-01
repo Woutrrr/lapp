@@ -1,5 +1,7 @@
 package nl.wvdzwan.timemachine.libio;
 
-interface LibrariesIOInterface {
+public interface LibrariesIOInterface {
     Project getProjectInfo(String identifier);
+
+    void setApiKey(String apiKey);
 }

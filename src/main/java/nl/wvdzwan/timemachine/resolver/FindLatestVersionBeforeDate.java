@@ -21,12 +21,17 @@ package nl.wvdzwan.timemachine.resolver;
 
 import nl.wvdzwan.timemachine.HttpClient;
 import nl.wvdzwan.timemachine.libio.LibrariesIOClient;
+import nl.wvdzwan.timemachine.libio.LibrariesIOInterface;
 import nl.wvdzwan.timemachine.resolver.util.Booter;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.apache.maven.repository.internal.MavenRepositorySystemUtils;
 import org.eclipse.aether.DefaultRepositorySystemSession;
 import org.eclipse.aether.RepositorySystem;
 import org.eclipse.aether.RepositorySystemSession;
 import org.eclipse.aether.artifact.Artifact;
 import org.eclipse.aether.artifact.DefaultArtifact;
+import org.eclipse.aether.impl.DefaultServiceLocator;
 import org.eclipse.aether.resolution.VersionRangeRequest;
 import org.eclipse.aether.resolution.VersionRangeResult;
 import org.eclipse.aether.version.Version;
@@ -39,6 +44,9 @@ import java.time.format.DateTimeFormatter;
  */
 public class FindLatestVersionBeforeDate
 {
+
+    protected static Logger logger = LogManager.getLogger();
+
     /**
      * Main.
      * @param args
@@ -51,18 +59,23 @@ public class FindLatestVersionBeforeDate
         System.out.println( FindLatestVersionBeforeDate.class.getSimpleName() );
 
         String apiKey = "ad19ce0d9ce33eac2bcdadb6ea73a388";
+        String datetime_limit = "2008-03-14";
+        String identifier = "com.thoughtworks.xstream:xstream";
 
-        RepositorySystem system = Booter.newRepositorySystem();
 
-        HttpClient httpClient = new HttpClient();
-        LibrariesIOClient api = new LibrariesIOClient(apiKey, httpClient);
+        DefaultServiceLocator locator = MavenRepositorySystemUtils.newServiceLocator();
+        RepositorySystem system = Booter.newRepositorySystem(locator);
+
+        LibrariesIOInterface api = locator.getService(LibrariesIOInterface.class);
+        api.setApiKey( apiKey );
+
 
         RepositorySystemSession session = Booter.newRepositorySystemSession( system );
         ((DefaultRepositorySystemSession) session).setVersionFilter(new DateVersionFilter(api, LocalDate.parse("2010-04-04")));
-        ((DefaultRepositorySystemSession) session).setConfigProperty("time-machine.date", "2010-04-04");
+        ((DefaultRepositorySystemSession) session).setConfigProperty("time-machine.date", datetime_limit);
         ((DefaultRepositorySystemSession) session).setConfigProperty("librariesio.key", apiKey);
 
-        Artifact artifact = new DefaultArtifact( "org.eclipse.aether:aether-util:[0,)" );
+        Artifact artifact = new DefaultArtifact( identifier + ":[0,)" );
 
         VersionRangeRequest rangeRequest = new VersionRangeRequest();
         rangeRequest.setArtifact( artifact );
@@ -70,13 +83,16 @@ public class FindLatestVersionBeforeDate
 
         VersionRangeResult rangeResult = system.resolveVersionRange( session, rangeRequest );
 
+        if (rangeResult.getVersions().size() == 0) {
+            logger.fatal("No suitable artifact found for {} before {}", identifier, datetime_limit);
+            return;
+        }
+
+        Version version = rangeResult.getHighestVersion();
+        logger.info("Found version: {} for {}", version.toString(), identifier);
 
 
 
-        Version newestVersion = rangeResult.getHighestVersion();
-
-        System.out.println( "Newest version " + newestVersion + " from repository "
-            + rangeResult.getRepository( newestVersion ) );
     }
 
 }

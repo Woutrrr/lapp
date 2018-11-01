@@ -27,6 +27,7 @@ import org.apache.maven.repository.internal.MavenRepositorySystemUtils;
 import org.eclipse.aether.DefaultRepositorySystemSession;
 import org.eclipse.aether.RepositorySystem;
 import org.eclipse.aether.RepositorySystemSession;
+import org.eclipse.aether.impl.DefaultServiceLocator;
 import org.eclipse.aether.repository.LocalRepository;
 import org.eclipse.aether.repository.RemoteRepository;
 
@@ -36,11 +37,9 @@ import org.eclipse.aether.repository.RemoteRepository;
 public class Booter
 {
 
-    public static RepositorySystem newRepositorySystem()
+    public static RepositorySystem newRepositorySystem(DefaultServiceLocator locator)
     {
-        return ManualRepositorySystemFactory.newRepositorySystem();
-        // return org.eclipse.aether.examples.guice.GuiceRepositorySystemFactory.newRepositorySystem();
-        // return org.eclipse.aether.examples.sisu.SisuRepositorySystemFactory.newRepositorySystem();
+        return ManualRepositorySystemFactory.newRepositorySystem(locator);
     }
 
     public static DefaultRepositorySystemSession newRepositorySystemSession( RepositorySystem system )

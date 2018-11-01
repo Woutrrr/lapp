@@ -1,15 +1,15 @@
 package nl.wvdzwan.timemachine.libio;
 
-public class RateLimitedClient implements LibrariesIOInterface {
+import javax.sound.midi.SysexMessage;
 
-    LibrariesIOInterface client;
-    private long lastRequest = Long.MAX_VALUE;
-    private long minWaitTime;
+public class RateLimitedClient extends LibrariesIOClient {
 
 
-    RateLimitedClient(LibrariesIOInterface client, long minWaitTime) {
-        this.client = client;
-        this.minWaitTime = minWaitTime;
+    private long lastRequest = 0;
+    private long minWaitTime = 500; // Default wait time of 1000ms
+
+    public void setWaitTime(long newWaitTime) {
+        this.minWaitTime = newWaitTime;
     }
 
     @Override
@@ -17,14 +17,15 @@ public class RateLimitedClient implements LibrariesIOInterface {
 
         doWait();
 
-        return client.getProjectInfo(identifier);
+        return super.getProjectInfo(identifier);
     }
 
     private void doWait() {
+        long earliestSlot = lastRequest + minWaitTime;
+        long now = System.currentTimeMillis();
 
-        long timeSinceLastRequest = System.currentTimeMillis() - lastRequest;
-
-        long waitRemaining = minWaitTime - timeSinceLastRequest;
+        long waitRemaining = Math.max(earliestSlot - now, 0);
+        System.out.print("Now: " + now + " Wait: " + waitRemaining + " Unpause at: " + (now+waitRemaining) );
 
         if (waitRemaining > 0) {
             try {
@@ -34,7 +35,7 @@ public class RateLimitedClient implements LibrariesIOInterface {
             }
         }
 
+        lastRequest = System.currentTimeMillis();
+        System.out.println(" Done at: " + lastRequest);
     }
-
-
 }
