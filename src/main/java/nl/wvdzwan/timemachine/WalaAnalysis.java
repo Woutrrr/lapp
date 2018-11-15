@@ -46,11 +46,6 @@ public class WalaAnalysis {
     // This example takes one command-line argument, so args[1] should be the "-classpath" parameter
     final static int CLASSPATH_INDEX = 1;
 
-    public final static String DOT_FILE = "temp.dt";
-
-    private final static String PDF_FILE = "th.pdf";
-
-
 
     public static void main(String[] args) throws IOException {
         run(args);
@@ -92,8 +87,6 @@ public class WalaAnalysis {
             //
             // build the call graph
             //
-//            CallGraphBuilder builder = Util.makeZeroCFABuilder(Language.JAVA, options, cache, cha, scope);
-
             CallGraphBuilder builder = Util.makeRTABuilder(options, cache, cha, scope);
             CallGraph cg = builder.makeCallGraph(options, null);
 
@@ -106,7 +99,6 @@ public class WalaAnalysis {
 
 
         } catch (WalaException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
             return null;
         } catch (CallGraphBuilderCancelException e) {
@@ -145,19 +137,6 @@ public class WalaAnalysis {
         return graph;
     }
 
-    public static <T> Graph<T> pruneGraph(Graph<T> g, Predicate<T> f) {
-        Collection<T> slice = GraphSlicer.slice(g, f);
-        return GraphSlicer.prune(g, new CollectionFilter<>(slice));
-    }
-
-    /**
-     * Restrict g to nodes from the Application loader
-     */
-    public static Graph<IClass> pruneForAppLoader(Graph<IClass> g) {
-        Predicate<IClass> f = c -> (c.getClassLoader().getReference().equals(ClassLoaderReference.Application));
-        return pruneGraph(g, f);
-    }
-
     /**
      * Validate that the command-line arguments obey the expected usage.
      * <p>
@@ -174,27 +153,6 @@ public class WalaAnalysis {
         }
     }
 
-    /**
-     * Return a view of an {@link IClassHierarchy} as a {@link Graph}, with edges from classes to immediate subtypes
-     */
-    public static Graph<IClass> typeHierarchy2Graph(IClassHierarchy cha) {
-        Graph<IClass> result = SlowSparseNumberedGraph.make();
-        for (IClass c : cha) {
-            result.addNode(c);
-        }
-        for (IClass c : cha) {
-
-            for (IClass x : cha.getImmediateSubclasses(c)) {
-                result.addEdge(c, x);
-            }
-            if (c.isInterface()) {
-                for (IClass x : cha.getImplementors(c.getReference())) {
-                    result.addEdge(c, x);
-                }
-            }
-        }
-        return result;
-    }
 
 
 }
