@@ -62,21 +62,7 @@ public class WalaAnalysis {
             // invoke WALA to build a class hierarchy
             ClassHierarchy cha = ClassHierarchyFactory.make(scope);
 
-//            Iterable<Entrypoint> entrypoints = Util.makeMainEntrypoints(scope, cha);
-            ArrayList<Entrypoint> entrypoints = new ArrayList<>();
-
-            IMethod method;
-            for (IClass klass : cha) {
-                // klass is not an interface and it's application class
-                if ((!klass.isInterface()) && (cha.getScope().getApplicationLoader().equals(klass.getClassLoader().getReference()))) {
-
-                    for (Iterator m_iter = klass.getDeclaredMethods().iterator(); m_iter.hasNext(); ) {
-                        method = (IMethod) m_iter.next();
-
-                        entrypoints.add(new DefaultEntrypoint(method, cha));
-                    }
-                }
-            }
+            ArrayList<Entrypoint> entrypoints = getEntrypoints(cha);
 
             //
             // analysis options controls aspects of call graph construction
@@ -105,6 +91,35 @@ public class WalaAnalysis {
             e.printStackTrace();
             return null;
         }
+    }
+
+    public static ArrayList<Entrypoint> getEntrypoints(ClassHierarchy cha) {
+        ArrayList<Entrypoint> entryPoints = new ArrayList<>();
+        for (IClass klass : cha) {
+            if (acceptClassForEntryPoints(klass)) {
+
+                Collection<Entrypoint> acceptedMethods = klass.getAllMethods().stream()
+                        .filter(WalaAnalysis::acceptMethodAsEntryPoint)
+                        .map(n -> new DefaultEntrypoint(n, cha))
+                        .collect(Collectors.toList());
+
+                entryPoints.addAll(acceptedMethods);
+
+            }
+        }
+
+        return entryPoints;
+    }
+
+
+    private static boolean acceptClassForEntryPoints(IClass klass) {
+        return klass.getClassLoader().getReference().equals(ClassLoaderReference.Application)
+                && !klass.isInterface()
+                && klass.isPublic();
+    }
+
+    public static boolean acceptMethodAsEntryPoint(IMethod method) {
+        return method.isPublic() && !method.isAbstract();
     }
 
     private static Graph<IMethod> outputcg(CallGraph cg) {
