@@ -11,6 +11,7 @@
  *******************************************************************************/
 package nl.wvdzwan.timemachine;
 
+import com.ibm.wala.classLoader.CallSiteReference;
 import com.ibm.wala.classLoader.IClass;
 import com.ibm.wala.classLoader.IMethod;
 import com.ibm.wala.ipa.callgraph.*;
@@ -18,8 +19,8 @@ import com.ibm.wala.ipa.callgraph.impl.DefaultEntrypoint;
 import com.ibm.wala.ipa.callgraph.impl.Util;
 import com.ibm.wala.ipa.cha.ClassHierarchy;
 import com.ibm.wala.ipa.cha.ClassHierarchyFactory;
-import com.ibm.wala.ipa.cha.IClassHierarchy;
 import com.ibm.wala.types.ClassLoaderReference;
+import com.ibm.wala.types.MethodReference;
 import com.ibm.wala.util.WalaException;
 import com.ibm.wala.util.collections.CollectionFilter;
 import com.ibm.wala.util.config.AnalysisScopeReader;
@@ -29,12 +30,15 @@ import com.ibm.wala.util.graph.impl.SlowSparseNumberedGraph;
 import com.ibm.wala.util.io.FileProvider;
 import com.ibm.wala.util.strings.Atom;
 import com.ibm.wala.viz.DotUtil;
+import com.ibm.wala.util.warnings.Warnings;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.Set;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 /**
  * This simple example WALA application builds a TypeHierarchy and fires off
@@ -76,7 +80,7 @@ public class WalaAnalysis {
             CallGraphBuilder builder = Util.makeRTABuilder(options, cache, cha, scope);
             CallGraph cg = builder.makeCallGraph(options, null);
 
-            Graph<IMethod> methodGraph = outputcg(cg);
+            Graph<MethodReference> methodGraph = outputcg(cg);
 
             DotUtil.writeDotFile(methodGraph, null, null, "output/cg.dot");
 
@@ -122,11 +126,12 @@ public class WalaAnalysis {
         return method.isPublic() && !method.isAbstract();
     }
 
-    private static Graph<IMethod> outputcg(CallGraph cg) {
-        Graph<IMethod> graph = SlowSparseNumberedGraph.make();
+    private static Graph<MethodReference> outputcg(CallGraph cg) {
+        Graph<MethodReference> graph = SlowSparseNumberedGraph.make();
         Iterator<CGNode> cgIterator = cg.iterator();
         CGNode node;
-        CGNode sub_node;
+        CallSiteReference callsite;
+
         while(cgIterator.hasNext()) {
             node = cgIterator.next();
 
@@ -135,16 +140,16 @@ public class WalaAnalysis {
                 continue;
             }
 
-            graph.addNode(node.getMethod());
+            graph.addNode(node.getMethod().getReference());
 
 
 
-            for(Iterator<CGNode> succ_nodes = cg.getSuccNodes(node); succ_nodes.hasNext();) {
-                sub_node = succ_nodes.next();
-                graph.addNode(sub_node.getMethod());
+            for(Iterator<CallSiteReference> callsites = node.iterateCallSites(); callsites.hasNext();) {
+                callsite = callsites.next();
+                graph.addNode(callsite.getDeclaredTarget());
 
-                if (!graph.hasEdge(node.getMethod(), sub_node.getMethod())) {
-                    graph.addEdge(node.getMethod(), sub_node.getMethod());
+                if (!graph.hasEdge(node.getMethod().getReference(), callsite.getDeclaredTarget())) {
+                    graph.addEdge(node.getMethod().getReference(), callsite.getDeclaredTarget());
                 }
             }
 
