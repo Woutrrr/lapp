@@ -139,8 +139,7 @@ public class WalaAnalysis {
         while(cgIterator.hasNext()) {
             node = cgIterator.next();
 
-            if (node.getMethod().getDeclaringClass().getClassLoader().getName().equals(Atom.findOrCreateUnicodeAtom("Primordial"))) {
-//            if (node.getMethod().getDeclaringClass().getReference().getName().getPackage().startsWith(Atom.findOrCreateUnicodeAtom("java"))) {
+            if (!node.getMethod().getDeclaringClass().getClassLoader().getReference().equals(ClassLoaderReference.Application)) {
                 continue;
             }
 
