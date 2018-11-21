@@ -65,6 +65,8 @@ public class WalaAnalysis {
 
             // invoke WALA to build a class hierarchy
             ClassHierarchy cha = ClassHierarchyFactory.make(scope);
+            System.out.println(cha.getNumberOfClasses() + " classes");
+            System.out.println(Warnings.asString());
 
             ArrayList<Entrypoint> entrypoints = getEntrypoints(cha);
 
@@ -79,6 +81,8 @@ public class WalaAnalysis {
             //
             CallGraphBuilder builder = Util.makeRTABuilder(options, cache, cha, scope);
             CallGraph cg = builder.makeCallGraph(options, null);
+
+            System.out.println(CallGraphStats.getStats(cg));
 
             Graph<MethodReference> methodGraph = outputcg(cg);
 
