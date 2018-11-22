@@ -48,7 +48,8 @@ import java.util.stream.Collectors;
  */
 public class WalaAnalysis {
     // This example takes one command-line argument, so args[1] should be the "-classpath" parameter
-    final static int CLASSPATH_INDEX = 1;
+    final static int JARPATH_INDEX = 1;
+    final static int CLASSPATH_INDEX = 3;
 
 
     public static void main(String[] args) throws IOException {
@@ -58,10 +59,14 @@ public class WalaAnalysis {
     public static Process run(String[] args) throws IOException {
         try {
             validateCommandLine(args);
+            String mainJar = args[JARPATH_INDEX];
             String classpath = args[CLASSPATH_INDEX];
-            AnalysisScope scope = AnalysisScopeReader.makeJavaBinaryAnalysisScope(
-                    classpath,
-                    (new FileProvider()).getFile("Java60RegressionExclusions.txt"));
+
+            File exclusionsFile = (new FileProvider()).getFile("Java60RegressionExclusions.txt");
+            AnalysisScope scope = AnalysisScopeReader.makePrimordialScope(exclusionsFile);
+
+            AnalysisScopeReader.addClassPathToScope(mainJar, scope, scope.getLoader(AnalysisScope.APPLICATION));
+            AnalysisScopeReader.addClassPathToScope(classpath, scope, scope.getLoader(AnalysisScope.EXTENSION));
 
             // invoke WALA to build a class hierarchy
             ClassHierarchy cha = ClassHierarchyFactory.make(scope);
@@ -163,20 +168,23 @@ public class WalaAnalysis {
     /**
      * Validate that the command-line arguments obey the expected usage.
      * <p>
-     * Usage: args[0] : "-classpath" args[1] : String, a ";"-delimited class path
+     * Usage: args[0] : "-jar"
+     *        args[1] : String, path to jar to analyze
+     *        args[2] : "-classpath"
+     *        args[3] : String, a ";"-delimited class path
      *
      * @throws UnsupportedOperationException if command-line is malformed.
      */
     public static void validateCommandLine(String[] args) {
-        if (args.length < 2) {
-            throw new UnsupportedOperationException("must have at least 2 command-line arguments");
+        if (args.length < 4) {
+            throw new UnsupportedOperationException("must have at least 4 command-line arguments");
         }
-        if (!args[0].equals("-classpath")) {
-            throw new UnsupportedOperationException("invalid command-line, args[0] should be -classpath, but is " + args[0]);
+        if (!args[0].equals("-jar")) {
+            throw new UnsupportedOperationException("invalid command line, args[0] should be -jar, but is " + args[0]);
+        }
+        if (!args[2].equals("-classpath")) {
+            throw new UnsupportedOperationException("invalid command-line, args[2] should be -classpath, but is " + args[2]);
         }
     }
-
-
-
 }
 
