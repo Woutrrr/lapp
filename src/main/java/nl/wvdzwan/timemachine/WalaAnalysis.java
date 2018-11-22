@@ -18,27 +18,28 @@ import com.ibm.wala.ipa.callgraph.*;
 import com.ibm.wala.ipa.callgraph.impl.DefaultEntrypoint;
 import com.ibm.wala.ipa.callgraph.impl.Util;
 import com.ibm.wala.ipa.cha.ClassHierarchy;
+import com.ibm.wala.ipa.cha.ClassHierarchyException;
 import com.ibm.wala.ipa.cha.ClassHierarchyFactory;
 import com.ibm.wala.types.ClassLoaderReference;
 import com.ibm.wala.types.MethodReference;
 import com.ibm.wala.util.WalaException;
-import com.ibm.wala.util.collections.CollectionFilter;
 import com.ibm.wala.util.config.AnalysisScopeReader;
 import com.ibm.wala.util.graph.Graph;
-import com.ibm.wala.util.graph.GraphSlicer;
 import com.ibm.wala.util.graph.impl.SlowSparseNumberedGraph;
 import com.ibm.wala.util.io.FileProvider;
 import com.ibm.wala.util.strings.Atom;
-import com.ibm.wala.viz.DotUtil;
 import com.ibm.wala.util.warnings.Warnings;
+import com.ibm.wala.viz.DotUtil;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.Set;
-import java.util.function.Predicate;
 import java.util.stream.Collectors;
+
+import static com.ibm.wala.types.ClassLoaderReference.Java;
 
 /**
  * This simple example WALA application builds a TypeHierarchy and fires off
@@ -50,6 +51,12 @@ public class WalaAnalysis {
     // This example takes one command-line argument, so args[1] should be the "-classpath" parameter
     final static int JARPATH_INDEX = 1;
     final static int CLASSPATH_INDEX = 3;
+
+    final static boolean outputPhantomNodes = true;
+
+    final static boolean outputInterface = true;
+
+    public final static ClassLoaderReference ClassLoaderMissing = new ClassLoaderReference(Atom.findOrCreateUnicodeAtom("Missing"), Java, null);
 
 
     public static void main(String[] args) throws IOException {
@@ -137,27 +144,56 @@ public class WalaAnalysis {
 
     private static Graph<MethodReference> outputcg(CallGraph cg) {
         Graph<MethodReference> graph = SlowSparseNumberedGraph.make();
+
         Iterator<CGNode> cgIterator = cg.iterator();
-        CGNode node;
-        CallSiteReference callsite;
+        while (cgIterator.hasNext()) {
+            CGNode node = cgIterator.next();
+            MethodReference nodeReference = node.getMethod().getReference();
 
-        while(cgIterator.hasNext()) {
-            node = cgIterator.next();
-
-            if (!node.getMethod().getDeclaringClass().getClassLoader().getReference().equals(ClassLoaderReference.Application)) {
+            if (node.getMethod().getDeclaringClass().getClassLoader().getReference().equals(ClassLoaderReference.Primordial)) {
                 continue;
             }
 
-            graph.addNode(node.getMethod().getReference());
+            graph.addNode(nodeReference);
+
+            for (Iterator<CallSiteReference> callsites = node.iterateCallSites(); callsites.hasNext(); ) {
+                CallSiteReference callsite = callsites.next();
+
+                MethodReference targetReference = callsite.getDeclaredTarget();
 
 
+                Set<CGNode> possibleTargets = cg.getPossibleTargets(node, callsite); // More specific, takes call site into consideration
+                //Set<CGNode> possibleTargets = cg.getClassHierarchy().getPossibleTargets(targetReference));
 
-            for(Iterator<CallSiteReference> callsites = node.iterateCallSites(); callsites.hasNext();) {
-                callsite = callsites.next();
-                graph.addNode(callsite.getDeclaredTarget());
+                if (possibleTargets.size() == 0) {
+                    System.err.println("No targets found for " + targetReference.toString());
 
-                if (!graph.hasEdge(node.getMethod().getReference(), callsite.getDeclaredTarget())) {
-                    graph.addEdge(node.getMethod().getReference(), callsite.getDeclaredTarget());
+                    if (outputPhantomNodes) {
+                        MethodReference missingMethod = MethodReference.findOrCreate(ClassLoaderMissing, targetReference.getDeclaringClass().getName().toString(), targetReference.getName().toString(), targetReference.getSelector().getDescriptor().toString());
+                        graph.addNode(missingMethod);
+
+                        if (!graph.hasEdge(nodeReference, missingMethod)) {
+                            graph.addEdge(nodeReference, missingMethod);
+                        }
+                    }
+                }
+
+                if (outputInterface && callsite.isInterface()) {
+                    MethodReference interfaceReference = cg.getClassHierarchy().resolveMethod(targetReference).getReference();
+                    graph.addNode(interfaceReference);
+                    if (!graph.hasEdge(nodeReference, interfaceReference)) {
+                        graph.addEdge(nodeReference, interfaceReference);
+                    }
+                }
+
+                for (CGNode possibleTarget : possibleTargets) {
+                    MethodReference callSiteTargetReference = possibleTarget.getMethod().getReference();
+
+                    graph.addNode(callSiteTargetReference);
+
+                    if (!graph.hasEdge(nodeReference, callSiteTargetReference)) {
+                        graph.addEdge(nodeReference, callSiteTargetReference);
+                    }
                 }
             }
 
