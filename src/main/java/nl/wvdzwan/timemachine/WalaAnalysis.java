@@ -18,7 +18,6 @@ import com.ibm.wala.ipa.callgraph.*;
 import com.ibm.wala.ipa.callgraph.impl.DefaultEntrypoint;
 import com.ibm.wala.ipa.callgraph.impl.Util;
 import com.ibm.wala.ipa.cha.ClassHierarchy;
-import com.ibm.wala.ipa.cha.ClassHierarchyException;
 import com.ibm.wala.ipa.cha.ClassHierarchyFactory;
 import com.ibm.wala.types.ClassLoaderReference;
 import com.ibm.wala.types.MethodReference;
@@ -30,6 +29,7 @@ import com.ibm.wala.util.io.FileProvider;
 import com.ibm.wala.util.strings.Atom;
 import com.ibm.wala.util.warnings.Warnings;
 import com.ibm.wala.viz.DotUtil;
+import com.ibm.wala.viz.NodeDecorator;
 
 import java.io.File;
 import java.io.IOException;
@@ -98,7 +98,9 @@ public class WalaAnalysis {
 
             Graph<MethodReference> methodGraph = outputcg(cg);
 
-            DotUtil.writeDotFile(methodGraph, null, null, "output/cg.dot");
+            NodeDecorator<MethodReference> labelDecorator = new GlobalUniqueSymbolDecorator(cha, new FlatArtifactFolderLayout());
+
+            DotUtil.writeDotFile(methodGraph, labelDecorator, "\", splines=true, overlap=false, ranksep=5, fontsize=36, root =  \"< Application, Lnl/wvdzwan/tudelft/dynamicDispatch/app/App, main([Ljava/lang/String;)V >", "output/cg.dot");
 
 
             return null;
