@@ -1,61 +1,86 @@
 package nl.wvdzwan.timemachine;
 
-
-import nl.wvdzwan.timemachine.libio.LibrariesIoClient;
+import java.io.File;
+import java.io.IOException;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
+import java.util.*;
+import java.util.concurrent.Callable;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
+import org.eclipse.aether.RepositorySystem;
+import org.eclipse.aether.impl.DefaultServiceLocator;
 import picocli.CommandLine;
 import soot.*;
 import soot.jimple.toolkits.callgraph.CallGraph;
 import soot.jimple.toolkits.callgraph.Targets;
 import soot.util.dot.DotGraph;
 
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Path;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.*;
-import java.util.concurrent.Callable;
-import java.util.stream.Collector;
-import java.util.stream.Collectors;
+import nl.wvdzwan.timemachine.libio.ApiConnectionParameters;
+import nl.wvdzwan.timemachine.libio.LibrariesIoInterface;
+import nl.wvdzwan.timemachine.resolver.util.Booter;
+
 
 @CommandLine.Command(
         name = "timemachine",
-        description = "Creates a callgraph for a maven artifact including dependencies for a specific date in history.",
+        description = "Resolve and download dependencies for a maven artifact for a specific date in history.",
         mixinStandardHelpOptions = true,
-        version = "timemahcine version 1.0"
+        version = "timemachine version 1.0"
 )
 public class Main implements Callable<Void> {
-    protected static Logger logger = LogManager.getLogger();
+    private static Logger logger = LogManager.getLogger();
 
     @CommandLine.Option(
             names = {"-k", "--api-key"},
             required = true,
             description = "Libraries.io api key, see https://libraries.io/account"
     )
-    protected String apiKey;
+    private String apiKey;
+
+
+    @CommandLine.Option(
+            names = {"-s", "--api-source"},
+            description = "Url to use for custom project version-date source, defaults to Libraries.io"
+    )
+    private String apiBaseUrl = "https://libraries.io/api/maven/%s?api_key=%s";
+
+
+    @CommandLine.Option(
+            names = {"-d", "--date"},
+            description = "Use version as date to determine the version to use"
+    )
+    private boolean searchByDate = false;
+
+
+    @CommandLine.Option(
+            names = {"-o", "--output"},
+            description = "Output folder"
+    )
+    private File outputDirectory;
+
 
     @CommandLine.Parameters(
             index = "0",
-            paramLabel = "package identifier",
+            paramLabel = "package_identifier",
             description = "Maven artifact to analyze (format: [groupId]:[artifactId] eg. com.company.app:my-app)."
     )
-    protected String packageIdentifier;
+    private String packageIdentifier;
 
 
     @CommandLine.Parameters(
             index = "1",
-            paramLabel = "date",
-            description = "Date (format: [YYYY-MM-DD]) to resolve dependency tree for."
+            paramLabel = "version",
+            description = "Package version or if --date is used the date used for finding the latest version."
     )
-    protected LocalDate dateStramp;
+    private String versionOrDate;
 
 
     public static void main(String[] args) {
+
+        logger.debug("Supplied arguments: {}", Arrays.toString(args));
         CommandLine.call(new Main(), args);
     }
 
@@ -63,33 +88,55 @@ public class Main implements Callable<Void> {
     public Void call() throws Exception {
         logger.info("Start analysis of {}", packageIdentifier);
 
-        ArtifactRecord rootArtifact = new ArtifactRecord(packageIdentifier);
+        DefaultServiceLocator locator = Booter.newServiceLocator();
+        initLibrariesIoApi(locator, new ApiConnectionParameters(apiBaseUrl, apiKey));
 
-        String outputDir = rootArtifact.getArtifactId() + "@" + dateStramp.toString();
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        LocalDateTime datetime_limit = dateStramp.atTime(23, 59, 59);
+        RepositorySystem system = Booter.newRepositorySystem(locator);
 
-        HttpClient httpClient = new HttpClient();
-        LibrariesIOClient api = new LibrariesIOClient(apiKey, httpClient);
-        ModelFactory modelFactory = new ModelFactory();
+        ResolveDependencies resolver = new ResolveDependencies(system);
 
-        DependencyTreeResolver dependencyResolver = new DependencyTreeResolver(api, modelFactory);
+        if (searchByDate) {
+            logger.debug("Parse date");
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
-        DependencyResolveResult result = dependencyResolver.resolve(rootArtifact, datetime_limit);
+            LocalDateTime dateStamp;
 
-        File destinationDir = new File(new File("output"), outputDir);
+            try {
+                dateStamp = LocalDate.parse(versionOrDate, formatter).atStartOfDay();
+            } catch (DateTimeParseException e) {
+                CommandLine.usage(new Main(), System.out);
+                return null;
+            }
 
-        ArrayList<Path> jars = dependencyResolver.downloadJars(result.getProjects().values(), destinationDir);
+            // Dates will be compared to be before or on the same day as the by the user provided date
+            LocalDateTime dateTime = dateStamp.plusDays(1);
 
+            ResolveResult result = resolver.resolveFromDate(packageIdentifier, dateTime);
 
-        String classpath = jars.stream()
-                .map(Path::toFile)
-                .map(File::getAbsolutePath)
-                .collect(Collectors.joining(":"));
+        } else {
 
-        //makeCallGraph(classpath, new File(destinationDir, rootArtifact.getJarName()), outputDir);
+            String version = versionOrDate;
+
+            ResolveResult result = resolver.resolveFromVersion(packageIdentifier, version);
+
+            // TODO
+            //ResolveDependencies.resolveFromVersion(packageIdentifier, version, apiConnection);
+            // Get Date for version
+            // Run resolver
+
+        }
 
         return null;
+    }
+
+    private void initLibrariesIoApi(
+            DefaultServiceLocator locator,
+            ApiConnectionParameters apiConnectionParameters) {
+
+        LibrariesIoInterface api = locator.getService(LibrariesIoInterface.class);
+        api.setApiKey(apiConnectionParameters.getApiKey());
+        api.setBaseUrl(apiConnectionParameters.getBaseUrl());
+
     }
 
 
