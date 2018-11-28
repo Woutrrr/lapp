@@ -1,12 +1,11 @@
 package nl.wvdzwan.timemachine;
 
 import java.io.File;
-import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
-import java.util.*;
+import java.util.Arrays;
 import java.util.concurrent.Callable;
 
 import org.apache.logging.log4j.LogManager;
@@ -14,10 +13,6 @@ import org.apache.logging.log4j.Logger;
 import org.eclipse.aether.RepositorySystem;
 import org.eclipse.aether.impl.DefaultServiceLocator;
 import picocli.CommandLine;
-import soot.*;
-import soot.jimple.toolkits.callgraph.CallGraph;
-import soot.jimple.toolkits.callgraph.Targets;
-import soot.util.dot.DotGraph;
 
 import nl.wvdzwan.timemachine.libio.ApiConnectionParameters;
 import nl.wvdzwan.timemachine.libio.LibrariesIoInterface;
@@ -136,96 +131,6 @@ public class Main implements Callable<Void> {
         LibrariesIoInterface api = locator.getService(LibrariesIoInterface.class);
         api.setApiKey(apiConnectionParameters.getApiKey());
         api.setBaseUrl(apiConnectionParameters.getBaseUrl());
-
-    }
-
-
-
-    protected void makeCallGraph(String classpath, File mainJar, String graphOutputName) throws IOException {
-
-        List<String> argsList = new ArrayList<String>(Arrays.asList("-whole-program",
-//                "-pp",
-                "-exclude", "java",
-                "-v",
-//                "-cp", destinationDir.getAbsolutePath() + "/", // classpath,
-                "-cp", "/usr/lib/jvm/java-8-openjdk-amd64/jre/lib/rt.jar:" + classpath, // classpath,
-                "-allow-phantom-refs",
-                //"-p", "cg", "all-reachable:true",
-
-                "-process-dir", mainJar.getAbsolutePath()));
-
-        System.out.println(argsList);
-
-
-        PackManager.v().getPack("wjtp").add(
-                new Transform("wjtp.myTransform", new SceneTransformer() {
-                    protected void internalTransform(String phaseName,
-                                                     Map options) {
-                        System.out.println(Scene.v().getSootClassPath());
-                        System.out.println("--- start");
-
-                        CallGraph cg = Scene.v().getCallGraph();
-
-
-                        Deque<MethodOrMethodContext> queue = new ArrayDeque<>();
-                        Set<SootMethod> explored = new HashSet<>();
-
-                        Iterator<MethodOrMethodContext> methodIterator = cg.sourceMethods();
-                        DotGraph graph = new DotGraph("test graph");
-
-                        // Seed exploration queue
-                        while (methodIterator.hasNext()) {
-                            MethodOrMethodContext m = methodIterator.next();
-                            if (m.method().isPublic()) {
-                                SootClass declaringClass = m.method().getDeclaringClass();
-                                if (!declaringClass.isJavaLibraryClass() && !declaringClass.getName().startsWith("jdk")) {
-                                    queue.add(m);
-                                }
-                            }
-                        }
-
-                        // Process queue
-                        while (!queue.isEmpty()) {
-                            SootMethod method = queue.pollFirst().method();
-
-                            logger.debug("Process method: {}", method);
-                            graph.drawNode(method.getSignature());
-
-                            Iterator<MethodOrMethodContext> targets = new Targets(cg.edgesOutOf(method));
-                            while (targets.hasNext()) {
-                                SootMethod child = targets.next().method();
-
-                                if (child.isJavaLibraryMethod()) {
-                                    continue;
-                                }
-
-                                graph.drawEdge(method.getSignature(), child.getSignature());
-
-                                if (!explored.contains(child)) {
-                                    queue.add(child);
-                                }
-                            }
-
-                            explored.add(method);
-                        }
-
-                        graph.plot(graphOutputName + ".dot");
-
-
-                        System.out.println("--- end");
-
-                    }
-
-
-                }
-
-
-                ));
-
-
-        String[] args = argsList.toArray(new String[0]);
-
-        soot.Main.main(args);
 
     }
 
