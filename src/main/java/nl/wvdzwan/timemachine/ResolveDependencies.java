@@ -1,70 +1,80 @@
 package nl.wvdzwan.timemachine;
 
-import nl.wvdzwan.timemachine.libio.LibrariesIoClient;
-import nl.wvdzwan.timemachine.libio.LibrariesIoInterface;
-import nl.wvdzwan.timemachine.resolver.DateVersionFilter;
-import nl.wvdzwan.timemachine.resolver.OptionalDependencyFilter;
-import nl.wvdzwan.timemachine.resolver.util.Booter;
-import nl.wvdzwan.timemachine.resolver.util.ConsoleDependencyGraphDumper;
-import org.apache.maven.repository.internal.MavenRepositorySystemUtils;
+import java.io.File;
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.eclipse.aether.DefaultRepositorySystemSession;
 import org.eclipse.aether.RepositorySystem;
 import org.eclipse.aether.artifact.Artifact;
 import org.eclipse.aether.artifact.DefaultArtifact;
 import org.eclipse.aether.collection.CollectRequest;
 import org.eclipse.aether.collection.CollectResult;
+import org.eclipse.aether.collection.DependencyCollectionException;
 import org.eclipse.aether.graph.Dependency;
 import org.eclipse.aether.graph.DependencyFilter;
-import org.eclipse.aether.impl.DefaultServiceLocator;
-import org.eclipse.aether.resolution.ArtifactResult;
-import org.eclipse.aether.resolution.DependencyRequest;
-import org.eclipse.aether.resolution.DependencyResult;
+import org.eclipse.aether.resolution.*;
 import org.eclipse.aether.util.artifact.JavaScopes;
 import org.eclipse.aether.util.filter.AndDependencyFilter;
 import org.eclipse.aether.util.filter.DependencyFilterUtils;
+import org.eclipse.aether.version.Version;
 
-import java.io.File;
-import java.time.LocalDate;
-import java.util.List;
-import java.util.stream.Collectors;
+import nl.wvdzwan.timemachine.resolver.ArtifactVersionResolver;
+import nl.wvdzwan.timemachine.resolver.OptionalDependencyFilter;
+import nl.wvdzwan.timemachine.resolver.util.Booter;
+import nl.wvdzwan.timemachine.resolver.util.ConsoleDependencyGraphDumper;
+
+*;
 
 public class ResolveDependencies {
 
+    private RepositorySystem system;
+    private DefaultRepositorySystemSession session;
 
-    /**
-     * Main.
-     * @param args
-     * @throws Exception
-     */
-    public static void main( String[] args )
-            throws Exception
-    {
-        System.out.println( "------------------------------------------------------------" );
-        System.out.println( ResolveDependencies.class.getSimpleName() );
+    public ResolveDependencies(RepositorySystem system) {
 
-        String apiKey = "ad19ce0d9ce33eac2bcdadb6ea73a388";
-        String datetime_limit = "2018-06-12";
+        this.system = system;
+        this.session = Booter.newRepositorySystemSession(system);
+    }
 
-        DefaultServiceLocator locator = MavenRepositorySystemUtils.newServiceLocator();
-        RepositorySystem system = Booter.newRepositorySystem(locator);
+    public ResolveResult resolveFromDate(String packageIdentfier, LocalDateTime dateLimit) throws VersionRangeResolutionException, DependencyResolutionException, DependencyCollectionException {
 
-        LibrariesIOInterface api = locator.getService(LibrariesIOInterface.class);
-        api.setApiKey( apiKey );
+        //  Find version for date
+        ArtifactVersionResolver versionFinder = new ArtifactVersionResolver(system);
+        Version latestVersion = versionFinder.latestBeforeDate(packageIdentfier, dateLimit);
+
+        // Resolve for version & date
+        resolve(packageIdentfier, latestVersion.toString(), dateLimit);
+
+        return new ResolveResult();
+    }
+
+    public ResolveResult resolveFromVersion(String packageIdentifier, String version) {
+
+        // Find date for version
+
+        // Resolve for version & date
+
+        return new ResolveResult();
+    }
 
 
-        DefaultRepositorySystemSession session = Booter.newRepositorySystemSession( system );
+    public void resolve(String packageIdentifier, String version, LocalDateTime datetime_limit) throws DependencyResolutionException, DependencyCollectionException {
+        System.out.println("------------------------------------------------------------");
+        System.out.println(ResolveDependencies.class.getSimpleName());
 
 
-        ((DefaultRepositorySystemSession) session).setConfigProperty("time-machine.date", datetime_limit);
+        session.setConfigProperty("time-machine.date", datetime_limit);
 
-        Artifact artifact = new DefaultArtifact( "org.springframework:spring-web:5.0.7.RELEASE" );
+        Artifact artifact = new DefaultArtifact(packageIdentifier + ":" + version);
         CollectRequest collectRequest = new CollectRequest();
-        collectRequest.setRoot( new Dependency( artifact, "" ) );
-        collectRequest.setRepositories( Booter.newRepositories( system, session ) );
+        collectRequest.setRoot(new Dependency(artifact, ""));
+        collectRequest.setRepositories(Booter.newRepositories(system, session));
 
-        CollectResult collectResult = system.collectDependencies( session, collectRequest );
+        CollectResult collectResult = system.collectDependencies(session, collectRequest);
 
-        collectResult.getRoot().accept( new ConsoleDependencyGraphDumper());
+        collectResult.getRoot().accept(new ConsoleDependencyGraphDumper());
 
         DependencyFilter dependencyFilter = new AndDependencyFilter(
                 DependencyFilterUtils.classpathFilter(JavaScopes.COMPILE),
@@ -76,7 +86,7 @@ public class ResolveDependencies {
         dependencyRequest.setRoot(collectResult.getRoot());
         dependencyRequest.setFilter(dependencyFilter);
 
-        DependencyResult dependencyResult = system.resolveDependencies( session, dependencyRequest);
+        DependencyResult dependencyResult = system.resolveDependencies(session, dependencyRequest);
 
         List<String> jarPaths = dependencyResult.getArtifactResults().stream()
                 .filter(ArtifactResult::isResolved)
@@ -87,7 +97,7 @@ public class ResolveDependencies {
 
         System.out.println(jarPaths);
 
-        dependencyResult.getRoot().accept( new ConsoleDependencyGraphDumper() );
+        dependencyResult.getRoot().accept(new ConsoleDependencyGraphDumper());
     }
 
 }
