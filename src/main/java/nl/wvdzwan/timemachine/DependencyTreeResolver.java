@@ -1,6 +1,6 @@
 package nl.wvdzwan.timemachine;
 
-import nl.wvdzwan.timemachine.libio.LibrariesIOClient;
+import nl.wvdzwan.timemachine.libio.LibrariesIoClient;
 import nl.wvdzwan.timemachine.libio.Project;
 import nl.wvdzwan.timemachine.libio.VersionDate;
 import org.apache.logging.log4j.LogManager;
@@ -28,10 +28,10 @@ import java.util.stream.Collectors;
 public class DependencyTreeResolver {
     protected static Logger logger = LogManager.getLogger();
 
-    private final LibrariesIOClient api;
+    private final LibrariesIoClient api;
     private final ModelFactory modelFactory;
 
-    public DependencyTreeResolver(LibrariesIOClient api, ModelFactory modelFactory) {
+    public DependencyTreeResolver(LibrariesIoClient api, ModelFactory modelFactory) {
         this.api = api;
         this.modelFactory = modelFactory;
     }
@@ -181,7 +181,7 @@ public class DependencyTreeResolver {
         return false;
     }
 
-    public VersionDate resolveVersionRange(String projectIdentifier, String versionRangeDef, LocalDateTime timestamp, LibrariesIOClient api)
+    public VersionDate resolveVersionRange(String projectIdentifier, String versionRangeDef, LocalDateTime timestamp, LibrariesIoClient api)
             throws
             InvalidVersionSpecificationException,
             VersionRangeNotFulFilledException {

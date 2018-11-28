@@ -1,8 +1,8 @@
 package nl.wvdzwan.timemachine.resolver;
 
 import nl.wvdzwan.timemachine.HttpClient;
-import nl.wvdzwan.timemachine.libio.LibrariesIOClient;
-import nl.wvdzwan.timemachine.libio.LibrariesIOInterface;
+import nl.wvdzwan.timemachine.libio.LibrariesIoClient;
+import nl.wvdzwan.timemachine.libio.LibrariesIoInterface;
 import nl.wvdzwan.timemachine.libio.Project;
 import nl.wvdzwan.timemachine.libio.VersionDate;
 import org.apache.maven.repository.internal.DefaultVersionRangeResolver;
@@ -24,7 +24,7 @@ import java.util.stream.Collectors;
 public class CustomVersionRangeResolver extends DefaultVersionRangeResolver {
 
 
-    private LibrariesIOInterface api;
+    private LibrariesIoInterface api;
 
     @Override
     public VersionRangeResult resolveVersionRange(RepositorySystemSession session, VersionRangeRequest request )
@@ -66,6 +66,6 @@ public class CustomVersionRangeResolver extends DefaultVersionRangeResolver {
     public void initService( ServiceLocator locator ) {
         super.initService(locator);
 
-        this.api = locator.getService(LibrariesIOInterface.class);
+        this.api = locator.getService(LibrariesIoInterface.class);
     }
 }

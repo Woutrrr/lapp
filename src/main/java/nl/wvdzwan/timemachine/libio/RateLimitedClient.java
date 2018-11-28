@@ -1,9 +1,11 @@
 package nl.wvdzwan.timemachine.libio;
 
-import javax.sound.midi.SysexMessage;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
-public class RateLimitedClient extends LibrariesIOClient {
+public class RateLimitedClient extends LibrariesIoClient {
 
+    private static Logger logger = LogManager.getLogger(RateLimitedClient.class);
 
     private long lastRequest = 0;
     private long minWaitTime = 500; // Default wait time of 1000ms
@@ -24,10 +26,11 @@ public class RateLimitedClient extends LibrariesIOClient {
         long earliestSlot = lastRequest + minWaitTime;
         long now = System.currentTimeMillis();
 
-        long waitRemaining = Math.max(earliestSlot - now, 0);
-        System.out.print("Now: " + now + " Wait: " + waitRemaining + " Unpause at: " + (now+waitRemaining) );
+        long waitRemaining = Math.max(earliestSlot - now, 0); // Don't wait for a negative time
 
         if (waitRemaining > 0) {
+            logger.trace("Rate limiting, now: {}, wait_for: {}", now, waitRemaining);
+
             try {
                 Thread.sleep(waitRemaining);
             } catch (InterruptedException e) {
@@ -36,6 +39,5 @@ public class RateLimitedClient extends LibrariesIOClient {
         }
 
         lastRequest = System.currentTimeMillis();
-        System.out.println(" Done at: " + lastRequest);
     }
 }

@@ -1,7 +1,7 @@
 package nl.wvdzwan.timemachine;
 
 
-import nl.wvdzwan.timemachine.libio.LibrariesIOClient;
+import nl.wvdzwan.timemachine.libio.LibrariesIoClient;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

@@ -21,8 +21,8 @@ package nl.wvdzwan.timemachine.resolver;
 
 import nl.wvdzwan.timemachine.HttpClient;
 import nl.wvdzwan.timemachine.HttpClientInterface;
-import nl.wvdzwan.timemachine.libio.LibrariesIOClient;
-import nl.wvdzwan.timemachine.libio.LibrariesIOInterface;
+import nl.wvdzwan.timemachine.libio.LibrariesIoClient;
+import nl.wvdzwan.timemachine.libio.LibrariesIoInterface;
 import nl.wvdzwan.timemachine.libio.RateLimitedClient;
 import org.apache.maven.repository.internal.MavenRepositorySystemUtils;
 import org.eclipse.aether.RepositorySystem;
@@ -60,7 +60,7 @@ public class ManualRepositorySystemFactory
         locator.setService( VersionResolver.class, CustomVersionResolver.class);
         locator.setService( VersionRangeResolver.class, CustomVersionRangeResolver.class );
         locator.setService( HttpClientInterface.class, HttpClient.class );
-        locator.setService( LibrariesIOInterface.class, RateLimitedClient.class );
+        locator.setService( LibrariesIoInterface.class, RateLimitedClient.class );
 
         locator.setErrorHandler( new DefaultServiceLocator.ErrorHandler()
         {

@@ -1,7 +1,7 @@
 package nl.wvdzwan.timemachine;
 
-import nl.wvdzwan.timemachine.libio.LibrariesIOClient;
-import nl.wvdzwan.timemachine.libio.LibrariesIOInterface;
+import nl.wvdzwan.timemachine.libio.LibrariesIoClient;
+import nl.wvdzwan.timemachine.libio.LibrariesIoInterface;
 import nl.wvdzwan.timemachine.resolver.DateVersionFilter;
 import nl.wvdzwan.timemachine.resolver.OptionalDependencyFilter;
 import nl.wvdzwan.timemachine.resolver.util.Booter;
