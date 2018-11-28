@@ -21,6 +21,7 @@ import org.eclipse.aether.util.filter.DependencyFilterUtils;
 import org.eclipse.aether.version.Version;
 
 import nl.wvdzwan.timemachine.resolver.ArtifactVersionResolver;
+import nl.wvdzwan.timemachine.resolver.CustomVersionRangeResolver;
 import nl.wvdzwan.timemachine.resolver.OptionalDependencyFilter;
 import nl.wvdzwan.timemachine.resolver.util.Booter;
 import nl.wvdzwan.timemachine.resolver.util.ConsoleDependencyGraphDumper;
@@ -65,7 +66,7 @@ public class ResolveDependencies {
         System.out.println(ResolveDependencies.class.getSimpleName());
 
 
-        session.setConfigProperty("time-machine.date", datetime_limit);
+        session.setConfigProperty(CustomVersionRangeResolver.CONFIG_LIMIT_DATE, datetime_limit);
 
         Artifact artifact = new DefaultArtifact(packageIdentifier + ":" + version);
         CollectRequest collectRequest = new CollectRequest();

@@ -1,28 +1,26 @@
 package nl.wvdzwan.timemachine.resolver;
 
-import nl.wvdzwan.timemachine.HttpClient;
-import nl.wvdzwan.timemachine.libio.LibrariesIoClient;
-import nl.wvdzwan.timemachine.libio.LibrariesIoInterface;
-import nl.wvdzwan.timemachine.libio.Project;
-import nl.wvdzwan.timemachine.libio.VersionDate;
+import java.time.LocalDateTime;
+import java.util.Iterator;
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.apache.maven.repository.internal.DefaultVersionRangeResolver;
 import org.eclipse.aether.RepositorySystemSession;
 import org.eclipse.aether.artifact.Artifact;
 import org.eclipse.aether.resolution.VersionRangeRequest;
 import org.eclipse.aether.resolution.VersionRangeResolutionException;
 import org.eclipse.aether.resolution.VersionRangeResult;
-import org.eclipse.aether.spi.locator.Service;
 import org.eclipse.aether.spi.locator.ServiceLocator;
 import org.eclipse.aether.version.Version;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.Iterator;
-import java.util.List;
-import java.util.stream.Collectors;
+import nl.wvdzwan.timemachine.libio.LibrariesIoInterface;
+import nl.wvdzwan.timemachine.libio.Project;
+import nl.wvdzwan.timemachine.libio.VersionDate;
 
 public class CustomVersionRangeResolver extends DefaultVersionRangeResolver {
 
+    public static final String CONFIG_LIMIT_DATE = "time-machine.date";
 
     private LibrariesIoInterface api;
 
@@ -38,7 +36,7 @@ public class CustomVersionRangeResolver extends DefaultVersionRangeResolver {
             Artifact artifact = request.getArtifact();
             Project project = api.getProjectInfo(artifact.getGroupId() + ":" + artifact.getArtifactId());
 
-            LocalDateTime date = (LocalDate.parse((String) session.getConfigProperties().get("time-machine.date"))).atTime(23, 59, 59);
+            LocalDateTime date = (LocalDateTime) session.getConfigProperties().get(CONFIG_LIMIT_DATE);
 
             List<String> dateFilteredVersions = project.getVersions().stream()
                     .filter(v -> v.getPublished_at().isBefore(date)) // Filter on timestamp
