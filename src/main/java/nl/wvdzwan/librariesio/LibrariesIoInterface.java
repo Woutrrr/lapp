@@ -1,4 +1,4 @@
-package nl.wvdzwan.timemachine.libio;
+package nl.wvdzwan.librariesio;
 
 /**
  * Interface to interact with libraries.io like api's.

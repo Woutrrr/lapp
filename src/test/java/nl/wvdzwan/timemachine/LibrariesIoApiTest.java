@@ -1,16 +1,17 @@
 package nl.wvdzwan.timemachine;
 
-import nl.wvdzwan.timemachine.libio.LibrariesIOClient;
-import nl.wvdzwan.timemachine.libio.Project;
-import org.junit.jupiter.api.Test;
-
 import java.io.IOException;
 
-import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.Test;
+
+import nl.wvdzwan.librariesio.HttpClientInterface;
+import nl.wvdzwan.librariesio.LibrariesIoClient;
+import nl.wvdzwan.librariesio.Project;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 class LibrariesIoApiTest {
 
@@ -21,7 +22,7 @@ class LibrariesIoApiTest {
     void getCorrectRequestUrl() throws IOException {
 
         HttpClientInterface mockHttpClient = mock(HttpClientInterface.class);
-        LibrariesIOClient api = new LibrariesIOClient("not_an_actual_api_key", mockHttpClient);
+        LibrariesIoClient api = new LibrariesIoClient("not_an_actual_api_key", mockHttpClient);
 
 
         api.getProjectInfo("junit:junit");
@@ -33,7 +34,7 @@ class LibrariesIoApiTest {
     @Test
     void buildProjectFromJson() throws IOException {
         HttpClientInterface mockHttpClient = mock(HttpClientInterface.class);
-        LibrariesIOClient api = new LibrariesIOClient("not_an_actual_api_key", mockHttpClient);
+        LibrariesIoClient api = new LibrariesIoClient("not_an_actual_api_key", mockHttpClient);
         when(mockHttpClient.get(anyString())).thenReturn(completeProjectJson);
 
         Project project = null;

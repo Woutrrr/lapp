@@ -1,11 +1,9 @@
-package nl.wvdzwan.timemachine.libio;
+package nl.wvdzwan.librariesio;
 
 import java.io.IOException;
 
 import org.eclipse.aether.spi.locator.Service;
 import org.eclipse.aether.spi.locator.ServiceLocator;
-
-import nl.wvdzwan.timemachine.HttpClientInterface;
 
 public class LibrariesIoClient implements LibrariesIoInterface, Service {
 

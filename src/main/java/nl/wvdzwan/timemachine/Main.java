@@ -14,8 +14,8 @@ import org.eclipse.aether.RepositorySystem;
 import org.eclipse.aether.impl.DefaultServiceLocator;
 import picocli.CommandLine;
 
-import nl.wvdzwan.timemachine.libio.ApiConnectionParameters;
-import nl.wvdzwan.timemachine.libio.LibrariesIoInterface;
+import nl.wvdzwan.librariesio.ApiConnectionParameters;
+import nl.wvdzwan.librariesio.LibrariesIoInterface;
 import nl.wvdzwan.timemachine.resolver.util.Booter;
 
 

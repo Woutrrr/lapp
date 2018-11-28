@@ -1,4 +1,4 @@
-package nl.wvdzwan.timemachine.libio;
+package nl.wvdzwan.librariesio;
 
 public class ApiConnectionParameters {
 

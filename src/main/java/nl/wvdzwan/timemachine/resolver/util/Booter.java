@@ -21,10 +21,10 @@ import org.eclipse.aether.transport.http.HttpTransporterFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import nl.wvdzwan.timemachine.HttpClient;
-import nl.wvdzwan.timemachine.HttpClientInterface;
-import nl.wvdzwan.timemachine.libio.LibrariesIoInterface;
-import nl.wvdzwan.timemachine.libio.RateLimitedClient;
+import nl.wvdzwan.librariesio.HttpClient;
+import nl.wvdzwan.librariesio.HttpClientInterface;
+import nl.wvdzwan.librariesio.LibrariesIoInterface;
+import nl.wvdzwan.librariesio.RateLimitedClient;
 import nl.wvdzwan.timemachine.resolver.CustomVersionRangeResolver;
 import nl.wvdzwan.timemachine.resolver.CustomVersionResolver;
 

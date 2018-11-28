@@ -14,9 +14,9 @@ import org.eclipse.aether.resolution.VersionRangeResult;
 import org.eclipse.aether.spi.locator.ServiceLocator;
 import org.eclipse.aether.version.Version;
 
-import nl.wvdzwan.timemachine.libio.LibrariesIoInterface;
-import nl.wvdzwan.timemachine.libio.Project;
-import nl.wvdzwan.timemachine.libio.VersionDate;
+import nl.wvdzwan.librariesio.LibrariesIoInterface;
+import nl.wvdzwan.librariesio.Project;
+import nl.wvdzwan.librariesio.VersionDate;
 
 public class CustomVersionRangeResolver extends DefaultVersionRangeResolver {
 

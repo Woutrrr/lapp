@@ -1,4 +1,4 @@
-package nl.wvdzwan.timemachine.libio;
+package nl.wvdzwan.librariesio;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;

@@ -1,4 +1,4 @@
-package nl.wvdzwan.timemachine;
+package nl.wvdzwan.librariesio;
 
 import java.io.*;
 import java.net.HttpURLConnection;
