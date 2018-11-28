@@ -18,14 +18,14 @@ import nl.wvdzwan.timemachine.resolver.util.Booter;
 /**
  * Find latest version of an artifact before a specified date.
  */
-public class FindLatestVersionBeforeDate {
+public class ArtifactVersionResolver {
 
 
-    private static final Logger logger = LogManager.getLogger(FindLatestVersionBeforeDate.class);
+    private static final Logger logger = LogManager.getLogger(ArtifactVersionResolver.class);
 
     private final RepositorySystem system;
 
-    public FindLatestVersionBeforeDate(RepositorySystem system) {
+    public ArtifactVersionResolver(RepositorySystem system) {
         this.system = system;
     }
 
