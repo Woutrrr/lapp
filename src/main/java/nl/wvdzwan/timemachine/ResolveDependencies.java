@@ -26,7 +26,6 @@ import nl.wvdzwan.timemachine.resolver.OptionalDependencyFilter;
 import nl.wvdzwan.timemachine.resolver.util.Booter;
 import nl.wvdzwan.timemachine.resolver.util.ConsoleDependencyGraphDumper;
 
-*;
 
 public class ResolveDependencies {
 
