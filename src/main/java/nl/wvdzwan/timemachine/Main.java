@@ -40,7 +40,7 @@ public class Main implements Callable<Void> {
             names = {"-s", "--api-source"},
             description = "Url to use for custom project version-date source, defaults to Libraries.io"
     )
-    private String apiBaseUrl = "https://libraries.io/api/maven/%s?api_key=%s";
+    private String apiBaseUrl = "https://libraries.io/api/";
 
 
     @CommandLine.Option(
@@ -54,7 +54,7 @@ public class Main implements Callable<Void> {
             names = {"-o", "--output"},
             description = "Output folder"
     )
-    private File outputDirectory;
+    private File outputDirectory = new File("output");
 
 
     @CommandLine.Parameters(
