@@ -1,4 +1,4 @@
-package nl.wvdzwan.timemachine;
+package nl.wvdzwan.timemachine.callgraph;
 
 public interface ArtifactFolderLayout {
 

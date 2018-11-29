@@ -1,4 +1,7 @@
-package nl.wvdzwan.timemachine;
+package nl.wvdzwan.timemachine.callgraph;
+
+import java.util.HashMap;
+import java.util.jar.JarFile;
 
 import com.ibm.wala.classLoader.IClass;
 import com.ibm.wala.classLoader.JarFileEntry;
@@ -7,10 +10,6 @@ import com.ibm.wala.ipa.cha.ClassHierarchy;
 import com.ibm.wala.types.MethodReference;
 import com.ibm.wala.util.WalaException;
 import com.ibm.wala.viz.NodeDecorator;
-
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.jar.JarFile;
 
 public class GlobalUniqueSymbolDecorator implements NodeDecorator<MethodReference> {
 

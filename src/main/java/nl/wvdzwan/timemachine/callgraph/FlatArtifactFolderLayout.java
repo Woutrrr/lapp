@@ -1,6 +1,5 @@
-package nl.wvdzwan.timemachine;
+package nl.wvdzwan.timemachine.callgraph;
 
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class FlatArtifactFolderLayout implements ArtifactFolderLayout {

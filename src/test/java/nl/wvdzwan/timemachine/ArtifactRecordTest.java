@@ -2,6 +2,8 @@ package nl.wvdzwan.timemachine;
 
 import org.junit.jupiter.api.Test;
 
+import nl.wvdzwan.timemachine.callgraph.ArtifactRecord;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
