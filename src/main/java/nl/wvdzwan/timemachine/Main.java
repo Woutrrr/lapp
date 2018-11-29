@@ -6,16 +6,25 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.Arrays;
+import java.util.List;
 import java.util.concurrent.Callable;
+import java.util.stream.Collectors;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.eclipse.aether.RepositorySystem;
+import org.eclipse.aether.artifact.Artifact;
 import org.eclipse.aether.impl.DefaultServiceLocator;
+import org.eclipse.aether.resolution.ArtifactResult;
+import org.eclipse.aether.resolution.DependencyResult;
 import picocli.CommandLine;
 
 import nl.wvdzwan.librariesio.ApiConnectionParameters;
 import nl.wvdzwan.librariesio.LibrariesIoInterface;
+import nl.wvdzwan.timemachine.resolver.ResolverOutputHandler;
+import nl.wvdzwan.timemachine.resolver.outputs.ClassPathFile;
+import nl.wvdzwan.timemachine.resolver.outputs.ConsoleOutput;
+import nl.wvdzwan.timemachine.resolver.outputs.DependencyJarFolder;
 import nl.wvdzwan.timemachine.resolver.util.Booter;
 
 
@@ -89,6 +98,7 @@ public class Main implements Callable<Void> {
         RepositorySystem system = Booter.newRepositorySystem(locator);
 
         ResolveDependencies resolver = new ResolveDependencies(system);
+        DependencyResult resolveResult;
 
         if (searchByDate) {
             logger.debug("Parse date");
@@ -106,22 +116,45 @@ public class Main implements Callable<Void> {
             // Dates will be compared to be before or on the same day as the by the user provided date
             LocalDateTime dateTime = dateStamp.plusDays(1);
 
-            ResolveResult result = resolver.resolveFromDate(packageIdentifier, dateTime);
+            resolveResult = resolver.resolveFromDate(packageIdentifier, dateTime);
+
 
         } else {
 
             String version = versionOrDate;
 
-            ResolveResult result = resolver.resolveFromVersion(packageIdentifier, version);
-
-            // TODO
-            //ResolveDependencies.resolveFromVersion(packageIdentifier, version, apiConnection);
-            // Get Date for version
-            // Run resolver
-
+            resolveResult = resolver.resolveFromVersion(packageIdentifier, version);
         }
 
+
+        if (resolveResult == null) {
+            return null;
+            // TODO graceful exit
+        }
+
+        List<String> jarPaths = resolveResult.getArtifactResults().stream()
+                .filter(ArtifactResult::isResolved)
+                .map(ArtifactResult::getArtifact)
+                .map(Artifact::getFile)
+                .map(File::getAbsolutePath)
+                .collect(Collectors.toList());
+
+        System.out.println(jarPaths);
+
+        ResolverOutputHandler handler = buildOutputHandler(outputDirectory);
+        handler.process(resolveResult);
+
         return null;
+    }
+
+    private ResolverOutputHandler buildOutputHandler(File outputDirectory) {
+        ResolverOutputHandler handler = new ResolverOutputHandler();
+
+        handler.add(new ClassPathFile(outputDirectory));
+        handler.add(new ConsoleOutput());
+        handler.add(new DependencyJarFolder(new File(outputDirectory, "jars")));
+
+        return handler;
     }
 
     private void initLibrariesIoApi(
