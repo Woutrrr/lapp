@@ -1,6 +1,7 @@
 package nl.wvdzwan.timemachine.resolver;
 
 import java.time.LocalDateTime;
+import java.util.stream.Collectors;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -12,7 +13,11 @@ import org.eclipse.aether.resolution.VersionRangeResolutionException;
 import org.eclipse.aether.resolution.VersionRangeResult;
 import org.eclipse.aether.version.Version;
 
+import nl.wvdzwan.librariesio.LibrariesIoInterface;
+import nl.wvdzwan.librariesio.Project;
+import nl.wvdzwan.librariesio.VersionDate;
 import nl.wvdzwan.timemachine.resolver.util.Booter;
+import nl.wvdzwan.timemachine.resolver.util.VersionNotFoundException;
 
 
 /**
@@ -24,9 +29,11 @@ public class ArtifactVersionResolver {
     private static final Logger logger = LogManager.getLogger(ArtifactVersionResolver.class);
 
     private final RepositorySystem system;
+    private final LibrariesIoInterface api;
 
-    public ArtifactVersionResolver(RepositorySystem system) {
+    public ArtifactVersionResolver(RepositorySystem system, LibrariesIoInterface api) {
         this.system = system;
+        this.api = api;
     }
 
     /**
@@ -68,6 +75,29 @@ public class ArtifactVersionResolver {
         logger.info("Found version {} for {} before {}", version.toString(), packageIdentifier, dateLimit);
 
         return version;
+    }
+
+    public LocalDateTime dateOfVersion(final String packageIdentifier, final String version)
+            throws VersionNotFoundException {
+        logger.debug("Find release date of {} version {}", packageIdentifier, version);
+
+        Project project = api.getProjectInfo(packageIdentifier);
+
+        for (VersionDate versionDate : project.getVersions()) {
+            if (versionDate.getNumber().equals(version)) {
+                return versionDate.getPublished_at();
+            }
+        }
+
+        String foundVersions = project.getVersions().stream()
+                .map(VersionDate::getNumber)
+                .collect(Collectors.joining(", "));
+        throw new VersionNotFoundException(
+                String.format(
+                        "Version %s for %s not found! Found versions: %s",
+                        version, packageIdentifier,  foundVersions
+                ));
+
     }
 
 }

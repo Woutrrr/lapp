@@ -97,7 +97,7 @@ public class Main implements Callable<Void> {
 
         RepositorySystem system = Booter.newRepositorySystem(locator);
 
-        ResolveDependencies resolver = new ResolveDependencies(system);
+        ResolveDependencies resolver = new ResolveDependencies(system, locator.getService(LibrariesIoInterface.class));
         DependencyResult resolveResult;
 
         if (searchByDate) {
