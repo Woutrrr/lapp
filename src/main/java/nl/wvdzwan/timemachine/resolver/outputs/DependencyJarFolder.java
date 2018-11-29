@@ -27,7 +27,8 @@ public class DependencyJarFolder implements ResolverOutput {
             outputFolder.mkdirs();
         }
 
-        boolean outputResult = result.getArtifactResults().stream()
+        long total = result.getArtifactResults().size();
+        long copyResults = result.getArtifactResults().stream()
                 .filter(ArtifactResult::isResolved)
                 .map(ArtifactResult::getArtifact)
                 .map(artifact -> {
@@ -43,10 +44,14 @@ public class DependencyJarFolder implements ResolverOutput {
                     logger.debug("Copied {}", file);
                     return true;
 
-                })
-                .allMatch(Boolean::booleanValue);
+                }).filter(Boolean::booleanValue).count();
 
-        logger.info("Created jar folder");
-        return outputResult;
+
+        logger.info("Copied {}/{} files to jar folder (\"{}\")",
+                copyResults,
+                total,
+                outputFolder);
+
+        return copyResults == total;
     }
 }
