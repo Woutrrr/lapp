@@ -2,8 +2,8 @@ package nl.wvdzwan.timemachine.resolver.outputs;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
 
-import com.google.common.io.Files;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.eclipse.aether.resolution.ArtifactResult;
@@ -36,7 +36,7 @@ public class DependencyJarFolder implements ResolverOutput {
                     File dest = new File(outputFolder, file.getName());
 
                     try {
-                        Files.copy(file, dest);
+                        Files.copy(file.toPath(), dest.toPath());
                     } catch (IOException e) {
                         logger.error("Failed copying {} to {}", file, dest);
                         return false;
