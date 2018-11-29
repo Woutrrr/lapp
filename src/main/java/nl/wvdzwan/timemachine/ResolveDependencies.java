@@ -17,14 +17,12 @@ import org.eclipse.aether.resolution.DependencyResolutionException;
 import org.eclipse.aether.resolution.DependencyResult;
 import org.eclipse.aether.resolution.VersionRangeResolutionException;
 import org.eclipse.aether.util.artifact.JavaScopes;
-import org.eclipse.aether.util.filter.AndDependencyFilter;
 import org.eclipse.aether.util.filter.DependencyFilterUtils;
 import org.eclipse.aether.version.Version;
 
 import nl.wvdzwan.librariesio.LibrariesIoInterface;
 import nl.wvdzwan.timemachine.resolver.ArtifactVersionResolver;
 import nl.wvdzwan.timemachine.resolver.CustomVersionRangeResolver;
-import nl.wvdzwan.timemachine.resolver.OptionalDependencyFilter;
 import nl.wvdzwan.timemachine.resolver.util.Booter;
 import nl.wvdzwan.timemachine.resolver.util.VersionNotFoundException;
 
@@ -84,10 +82,12 @@ public class ResolveDependencies {
         collectRequest.setRoot(new Dependency(artifact, ""));
         collectRequest.setRepositories(Booter.newRepositories(system, session));
 
-        DependencyFilter dependencyFilter = new AndDependencyFilter(
-                DependencyFilterUtils.classpathFilter(JavaScopes.COMPILE),
-                new OptionalDependencyFilter()
-        );
+//        DependencyFilter dependencyFilter = new AndDependencyFilter(
+//                DependencyFilterUtils.classpathFilter(JavaScopes.COMPILE),
+//                new OptionalDependencyFilter()
+//        );
+
+        DependencyFilter dependencyFilter = DependencyFilterUtils.classpathFilter(JavaScopes.COMPILE);
 
         DependencyRequest dependencyRequest = new DependencyRequest(collectRequest, dependencyFilter);
 

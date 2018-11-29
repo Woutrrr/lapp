@@ -83,6 +83,11 @@ public class ArtifactVersionResolver {
 
         Project project = api.getProjectInfo(packageIdentifier);
 
+        if (project == null) {
+            throw new VersionNotFoundException(String.format("Package %s not found!", packageIdentifier));
+            // TODO make nice exception
+        }
+
         for (VersionDate versionDate : project.getVersions()) {
             if (versionDate.getNumber().equals(version)) {
                 return versionDate.getPublished_at();

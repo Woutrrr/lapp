@@ -6,7 +6,9 @@
         </Console>
     </Appenders>
     <Loggers>
+        <Logger name="LoggerTransferListener" level="info" />
         <Logger name="org.apache.http" level="info" />
+        <Logger name="nl.wvdzwan.timemachine.resolver.outputs.DependencyJarFolder" level="info" />
         <Root level="debug">
             <AppenderRef ref="Console"/>
         </Root>
