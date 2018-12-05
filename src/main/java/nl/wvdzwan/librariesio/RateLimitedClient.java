@@ -8,7 +8,7 @@ public class RateLimitedClient extends LibrariesIoClient {
     private static Logger logger = LogManager.getLogger(RateLimitedClient.class);
 
     private long lastRequest = 0;
-    private long minWaitTime = 500; // Default wait time of 1000ms
+    private long minWaitTime = 1000; // Default wait time of 1000ms
 
     public void setWaitTime(long newWaitTime) {
         this.minWaitTime = newWaitTime;
