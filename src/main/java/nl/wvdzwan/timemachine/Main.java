@@ -21,7 +21,6 @@ import picocli.CommandLine;
 
 import nl.wvdzwan.librariesio.ApiConnectionParameters;
 import nl.wvdzwan.librariesio.LibrariesIoInterface;
-import nl.wvdzwan.timemachine.resolver.ResolverOutputHandler;
 import nl.wvdzwan.timemachine.resolver.outputs.ClassPathFile;
 import nl.wvdzwan.timemachine.resolver.outputs.ConsoleOutput;
 import nl.wvdzwan.timemachine.resolver.outputs.DependencyJarFolder;
@@ -141,14 +140,14 @@ public class Main implements Callable<Void> {
 
         System.out.println(jarPaths);
 
-        ResolverOutputHandler handler = buildOutputHandler(outputDirectory);
+        OutputHandler<DependencyResult> handler = buildOutputHandler(outputDirectory);
         handler.process(resolveResult);
 
         return null;
     }
 
-    private ResolverOutputHandler buildOutputHandler(File outputDirectory) {
-        ResolverOutputHandler handler = new ResolverOutputHandler();
+    private OutputHandler<DependencyResult> buildOutputHandler(File outputDirectory) {
+        OutputHandler<DependencyResult> handler = new OutputHandler<>();
 
         handler.add(new ClassPathFile(outputDirectory));
         handler.add(new ConsoleOutput());

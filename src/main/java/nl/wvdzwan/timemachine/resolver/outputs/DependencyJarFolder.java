@@ -9,7 +9,9 @@ import org.apache.logging.log4j.Logger;
 import org.eclipse.aether.resolution.ArtifactResult;
 import org.eclipse.aether.resolution.DependencyResult;
 
-public class DependencyJarFolder implements ResolverOutput {
+import nl.wvdzwan.timemachine.OutputTask;
+
+public class DependencyJarFolder implements OutputTask<DependencyResult> {
 
     private static Logger logger = LogManager.getLogger();
 
