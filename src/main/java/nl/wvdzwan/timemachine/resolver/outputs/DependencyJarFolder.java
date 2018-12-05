@@ -3,6 +3,7 @@ package nl.wvdzwan.timemachine.resolver.outputs;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -38,7 +39,7 @@ public class DependencyJarFolder implements OutputTask<DependencyResult> {
                     File dest = new File(outputFolder, file.getName());
 
                     try {
-                        Files.copy(file.toPath(), dest.toPath());
+                        Files.copy(file.toPath(), dest.toPath(), StandardCopyOption.REPLACE_EXISTING);
                     } catch (IOException e) {
                         logger.error("Failed copying {} to {}", file, dest);
                         return false;
