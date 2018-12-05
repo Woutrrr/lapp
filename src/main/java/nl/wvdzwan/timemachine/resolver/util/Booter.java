@@ -35,6 +35,8 @@ public class Booter {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(Booter.class);
 
+    public static final String LOCAL_REPO = "target/local-repo";
+
     public static DefaultServiceLocator newServiceLocator() {
         DefaultServiceLocator locator = MavenRepositorySystemUtils.newServiceLocator();
 
@@ -66,7 +68,7 @@ public class Booter {
     public static DefaultRepositorySystemSession newRepositorySystemSession(RepositorySystem system) {
         DefaultRepositorySystemSession session = MavenRepositorySystemUtils.newSession();
 
-        LocalRepository localRepo = new LocalRepository("target/local-repo");
+        LocalRepository localRepo = new LocalRepository(LOCAL_REPO);
         session.setLocalRepositoryManager(system.newLocalRepositoryManager(session, localRepo));
         session.setTransferListener(new LoggerTransferListener());
         session.setRepositoryListener(new LoggerRepositoryListener());
