@@ -105,7 +105,9 @@ public class WalaAnalysis {
     }
 
     public static boolean acceptMethodAsEntryPoint(IMethod method) {
-        return method.isPublic() && !method.isAbstract();
+        return method.getDeclaringClass().getClassLoader().getReference().equals(ClassLoaderReference.Application)
+                && method.isPublic()
+                && !method.isAbstract();
     }
 
 
