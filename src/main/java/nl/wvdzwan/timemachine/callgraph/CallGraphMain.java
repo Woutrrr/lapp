@@ -28,17 +28,6 @@ import static com.ibm.wala.types.ClassLoaderReference.Java;
 )
 public class CallGraphMain implements Callable<Void> {
     private static Logger logger = LogManager.getLogger();
-    @CommandLine.Option(
-            names = {"-p", "--phantom"},
-            description = "Make phantom nodes in call graph."
-    )
-    private boolean outputPhantomNodes = true;
-
-    @CommandLine.Option(
-            names = {"-i", "--include-interface"},
-            description = "Make interface node for interface invocations"
-    )
-    private boolean outputInterfaceInvocations = true;
 
     @CommandLine.Option(
             names = {"-e", "--exclusion"},
@@ -103,8 +92,6 @@ public class CallGraphMain implements Callable<Void> {
         GraphVizOutput applicationScopeCallGraph = new GraphVizOutput(
                 new File(outputDirectory, "app.dot"),
                 onlyApplicationScope,
-                outputPhantomNodes,
-                outputInterfaceInvocations,
                 localRepoPrefix);
 
         return applicationScopeCallGraph.makeOutput(cg, extendedCha);
