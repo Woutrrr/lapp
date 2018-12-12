@@ -14,12 +14,10 @@ import org.eclipse.aether.artifact.Artifact;
 import org.eclipse.aether.resolution.ArtifactResult;
 import org.eclipse.aether.resolution.DependencyResult;
 
-import nl.wvdzwan.timemachine.OutputTask;
-
 /**
  * Create a file with two lines, the main jar on the first line and a dependency classpath on the second line.
  */
-public class ClassPathFile implements OutputTask<DependencyResult> {
+public class ClassPathFile implements ResolveOutputTask {
 
     private static Logger logger = LogManager.getLogger();
 

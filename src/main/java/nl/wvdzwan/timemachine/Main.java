@@ -24,6 +24,7 @@ import nl.wvdzwan.librariesio.LibrariesIoInterface;
 import nl.wvdzwan.timemachine.resolver.outputs.ClassPathFile;
 import nl.wvdzwan.timemachine.resolver.outputs.ConsoleOutput;
 import nl.wvdzwan.timemachine.resolver.outputs.DependencyJarFolder;
+import nl.wvdzwan.timemachine.resolver.outputs.OutputHandler;
 import nl.wvdzwan.timemachine.resolver.util.Booter;
 
 
@@ -140,14 +141,14 @@ public class Main implements Callable<Void> {
 
         System.out.println(jarPaths);
 
-        OutputHandler<DependencyResult> handler = buildOutputHandler(outputDirectory);
+        OutputHandler handler = buildOutputHandler(outputDirectory);
         handler.process(resolveResult);
 
         return null;
     }
 
-    private OutputHandler<DependencyResult> buildOutputHandler(File outputDirectory) {
-        OutputHandler<DependencyResult> handler = new OutputHandler<>();
+    private OutputHandler buildOutputHandler(File outputDirectory) {
+        OutputHandler handler = new OutputHandler();
 
         handler.add(new ClassPathFile(outputDirectory));
         handler.add(new ConsoleOutput());
