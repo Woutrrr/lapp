@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.Arrays;
 import java.util.concurrent.Callable;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 import com.ibm.wala.ipa.callgraph.CGNode;
 import com.ibm.wala.ipa.callgraph.CallGraph;
@@ -52,18 +53,11 @@ public class CallGraphMain implements Callable<Void> {
 
 
     @CommandLine.Parameters(
-            index = "0",
-            paramLabel = "main-jar",
-            description = "Application/Libary jar to analyse"
+            index = "0..*",
+            paramLabel = "jars",
+            description = "Application/Libary jars to analyse, first jar will be considered as main jar"
     )
-    private String mainJar;
-
-    @CommandLine.Parameters(
-            index = "1",
-            paramLabel = "classpath",
-            description = "Classpath with all dependencies of main jar"
-    )
-    private String classPath;
+    private String[] jars;
 
     private static final ClassLoaderReference ClassLoaderMissing = new ClassLoaderReference(Atom.findOrCreateUnicodeAtom("Missing"), Java, null);
 
@@ -75,6 +69,15 @@ public class CallGraphMain implements Callable<Void> {
 
     @Override
     public Void call() throws Exception {
+
+        String mainJar = jars[0];
+
+        String classPath;
+        if (jars.length > 1) {
+            classPath = Arrays.stream(jars).skip(1).collect(Collectors.joining(":"));
+        } else {
+            classPath = "";
+        }
 
         WalaAnalysis analysis = new WalaAnalysis(mainJar, classPath, exclusionFile);
 
