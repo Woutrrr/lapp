@@ -7,10 +7,14 @@ import com.ibm.wala.classLoader.IClass;
 import com.ibm.wala.classLoader.JarFileEntry;
 import com.ibm.wala.classLoader.ShrikeClass;
 import com.ibm.wala.ipa.cha.IClassHierarchy;
+import com.ibm.wala.types.ClassLoaderReference;
 import com.ibm.wala.types.MethodReference;
+import com.ibm.wala.types.TypeReference;
 import com.ibm.wala.viz.NodeDecorator;
 
-public class GlobalUniqueSymbolDecorator implements NodeDecorator<MethodReference> {
+import nl.wvdzwan.timemachine.callgraph.outputs.IGraphNode;
+
+public class GlobalUniqueSymbolDecorator implements NodeDecorator<IGraphNode> {
 
     private final ArtifactFolderLayout transformer;
     private IClassHierarchy cha;
@@ -23,12 +27,19 @@ public class GlobalUniqueSymbolDecorator implements NodeDecorator<MethodReferenc
     }
 
     @Override
-    public String getLabel(MethodReference n) {
+    public String getLabel(IGraphNode node) {
 
         String sep = "::";
         String ecosystem = "mvn";
 
+        MethodReference n = node.getMethodReference();
+
         IClass klass = cha.lookupClass(n.getDeclaringClass());
+
+        if (klass == null) {
+            TypeReference t = TypeReference.findOrCreate(cha.getLoader(ClassLoaderReference.Application).getReference(), n.getDeclaringClass().getName());
+            klass = cha.lookupClass(t);
+        }
         ArtifactRecord artifactRecord = artifactRecordFromClass(klass);
 
         String namespace = n.getDeclaringClass().getName().toString().substring(1).replace('/', '.');
@@ -36,11 +47,11 @@ public class GlobalUniqueSymbolDecorator implements NodeDecorator<MethodReferenc
         String libraryName = artifactRecord.getUnversionedIdentifier();
         String version = artifactRecord.getVersion();
 
-        return ecosystem + sep
+        return node.prefix(ecosystem + sep
                 + libraryName + sep
                 + version + sep
                 + namespace + sep
-                + symbol;
+                + symbol);
     }
 
     private ArtifactRecord artifactRecordFromClass(IClass klass) {

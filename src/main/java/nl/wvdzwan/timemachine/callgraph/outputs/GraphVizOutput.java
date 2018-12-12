@@ -1,15 +1,23 @@
 package nl.wvdzwan.timemachine.callgraph.outputs;
 
 import java.io.File;
+import java.util.Collection;
 import java.util.Iterator;
-import java.util.Set;
+import java.util.Map;
+import java.util.function.Function;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 import com.ibm.wala.classLoader.CallSiteReference;
+import com.ibm.wala.classLoader.IClass;
+import com.ibm.wala.classLoader.IMethod;
 import com.ibm.wala.ipa.callgraph.CGNode;
 import com.ibm.wala.ipa.callgraph.CallGraph;
+import com.ibm.wala.ipa.cha.IClassHierarchy;
+import com.ibm.wala.shrikeBT.IInvokeInstruction;
 import com.ibm.wala.types.ClassLoaderReference;
 import com.ibm.wala.types.MethodReference;
+import com.ibm.wala.types.Selector;
 import com.ibm.wala.util.WalaException;
 import com.ibm.wala.util.graph.Graph;
 import com.ibm.wala.util.graph.impl.SlowSparseNumberedGraph;
@@ -19,13 +27,12 @@ import com.ibm.wala.viz.NodeDecorator;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import nl.wvdzwan.timemachine.OutputTask;
 import nl.wvdzwan.timemachine.callgraph.GlobalUniqueSymbolDecorator;
 import nl.wvdzwan.timemachine.callgraph.MavenFolderLayout;
 
 import static com.ibm.wala.types.ClassLoaderReference.Java;
 
-public class GraphVizOutput implements OutputTask<CallGraph> {
+public class GraphVizOutput implements CallgraphOutputTask<CallGraph> {
     private static Logger logger = LogManager.getLogger();
 
     private File output;
@@ -33,8 +40,10 @@ public class GraphVizOutput implements OutputTask<CallGraph> {
     private boolean includePhantom;
     private boolean includeInterfaceInvocation;
     private String repositoryPathPrefix;
+    private Graph<IGraphNode> graph;
 
     public final static ClassLoaderReference ClassLoaderMissing = new ClassLoaderReference(Atom.findOrCreateUnicodeAtom("Missing"), Java, null);
+    public final static ClassLoaderReference ClassLoaderUtility = new ClassLoaderReference(Atom.findOrCreateUnicodeAtom("Utility"), Java, null);
 
 
     public GraphVizOutput(
@@ -49,15 +58,23 @@ public class GraphVizOutput implements OutputTask<CallGraph> {
         this.includePhantom = includePhantom;
         this.includeInterfaceInvocation = includeInterfaceInvocation;
         this.repositoryPathPrefix = repositoryPathPrefix;
+
+        graph = SlowSparseNumberedGraph.make();
     }
 
     @Override
-    public boolean makeOutput(CallGraph cg) {
+    public boolean makeOutput(CallGraph cg, IClassHierarchy extendedCha) {
 
-        Graph<MethodReference> methodGraph = outputcg(cg);
+        IClassHierarchy cha;
+        if (extendedCha == null) {
+            cha = cg.getClassHierarchy();
+        } else {
+            cha = extendedCha;
+        }
+        Graph<IGraphNode> methodGraph = outputcg(cg);
 
-        NodeDecorator<MethodReference> labelDecorator = new GlobalUniqueSymbolDecorator(
-                cg.getClassHierarchy(),
+        NodeDecorator<IGraphNode> labelDecorator = new GlobalUniqueSymbolDecorator(
+                cha,
                 new MavenFolderLayout(repositoryPathPrefix)
         );
 
@@ -71,8 +88,8 @@ public class GraphVizOutput implements OutputTask<CallGraph> {
         return false;
     }
 
-    private Graph<MethodReference> outputcg(CallGraph cg) {
-        Graph<MethodReference> graph = SlowSparseNumberedGraph.make();
+    private Graph<IGraphNode> outputcg(CallGraph cg) {
+
 
         Iterator<CGNode> cgIterator = cg.iterator();
         while (cgIterator.hasNext()) {
@@ -82,59 +99,61 @@ public class GraphVizOutput implements OutputTask<CallGraph> {
             if (nodeFilter.test(node)) {
                 continue;
             }
+            MethodRefNode graphNode = new MethodRefNode(nodeReference);
+            graph.addNode(graphNode);
 
-            graph.addNode(nodeReference);
+
+
+            Collection<IClass> interfaces = node.getMethod().getDeclaringClass().getAllImplementedInterfaces();
+
+            if (interfaces.size() > 0) {
+                Map<Selector, IMethod> methods = interfaces.stream()
+                        .flatMap(implementedInterface -> implementedInterface.getDeclaredMethods().stream())
+                        .collect(Collectors.toMap(IMethod::getSelector, Function.identity()));
+
+                if (methods.containsKey(nodeReference.getSelector())) {
+                    IMethod interfaceMethod = methods.get(nodeReference.getSelector());
+                    InterfaceMethodNode interfaceMethodNode = new InterfaceMethodNode(interfaceMethod.getReference());
+
+                    graph.addNode(interfaceMethodNode);
+                    if (!graph.hasEdge(interfaceMethodNode, graphNode)) {
+                        graph.addEdge(interfaceMethodNode, graphNode);
+                    }
+                }
+            }
+
 
             for (Iterator<CallSiteReference> callsites = node.iterateCallSites(); callsites.hasNext(); ) {
                 CallSiteReference callsite = callsites.next();
 
                 MethodReference targetReference = callsite.getDeclaredTarget();
 
+                switch ((IInvokeInstruction.Dispatch) callsite.getInvocationCode()) {
+                    case INTERFACE:
+                        InvokeInterfaceNode invokeInterfaceNode = new InvokeInterfaceNode(targetReference);
 
-                Set<CGNode> possibleTargets = cg.getPossibleTargets(node, callsite); // More specific, takes call site into consideration
-                //Set<CGNode> possibleTargets = cg.getClassHierarchy().getPossibleTargets(targetReference));
+                        addEdgeToNewNode(graphNode, invokeInterfaceNode);
+                        break;
 
-                if (possibleTargets.size() == 0) {
+                    case VIRTUAL:
+                    case SPECIAL:
+                    case STATIC:
+                    default:
+                        MethodRefNode targetNode = new MethodRefNode(targetReference);
 
-
-                    if (includePhantom) {
-                        logger.debug("No targets found for {}, creating phantom node", targetReference);
-                        MethodReference missingMethod = MethodReference.findOrCreate(ClassLoaderMissing, targetReference.getDeclaringClass().getName().toString(), targetReference.getName().toString(), targetReference.getSelector().getDescriptor().toString());
-                        graph.addNode(missingMethod);
-
-                        if (!graph.hasEdge(nodeReference, missingMethod)) {
-                            graph.addEdge(nodeReference, missingMethod);
-                        }
-                    } else {
-                        logger.warn("No targets found for {}", targetReference);
-                    }
-                }
-
-                if (includeInterfaceInvocation && callsite.isInterface()) {
-                    try {
-                        MethodReference interfaceReference = cg.getClassHierarchy().resolveMethod(targetReference).getReference();
-
-                        graph.addNode(interfaceReference);
-                        if (!graph.hasEdge(nodeReference, interfaceReference)) {
-                            graph.addEdge(nodeReference, interfaceReference);
-                        }
-                    } catch (NullPointerException e) {
-                        logger.warn("NPE for {}", targetReference);
-                    }
-                }
-
-                for (CGNode possibleTarget : possibleTargets) {
-                    MethodReference callSiteTargetReference = possibleTarget.getMethod().getReference();
-
-                    graph.addNode(callSiteTargetReference);
-
-                    if (!graph.hasEdge(nodeReference, callSiteTargetReference)) {
-                        graph.addEdge(nodeReference, callSiteTargetReference);
-                    }
+                        addEdgeToNewNode(graphNode, targetNode);
                 }
             }
 
         }
         return graph;
+    }
+
+    private void addEdgeToNewNode(IGraphNode src, IGraphNode dst) {
+
+        graph.addNode(dst);
+        if (!graph.hasEdge(src, dst)) {
+            graph.addEdge(src, dst);
+        }
     }
 }

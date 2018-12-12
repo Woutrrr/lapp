@@ -8,6 +8,7 @@ import java.util.stream.Collectors;
 
 import com.ibm.wala.ipa.callgraph.CGNode;
 import com.ibm.wala.ipa.callgraph.CallGraph;
+import com.ibm.wala.ipa.cha.IClassHierarchy;
 import com.ibm.wala.types.ClassLoaderReference;
 import com.ibm.wala.util.strings.Atom;
 import org.apache.logging.log4j.LogManager;
@@ -85,18 +86,14 @@ public class CallGraphMain implements Callable<Void> {
 
         String localRepoPrefix = (new File(Booter.LOCAL_REPO)).getAbsolutePath();
 
-        makeApplicationScopeGraph(cg, localRepoPrefix);
-
-        makeAppLibScopeGraph(cg, localRepoPrefix);
-
-        makeFullScopeGraph(cg, localRepoPrefix);
+        makeApplicationScopeGraph(cg, localRepoPrefix, analysis.getExtendedCha());
 
         return null;
     }
 
 
 
-    private boolean makeApplicationScopeGraph(CallGraph cg, String localRepoPrefix) {
+    private boolean makeApplicationScopeGraph(CallGraph cg, String localRepoPrefix, IClassHierarchy extendedCha) {
         Predicate<CGNode> onlyApplicationScope = node -> {
             return !node.getMethod()
                     .getDeclaringClass()
@@ -110,37 +107,7 @@ public class CallGraphMain implements Callable<Void> {
                 outputInterfaceInvocations,
                 localRepoPrefix);
 
-        return applicationScopeCallGraph.makeOutput(cg);
+        return applicationScopeCallGraph.makeOutput(cg, extendedCha);
     }
-
-    private void makeAppLibScopeGraph(CallGraph cg, String localRepoPrefix) {
-        Predicate<CGNode> anyThingButPrimodialScope = node -> {
-            return node.getMethod()
-                    .getDeclaringClass()
-                    .getClassLoader().getReference()
-                    .equals(ClassLoaderReference.Primordial);
-        };
-        GraphVizOutput appAndLibScopeCallGraph = new GraphVizOutput(
-                new File(outputDirectory, "app_lib.dot"),
-                anyThingButPrimodialScope,
-                outputPhantomNodes,
-                outputInterfaceInvocations,
-                localRepoPrefix);
-
-        appAndLibScopeCallGraph.makeOutput(cg);
-    }
-
-    private boolean makeFullScopeGraph(CallGraph cg, String localRepoPrefix) {
-        Predicate<CGNode> filterNone = node -> false;
-        GraphVizOutput applicationScopeCallGraph = new GraphVizOutput(
-                new File(outputDirectory, "app_full.dot"),
-                filterNone,
-                outputPhantomNodes,
-                outputInterfaceInvocations,
-                localRepoPrefix);
-
-        return applicationScopeCallGraph.makeOutput(cg);
-    }
-
 
 }

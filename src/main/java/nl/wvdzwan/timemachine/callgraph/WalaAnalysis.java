@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.stream.Collectors;
 
 import com.ibm.wala.classLoader.IClass;
@@ -15,9 +16,12 @@ import com.ibm.wala.ipa.callgraph.impl.Util;
 import com.ibm.wala.ipa.cha.ClassHierarchy;
 import com.ibm.wala.ipa.cha.ClassHierarchyException;
 import com.ibm.wala.ipa.cha.ClassHierarchyFactory;
+import com.ibm.wala.ipa.cha.IClassHierarchy;
 import com.ibm.wala.types.ClassLoaderReference;
 import com.ibm.wala.util.config.AnalysisScopeReader;
+import com.ibm.wala.util.config.SetOfClasses;
 import com.ibm.wala.util.io.FileProvider;
+import com.ibm.wala.util.warnings.Warning;
 import com.ibm.wala.util.warnings.Warnings;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -29,6 +33,8 @@ public class WalaAnalysis {
     private String classPath;
 
     private String exclusionFile;
+
+    private IClassHierarchy extendedCha;
 
 
     public WalaAnalysis(String mainJar, String classPath, String exclusionFile) {
@@ -42,19 +48,37 @@ public class WalaAnalysis {
 
             File exclusionsFile = (new FileProvider()).getFile(exclusionFile);
             AnalysisScope scope = AnalysisScopeReader.makePrimordialScope(exclusionsFile);
-
             AnalysisScopeReader.addClassPathToScope(mainJar, scope, scope.getLoader(AnalysisScope.APPLICATION));
-            AnalysisScopeReader.addClassPathToScope(classPath, scope, scope.getLoader(AnalysisScope.EXTENSION));
-
 
             logger.debug("Building class hierarchy...");
             ClassHierarchy cha = ClassHierarchyFactory.make(scope);
             logger.info("Class hierarchy built, {} classes", cha::getNumberOfClasses);
 
-            String warning = Warnings.asString();
-            if (warning.length() > 0) {
+            for (Warning warning : filterExclusionsWarnings(scope.getExclusions())) {
+                if (warning.getMsg().startsWith("class com.ibm.wala.classLoader.BytecodeClass$ClassNotFoundWarning")) {
+                    // Missing classes is expected since the classpath only has main jar + primordial
+                    continue;
+                }
                 logger.warn(warning);
             }
+            Warnings.clear();
+
+
+            AnalysisScope extendedScope = AnalysisScopeReader.makePrimordialScope(exclusionsFile);
+            AnalysisScopeReader.addClassPathToScope(mainJar, extendedScope, extendedScope.getLoader(AnalysisScope.APPLICATION));
+            if (!classPath.equals("")) {
+                AnalysisScopeReader.addClassPathToScope(classPath, extendedScope, extendedScope.getLoader(AnalysisScope.EXTENSION));
+            }
+
+            logger.debug("Building extended class hierarchy with dependencies...");
+            ClassHierarchy extendedCha = ClassHierarchyFactory.make(extendedScope);
+            logger.info("Extended class hierarchy built, {} classes", extendedCha::getNumberOfClasses);
+            this.extendedCha = extendedCha;
+
+            for(Warning warning : filterExclusionsWarnings(scope.getExclusions())) {
+                logger.warn(warning);
+            }
+            Warnings.clear();
 
 
             // Prepare call graph generation
@@ -76,6 +100,50 @@ public class WalaAnalysis {
             return e.getPartialCallGraph();
         }
     }
+
+    private void removeClassNotFoundWarnings(ArrayList<Warning> filteredWarnings) {
+        for (Warning warning : filteredWarnings) {
+            if (warning.getMsg().startsWith("class com.ibm.wala.classLoader.BytecodeClass$ClassNotFoundWarning")) {
+                filteredWarnings.remove(warning);
+            }
+        }
+    }
+
+    private ArrayList<Warning> filterExclusionsWarnings(SetOfClasses exclusions) {
+        ArrayList<Warning> result = new ArrayList<>();
+
+        for (Iterator<Warning> it = Warnings.iterator(); it.hasNext(); ) {
+            Warning warning = it.next();
+
+            String msg = warning.getMsg();
+
+            if (msg.startsWith("class com.ibm.wala.ipa.cha.ClassHierarchy$ClassExclusion")) {
+                int index = msg.lastIndexOf("Superclass name");
+
+                String superClass = msg.substring(index + 17);
+
+                if (exclusions.contains(superClass)) {
+                    continue;
+                }
+
+            }
+
+            if (msg.startsWith("class com.ibm.wala.classLoader.BytecodeClass$ClassNotFoundWarning")) {
+                int index = msg.lastIndexOf("ClassNotFoundWarning");
+                String klass = msg.substring(index + 24);
+
+                if (exclusions.contains(klass)) {
+                    continue;
+                }
+            }
+
+            result.add(warning);
+        }
+
+        return result;
+    }
+
+
 
     public ArrayList<Entrypoint> getEntrypoints(ClassHierarchy cha) {
 
@@ -110,6 +178,9 @@ public class WalaAnalysis {
                 && !method.isAbstract();
     }
 
+    public IClassHierarchy getExtendedCha() {
+        return this.extendedCha;
+    }
 
 }
 
