@@ -97,6 +97,7 @@ public class GraphVizOutputTransformer {
             for (Iterator<CallSiteReference> callsites = node.iterateCallSites(); callsites.hasNext(); ) {
                 CallSiteReference callsite = callsites.next();
 
+
                 MethodReference targetReference = callsite.getDeclaredTarget();
 
                 switch ((IInvokeInstruction.Dispatch) callsite.getInvocationCode()) {
@@ -106,6 +107,18 @@ public class GraphVizOutputTransformer {
                         break;
 
                     case VIRTUAL:
+                        IClass klass = cha.lookupClass(callsite.getDeclaredTarget().getDeclaringClass());
+                        IMethod method1 = cha.resolveMethod(klass, targetReference.getSelector());
+
+                        if (method1.isAbstract()) {
+                            IGraphNode abstractNode = new MethodRefNode(targetReference, NodeAnnotation.InvokeAbstract);
+                            addEdgeToNewNode(graphNode, abstractNode);
+                        } else {
+                            IGraphNode virtualNode = new MethodRefNode(targetReference, NodeAnnotation.InvokeVirtual);
+                            addEdgeToNewNode(graphNode, virtualNode);
+                        }
+                        break;
+
                     case SPECIAL:
                     case STATIC:
                     default:
