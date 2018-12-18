@@ -12,13 +12,14 @@ import com.ibm.wala.classLoader.IClass;
 import com.ibm.wala.classLoader.IMethod;
 import com.ibm.wala.ipa.callgraph.CGNode;
 import com.ibm.wala.ipa.callgraph.CallGraph;
+import com.ibm.wala.ipa.cha.IClassHierarchy;
 import com.ibm.wala.shrikeBT.IInvokeInstruction;
 import com.ibm.wala.types.MethodReference;
 import com.ibm.wala.types.Selector;
 import com.ibm.wala.util.graph.Graph;
 import com.ibm.wala.util.graph.impl.SlowSparseNumberedGraph;
 
-public class GraphVizOutputTransformer  {
+public class GraphVizOutputTransformer {
 
     private Predicate<CGNode> nodeFilter;
     private Graph<IGraphNode> graph;
@@ -28,7 +29,7 @@ public class GraphVizOutputTransformer  {
         graph = SlowSparseNumberedGraph.make();
     }
 
-    public Graph<IGraphNode> transform(CallGraph cg) {
+    public Graph<IGraphNode> transform(CallGraph cg, IClassHierarchy cha) {
 
 
         Iterator<CGNode> cgIterator = cg.iterator();
@@ -60,6 +61,35 @@ public class GraphVizOutputTransformer  {
                     if (!graph.hasEdge(interfaceMethodNode, graphNode)) {
                         graph.addEdge(interfaceMethodNode, graphNode);
                     }
+                }
+            }
+
+            IMethod method = node.getMethod();
+            IMethod superMethod = null;
+            IClass superClass = null;
+            IClass walkerClass = declaringClass.getSuperclass();
+
+            while (walkerClass != null) {
+                // Is method found in superclass ?
+                Collection<? extends IMethod> declaredSuperMethods = walkerClass.getDeclaredMethods();
+                if (declaredSuperMethods.contains(method)) {
+                    superClass = walkerClass;
+                    superMethod = cha.resolveMethod(superClass, method.getSelector());
+
+                    break;
+                }
+
+
+                walkerClass = walkerClass.getSuperclass();
+            }
+
+
+            if (superClass != null) {
+                IGraphNode implementedSuperMethodNode = new MethodRefNode(superMethod.getReference(), NodeAnnotation.SuperMethod);
+                graph.addNode(implementedSuperMethodNode);
+
+                if (!graph.hasEdge(implementedSuperMethodNode, graphNode)) {
+                    graph.addEdge(implementedSuperMethodNode, graphNode);
                 }
             }
 
