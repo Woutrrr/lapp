@@ -39,7 +39,7 @@ public class GraphVizOutput implements CallgraphOutputTask<CallGraph> {
 
         IClassHierarchy cha = (extendedCha != null) ? extendedCha : cg.getClassHierarchy();
 
-        Graph<IGraphNode> methodGraph = transformer.transform(cg);
+        Graph<IGraphNode> methodGraph = transformer.transform(cg, extendedCha);
 
         NodeDecorator<IGraphNode> labelDecorator = new GlobalUniqueSymbolDecorator(
                 cha,

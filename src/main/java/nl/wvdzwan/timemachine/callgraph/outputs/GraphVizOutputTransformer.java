@@ -42,7 +42,9 @@ public class GraphVizOutputTransformer  {
             MethodRefNode graphNode = new MethodRefNode(nodeReference);
             graph.addNode(graphNode);
 
-            Collection<IClass> interfaces = node.getMethod().getDeclaringClass().getAllImplementedInterfaces();
+            IClass declaringClass = node.getMethod().getDeclaringClass();
+
+            Collection<IClass> interfaces = declaringClass.getAllImplementedInterfaces();
             if (interfaces.size() > 0) {
                 Map<Selector, IMethod> methods = interfaces.stream()
                         .flatMap(implementedInterface -> implementedInterface.getDeclaredMethods().stream())
@@ -50,8 +52,8 @@ public class GraphVizOutputTransformer  {
 
                 if (methods.containsKey(nodeReference.getSelector())) {
                     IMethod interfaceMethod = methods.get(nodeReference.getSelector());
-                    InterfaceMethodNode interfaceMethodNode = new InterfaceMethodNode(interfaceMethod.getReference());
 
+                    IGraphNode interfaceMethodNode = new MethodRefNode(interfaceMethod.getReference(), NodeAnnotation.InterfaceMethod);
                     graph.addNode(interfaceMethodNode);
 
                     // Reverse because we need a edge from interface def to implementation
@@ -69,8 +71,7 @@ public class GraphVizOutputTransformer  {
 
                 switch ((IInvokeInstruction.Dispatch) callsite.getInvocationCode()) {
                     case INTERFACE:
-                        InvokeInterfaceNode invokeInterfaceNode = new InvokeInterfaceNode(targetReference);
-
+                        IGraphNode invokeInterfaceNode = new MethodRefNode(targetReference, NodeAnnotation.InvokeInterface);
                         addEdgeToNewNode(graphNode, invokeInterfaceNode);
                         break;
 

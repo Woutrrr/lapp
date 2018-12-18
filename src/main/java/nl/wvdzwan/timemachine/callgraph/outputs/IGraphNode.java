@@ -6,5 +6,8 @@ public interface IGraphNode {
 
     MethodReference getMethodReference();
 
+    void addAnnotation(NodeAnnotation annotation);
+    boolean hasAnnotation(NodeAnnotation annotation);
+
     String prefix(String label);
 }
