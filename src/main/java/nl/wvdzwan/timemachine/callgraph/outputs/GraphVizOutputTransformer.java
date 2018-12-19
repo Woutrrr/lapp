@@ -1,36 +1,50 @@
 package nl.wvdzwan.timemachine.callgraph.outputs;
 
-import java.util.Collection;
+import java.util.EnumMap;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.function.Function;
 import java.util.function.Predicate;
-import java.util.stream.Collectors;
 
 import com.ibm.wala.classLoader.CallSiteReference;
-import com.ibm.wala.classLoader.IClass;
-import com.ibm.wala.classLoader.IMethod;
 import com.ibm.wala.ipa.callgraph.CGNode;
 import com.ibm.wala.ipa.callgraph.CallGraph;
 import com.ibm.wala.ipa.cha.IClassHierarchy;
 import com.ibm.wala.shrikeBT.IInvokeInstruction;
 import com.ibm.wala.types.MethodReference;
-import com.ibm.wala.types.Selector;
-import com.ibm.wala.util.graph.Graph;
-import com.ibm.wala.util.graph.impl.SlowSparseNumberedGraph;
+import org.jgrapht.Graph;
+import org.jgrapht.graph.DefaultDirectedGraph;
 
 public class GraphVizOutputTransformer {
+    static final String INTERFACE_METHOD = "Interface";
+    static final String ABSTRACT_METHOD = "Abstract";
+    static final String IMPLEMENTED_METHOD = "Implementation";
 
     private Predicate<CGNode> nodeFilter;
-    private Graph<IGraphNode> graph;
+    private Graph<MethodReference, GraphEdge> graph;
+
+    private Map<MethodReference, AttributeMap> vertexAttributeMap = new HashMap<>();
+
+    private static final Function<MethodReference, AttributeMap> emptyAttributeMapProvider =
+            methodReference -> new AttributeMap();
+
+    enum VertexAttributes {
+        style, type,
+    }
+
+    static class AttributeMap extends EnumMap<VertexAttributes, String> {
+        public AttributeMap() {
+            super(VertexAttributes.class);
+        }
+    }
 
     public GraphVizOutputTransformer(Predicate<CGNode> nodeFilter) {
         this.nodeFilter = nodeFilter;
-        graph = SlowSparseNumberedGraph.make();
+        graph = new DefaultDirectedGraph<>(GraphEdge.class);
     }
 
-    public Graph<IGraphNode> transform(CallGraph cg, IClassHierarchy cha) {
-
+    public Graph<MethodReference, GraphEdge> transform(CallGraph cg, IClassHierarchy cha) {
 
         Iterator<CGNode> cgIterator = cg.iterator();
         while (cgIterator.hasNext()) {
@@ -40,91 +54,36 @@ public class GraphVizOutputTransformer {
             if (nodeFilter.test(node)) {
                 continue;
             }
-            MethodRefNode graphNode = new MethodRefNode(nodeReference);
-            graph.addNode(graphNode);
-
-            IClass declaringClass = node.getMethod().getDeclaringClass();
-
-            Collection<IClass> interfaces = declaringClass.getAllImplementedInterfaces();
-            if (interfaces.size() > 0) {
-                Map<Selector, IMethod> methods = interfaces.stream()
-                        .flatMap(implementedInterface -> implementedInterface.getDeclaredMethods().stream())
-                        .collect(Collectors.toMap(IMethod::getSelector, Function.identity()));
-
-                if (methods.containsKey(nodeReference.getSelector())) {
-                    IMethod interfaceMethod = methods.get(nodeReference.getSelector());
-
-                    IGraphNode interfaceMethodNode = new MethodRefNode(interfaceMethod.getReference(), NodeAnnotation.InterfaceMethod);
-                    graph.addNode(interfaceMethodNode);
-
-                    // Reverse because we need a edge from interface def to implementation
-                    if (!graph.hasEdge(interfaceMethodNode, graphNode)) {
-                        graph.addEdge(interfaceMethodNode, graphNode);
-                    }
-                }
-            }
-
-            IMethod method = node.getMethod();
-            IMethod superMethod = null;
-            IClass superClass = null;
-            IClass walkerClass = declaringClass.getSuperclass();
-
-            while (walkerClass != null) {
-                // Is method found in superclass ?
-                Collection<? extends IMethod> declaredSuperMethods = walkerClass.getDeclaredMethods();
-                if (declaredSuperMethods.contains(method)) {
-                    superClass = walkerClass;
-                    superMethod = cha.resolveMethod(superClass, method.getSelector());
-
-                    break;
-                }
-
-
-                walkerClass = walkerClass.getSuperclass();
-            }
-
-
-            if (superClass != null) {
-                IGraphNode implementedSuperMethodNode = new MethodRefNode(superMethod.getReference(), NodeAnnotation.SuperMethod);
-                graph.addNode(implementedSuperMethodNode);
-
-                if (!graph.hasEdge(implementedSuperMethodNode, graphNode)) {
-                    graph.addEdge(implementedSuperMethodNode, graphNode);
-                }
-            }
-
+            addVertexWithAttribute(nodeReference, VertexAttributes.type, IMPLEMENTED_METHOD);
 
             for (Iterator<CallSiteReference> callsites = node.iterateCallSites(); callsites.hasNext(); ) {
                 CallSiteReference callsite = callsites.next();
 
 
                 MethodReference targetReference = callsite.getDeclaredTarget();
+                targetReference = cha.resolveMethod(targetReference).getReference();
 
                 switch ((IInvokeInstruction.Dispatch) callsite.getInvocationCode()) {
                     case INTERFACE:
-                        IGraphNode invokeInterfaceNode = new MethodRefNode(targetReference, NodeAnnotation.InvokeInterface);
-                        addEdgeToNewNode(graphNode, invokeInterfaceNode);
+                        graph.addVertex(targetReference);
+                        graph.addEdge(nodeReference, targetReference, new GraphEdge.InterfaceDispatchEdge());
                         break;
 
                     case VIRTUAL:
-                        IClass klass = cha.lookupClass(callsite.getDeclaredTarget().getDeclaringClass());
-                        IMethod method1 = cha.resolveMethod(klass, targetReference.getSelector());
-
-                        if (method1.isAbstract()) {
-                            IGraphNode abstractNode = new MethodRefNode(targetReference, NodeAnnotation.InvokeAbstract);
-                            addEdgeToNewNode(graphNode, abstractNode);
-                        } else {
-                            IGraphNode virtualNode = new MethodRefNode(targetReference, NodeAnnotation.InvokeVirtual);
-                            addEdgeToNewNode(graphNode, virtualNode);
-                        }
+                        graph.addVertex(targetReference);
+                        graph.addEdge(nodeReference, targetReference, new GraphEdge.VirtualDispatchEdge());
                         break;
 
                     case SPECIAL:
+                        graph.addVertex(targetReference);
+                        graph.addEdge(nodeReference, targetReference, new GraphEdge.SpecialDispatchEdge());
+                        break;
                     case STATIC:
+                        graph.addVertex(targetReference);
+                        graph.addEdge(nodeReference, targetReference, new GraphEdge.StaticDispatchEdge());
+                        break;
                     default:
-                        MethodRefNode targetNode = new MethodRefNode(targetReference);
-
-                        addEdgeToNewNode(graphNode, targetNode);
+                        assert false : "Unknown IInvokeInstruction!";
                 }
             }
 
@@ -132,11 +91,15 @@ public class GraphVizOutputTransformer {
         return graph;
     }
 
-    private void addEdgeToNewNode(IGraphNode src, IGraphNode dst) {
-        graph.addNode(dst);
+    public Map<MethodReference, AttributeMap> getVertexAttributeMapMap() {
+        return this.vertexAttributeMap;
+    }
 
-        if (!graph.hasEdge(src, dst)) {
-            graph.addEdge(src, dst);
-        }
+    private AttributeMap addVertexWithAttribute(MethodReference methodReference, VertexAttributes attributeName, String value) {
+        graph.addVertex(methodReference);
+
+        AttributeMap attributes = vertexAttributeMap.computeIfAbsent(methodReference, emptyAttributeMapProvider);
+        attributes.put(attributeName, value);
+        return attributes;
     }
 }

@@ -1,20 +1,20 @@
 package nl.wvdzwan.timemachine.callgraph.outputs;
 
 import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.Writer;
 import java.util.function.Predicate;
 
 import com.ibm.wala.ipa.callgraph.CGNode;
 import com.ibm.wala.ipa.callgraph.CallGraph;
 import com.ibm.wala.ipa.cha.IClassHierarchy;
-import com.ibm.wala.util.WalaException;
-import com.ibm.wala.util.graph.Graph;
-import com.ibm.wala.viz.DotUtil;
-import com.ibm.wala.viz.NodeDecorator;
+import com.ibm.wala.types.MethodReference;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
-import nl.wvdzwan.timemachine.callgraph.GlobalUniqueSymbolDecorator;
-import nl.wvdzwan.timemachine.callgraph.MavenFolderLayout;
+import org.jgrapht.Graph;
+import org.jgrapht.io.ExportException;
+import org.jgrapht.io.GraphExporter;
 
 public class GraphVizOutput implements CallgraphOutputTask<CallGraph> {
     private static Logger logger = LogManager.getLogger();
@@ -37,18 +37,14 @@ public class GraphVizOutput implements CallgraphOutputTask<CallGraph> {
     @Override
     public boolean makeOutput(CallGraph cg, IClassHierarchy extendedCha) {
 
-        IClassHierarchy cha = (extendedCha != null) ? extendedCha : cg.getClassHierarchy();
+        Graph<MethodReference, GraphEdge> methodGraph = transformer.transform(cg, extendedCha);
 
-        Graph<IGraphNode> methodGraph = transformer.transform(cg, extendedCha);
-
-        NodeDecorator<IGraphNode> labelDecorator = new GlobalUniqueSymbolDecorator(
-                cha,
-                new MavenFolderLayout(repositoryPathPrefix)
-        );
+        GraphExporter<MethodReference, GraphEdge> exporter = new CustomDotExporter(transformer.getVertexAttributeMapMap());
 
         try {
-            DotUtil.writeDotFile(methodGraph, labelDecorator, "\", splines=true, overlap=false, ranksep=5, fontsize=36, root =  \"", output.getAbsolutePath());
-        } catch (WalaException e) {
+            Writer writer = new FileWriter(output.getAbsolutePath());
+            exporter.exportGraph(methodGraph, writer);
+        } catch (IOException | ExportException e) {
             e.printStackTrace();
             return false;
         }
