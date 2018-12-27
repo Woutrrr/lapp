@@ -24,9 +24,9 @@ public class CustomDotExporter implements GraphExporter<MethodReference, GraphEd
         dotExporter = new DOTExporter<>(
                 this::vertexIdProvider,
                 this::vertexLabelProvider,
-                this::edgeLabelProvider,
+                CustomDotExporter::edgeLabelProvider,
                 this::vertexAttributeProvider,
-                this::edgeAttributeProvider);
+                CustomDotExporter::edgeAttributeProvider);
 
         setGraphAttributes();
     }
@@ -37,14 +37,14 @@ public class CustomDotExporter implements GraphExporter<MethodReference, GraphEd
     }
 
     private String vertexIdProvider(MethodReference reference) {
-        return reference.toString();
+        return "\"" + reference.getSignature() + "\""; //.replaceAll("[\\.\\(\\)<>/;]", "_");
     }
 
     private String vertexLabelProvider(MethodReference reference) {
         String label = reference.getSignature();
         GraphVizOutputTransformer.AttributeMap attributes = vertexAttributeMap.get(reference);
         if (attributes != null) {
-            label = "[" + attributes.get(GraphVizOutputTransformer.VertexAttributes.type) + "]\n" + label;
+            label = "" + attributes.get(GraphVizOutputTransformer.VertexAttributes.type) + " - " + label;
         }
         return label;
     }
@@ -66,11 +66,11 @@ public class CustomDotExporter implements GraphExporter<MethodReference, GraphEd
 
     }
 
-    private String edgeLabelProvider(GraphEdge edge) {
+    public static String edgeLabelProvider(GraphEdge edge) {
         return edge.getLabel();
     }
 
-    private Map<String, Attribute> edgeAttributeProvider(GraphEdge edge) {
+    public static Map<String, Attribute> edgeAttributeProvider(GraphEdge edge) {
         Map<String, Attribute> attributes = new HashMap<>();
 
         if (edge instanceof GraphEdge.InterfaceDispatchEdge) {
