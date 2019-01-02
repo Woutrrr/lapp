@@ -1,4 +1,4 @@
-package nl.wvdzwan.timemachine;
+package nl.wvdzwan.timemachine.resolver;
 
 import java.io.File;
 import java.time.LocalDate;
