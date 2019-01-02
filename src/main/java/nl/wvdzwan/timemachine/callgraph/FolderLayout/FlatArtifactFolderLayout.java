@@ -1,6 +1,9 @@
-package nl.wvdzwan.timemachine.callgraph;
+package nl.wvdzwan.timemachine.callgraph.FolderLayout;
 
+import java.util.jar.JarFile;
 import java.util.regex.Pattern;
+
+import nl.wvdzwan.timemachine.callgraph.ArtifactRecord;
 
 public class FlatArtifactFolderLayout implements ArtifactFolderLayout {
 
@@ -9,11 +12,13 @@ public class FlatArtifactFolderLayout implements ArtifactFolderLayout {
     /**
      * Build ArtifactRecord from path
      *
-     * @param path Path following repository layout format
+     * @param jarFile Jar file
      * @return parsed ArtifactRecord
      */
     @Override
-    public ArtifactRecord artifactRecordFromPath(String path) {
+    public ArtifactRecord artifactRecordFromJarFile(JarFile jarFile) {
+
+        String path = jarFile.getName();
 
         int fileNameIndex = path.lastIndexOf("/");
         String fileName = path.substring(fileNameIndex + 1, path.length()-4);

@@ -1,7 +1,10 @@
-package nl.wvdzwan.timemachine.callgraph;
+package nl.wvdzwan.timemachine.callgraph.FolderLayout;
 
+import java.util.jar.JarFile;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import nl.wvdzwan.timemachine.callgraph.ArtifactRecord;
 
 public class MavenFolderLayout implements ArtifactFolderLayout {
 
@@ -14,7 +17,8 @@ public class MavenFolderLayout implements ArtifactFolderLayout {
     }
 
     @Override
-    public ArtifactRecord artifactRecordFromPath(String path) {
+    public ArtifactRecord artifactRecordFromJarFile(JarFile jarFile) {
+        String path = jarFile.getName();
         String name = path.substring(path.lastIndexOf('/')+1);
 
         if (!path.startsWith(repositoryBase)) {

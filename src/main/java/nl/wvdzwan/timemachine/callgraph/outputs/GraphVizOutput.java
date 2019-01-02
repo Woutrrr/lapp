@@ -4,52 +4,64 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Writer;
-import java.util.function.Predicate;
+import java.util.Map;
 
-import com.ibm.wala.ipa.callgraph.CGNode;
-import com.ibm.wala.ipa.callgraph.CallGraph;
-import com.ibm.wala.ipa.cha.IClassHierarchy;
 import com.ibm.wala.types.MethodReference;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jgrapht.Graph;
-import org.jgrapht.io.ExportException;
-import org.jgrapht.io.GraphExporter;
+import org.jgrapht.io.Attribute;
+import org.jgrapht.io.DOTExporter;
 
-public class GraphVizOutput implements CallgraphOutputTask<CallGraph> {
+import nl.wvdzwan.timemachine.callgraph.FolderLayout.ArtifactFolderLayout;
+
+public abstract class GraphVizOutput {
     private static Logger logger = LogManager.getLogger();
 
-    private File output;
-    private String repositoryPathPrefix;
-    private GraphVizOutputTransformer transformer;
+    protected final ArtifactFolderLayout folderLayout;
+    protected final Graph<MethodReference, GraphEdge> graph;
+    protected final Map<MethodReference, AttributeMap> vertexAttributeMap;
 
-    public GraphVizOutput(
-            File output,
-            Predicate<CGNode> nodeFilter,
-            String repositoryPathPrefix) {
-
-        this.output = output;
-        this.repositoryPathPrefix = repositoryPathPrefix;
-
-        transformer = new GraphVizOutputTransformer(nodeFilter);
+    public GraphVizOutput(ArtifactFolderLayout folderLayout, Graph<MethodReference, GraphEdge> graph, Map<MethodReference, AttributeMap> vertexAttributeMap) {
+        this.folderLayout = folderLayout;
+        this.graph = graph;
+        this.vertexAttributeMap = vertexAttributeMap;
     }
 
-    @Override
-    public boolean makeOutput(CallGraph cg, IClassHierarchy extendedCha) {
 
-        Graph<MethodReference, GraphEdge> methodGraph = transformer.transform(cg, extendedCha);
+    public boolean export(File output) {
 
-        GraphExporter<MethodReference, GraphEdge> exporter = new CustomDotExporter(transformer.getVertexAttributeMapMap());
+        DOTExporter<MethodReference, GraphEdge> exporter = new DOTExporter<>(
+                this::vertexIdProvider,
+                this::vertexLabelProvider,
+                this::edgeLabelProvider,
+                this::vertexAttributeProvider,
+                this::edgeAttributeProvider);
+
+
+        setGraphAttributes(exporter);
 
         try {
             Writer writer = new FileWriter(output.getAbsolutePath());
-            exporter.exportGraph(methodGraph, writer);
-        } catch (IOException | ExportException e) {
+            exporter.exportGraph(graph, writer);
+
+        } catch (IOException e) {
             e.printStackTrace();
             return false;
         }
 
         return true;
     }
+
+    protected void setGraphAttributes(DOTExporter<MethodReference, GraphEdge> exported) {
+        // No graph attributes by default
+    };
+
+    abstract String vertexIdProvider(MethodReference reference);
+    abstract String vertexLabelProvider(MethodReference reference);
+    abstract Map<String, Attribute> vertexAttributeProvider(MethodReference reference);
+
+    abstract String edgeLabelProvider(GraphEdge edge);
+    abstract Map<String, Attribute> edgeAttributeProvider(GraphEdge edge);
 
 }

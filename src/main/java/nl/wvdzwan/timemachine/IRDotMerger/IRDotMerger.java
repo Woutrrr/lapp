@@ -1,4 +1,4 @@
-package nl.wvdzwan.timemachine;
+package nl.wvdzwan.timemachine.IRDotMerger;
 
 import java.io.*;
 import java.util.HashMap;
@@ -6,15 +6,8 @@ import java.util.Map;
 
 import org.jgrapht.Graph;
 import org.jgrapht.graph.DefaultDirectedGraph;
-import org.jgrapht.io.Attribute;
-import org.jgrapht.io.ComponentUpdater;
-import org.jgrapht.io.DOTExporter;
-import org.jgrapht.io.DOTImporter;
-import org.jgrapht.io.EdgeProvider;
-import org.jgrapht.io.ImportException;
-import org.jgrapht.io.VertexProvider;
+import org.jgrapht.io.*;
 
-import nl.wvdzwan.timemachine.callgraph.outputs.CustomDotExporter;
 import nl.wvdzwan.timemachine.callgraph.outputs.GraphEdge;
 
 public class IRDotMerger {
@@ -66,11 +59,11 @@ public class IRDotMerger {
 
     private static void exportGraph(Graph<AnnotatedVertex, GraphEdge> graph, Writer writer) {
         DOTExporter<AnnotatedVertex, GraphEdge> exporter = new DOTExporter<>(
-                IRDotMerger::vertexIdProvider,
-                IRDotMerger::vertexLabelProvider,
-                CustomDotExporter::edgeLabelProvider,
-                IRDotMerger::vertexAttributeProvider,
-                CustomDotExporter::edgeAttributeProvider);
+                IRDotExporter::vertexIdProvider,
+                IRDotExporter::vertexLabelProvider,
+                IRDotExporter::edgeLabelProvider,
+                IRDotExporter::vertexAttributeProvider,
+                IRDotExporter::edgeAttributeProvider);
 
         exporter.putGraphAttribute("overlap", "false");
         exporter.putGraphAttribute("ranksep", "1");
@@ -154,24 +147,57 @@ public class IRDotMerger {
         }
     }
 
+    static class IRDotExporter {
 
-    static private String vertexIdProvider(AnnotatedVertex vertex) {
-        return "\"" + vertex.name + "\""; //.replaceAll("[\\.\\(\\)<>/;]", "_");
-    }
 
-    static private String vertexLabelProvider(AnnotatedVertex vertex) {
-        String label = vertex.getName();
-        Map<String, Attribute> attributes = vertex.attributesMap;
 
-        if (attributes != null && attributes.containsKey("type")) {
-            label = "" + attributes.get("type").getValue() + " - " + label;
+        protected static String vertexIdProvider(AnnotatedVertex vertex) {
+            return "\"" + vertex.name + "\""; //.replaceAll("[\\.\\(\\)<>/;]", "_");
         }
-        return label;
+
+        protected static String vertexLabelProvider(AnnotatedVertex vertex) {
+            String label = vertex.getName();
+            Map<String, Attribute> attributes = vertex.attributesMap;
+
+            if (attributes != null && attributes.containsKey("type")) {
+                label = "" + attributes.get("type").getValue() + " - " + label;
+            }
+            return label;
+        }
+
+        protected static Map<String, Attribute> vertexAttributeProvider(AnnotatedVertex vertex) {
+            return vertex.attributesMap;
+        }
+
+        public static String edgeLabelProvider(GraphEdge edge) {
+            return edge.getLabel();
+        }
+
+        public static Map<String, Attribute> edgeAttributeProvider(GraphEdge edge) {
+            Map<String, Attribute> attributes = new HashMap<>();
+
+            if (edge instanceof GraphEdge.InterfaceDispatchEdge) {
+                Attribute attribute = DefaultAttribute.createAttribute("bold");
+                attributes.put("style", attribute);
+            } else if (edge instanceof GraphEdge.VirtualDispatchEdge) {
+                Attribute attribute = DefaultAttribute.createAttribute("bold");
+                attributes.put("style", attribute);
+            } else if (edge instanceof GraphEdge.ImplementsEdge) {
+                Attribute attribute = DefaultAttribute.createAttribute("dashed");
+                attributes.put("style", attribute);
+            } else if (edge instanceof GraphEdge.OverridesEdge) {
+                Attribute attribute = DefaultAttribute.createAttribute("dotted");
+                attributes.put("style", attribute);
+            } else {
+                return null;
+            }
+
+            return attributes;
+        }
+
     }
 
-    static private Map<String, Attribute> vertexAttributeProvider(AnnotatedVertex vertex) {
-        return vertex.attributesMap;
-    }
+
 
 
     static class MergedInputReader extends Reader {

@@ -1,8 +1,7 @@
-package nl.wvdzwan.timemachine.callgraph.outputs;
+package nl.wvdzwan.timemachine.callgraph;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -24,39 +23,45 @@ import com.ibm.wala.types.Selector;
 import org.jgrapht.Graph;
 import org.jgrapht.graph.DefaultDirectedGraph;
 
-public class GraphVizOutputTransformer {
+import nl.wvdzwan.timemachine.callgraph.outputs.AttributeMap;
+import nl.wvdzwan.timemachine.callgraph.outputs.GraphEdge;
+
+public class IRGraphBuilder {
     static final String INTERFACE_METHOD = "Interface";
     static final String ABSTRACT_METHOD = "Abstract";
     static final String IMPLEMENTED_METHOD = "Implementation";
+    private final CallGraph callGraph;
+    private final IClassHierarchy cha;
 
-    private Predicate<CGNode> nodeFilter;
-    private Graph<MethodReference, GraphEdge> graph;
+    private Predicate<CGNode> nodeFilter = node -> {
+        return !node.getMethod()
+                .getDeclaringClass()
+                .getClassLoader()
+                .getReference()
+                .equals(ClassLoaderReference.Application);
+    };
 
+    private Graph<MethodReference, GraphEdge> graph = new DefaultDirectedGraph<>(GraphEdge.class);
     private Map<MethodReference, AttributeMap> vertexAttributeMap = new HashMap<>();
 
     private static final Function<MethodReference, AttributeMap> emptyAttributeMapProvider =
             methodReference -> new AttributeMap();
 
-    enum VertexAttributes {
-        style, type,
+    public IRGraphBuilder(CallGraph cg, IClassHierarchy cha) {
+        this.callGraph = cg;
+        this.cha = cha;
     }
 
-    static class AttributeMap extends EnumMap<VertexAttributes, String> {
-        public AttributeMap() {
-            super(VertexAttributes.class);
-        }
+
+    public void build() {
+
+        insertCHA();
+
+        insertCallGraph();
     }
 
-    public GraphVizOutputTransformer(Predicate<CGNode> nodeFilter) {
-        this.nodeFilter = nodeFilter;
-        graph = new DefaultDirectedGraph<>(GraphEdge.class);
-    }
-
-    public Graph<MethodReference, GraphEdge> transform(CallGraph cg, IClassHierarchy cha) {
-
-        insertCHA(cha);
-
-        Iterator<CGNode> cgIterator = cg.iterator();
+    private void insertCallGraph() {
+        Iterator<CGNode> cgIterator = callGraph.iterator();
         while (cgIterator.hasNext()) {
             CGNode node = cgIterator.next();
             MethodReference nodeReference = node.getMethod().getReference();
@@ -64,7 +69,7 @@ public class GraphVizOutputTransformer {
             if (nodeFilter.test(node)) {
                 continue;
             }
-            addVertexWithAttribute(nodeReference, VertexAttributes.type, IMPLEMENTED_METHOD);
+            addVertexWithAttribute(nodeReference, AttributeMap.TYPE, IMPLEMENTED_METHOD);
 
             for (Iterator<CallSiteReference> callsites = node.iterateCallSites(); callsites.hasNext(); ) {
                 CallSiteReference callsite = callsites.next();
@@ -88,6 +93,7 @@ public class GraphVizOutputTransformer {
                         graph.addVertex(targetReference);
                         graph.addEdge(nodeReference, targetReference, new GraphEdge.SpecialDispatchEdge());
                         break;
+
                     case STATIC:
                         graph.addVertex(targetReference);
                         graph.addEdge(nodeReference, targetReference, new GraphEdge.StaticDispatchEdge());
@@ -98,10 +104,9 @@ public class GraphVizOutputTransformer {
             }
 
         }
-        return graph;
     }
 
-    public void insertCHA(IClassHierarchy cha) {
+    public void insertCHA() {
         IClassLoader classLoader = cha.getLoader(ClassLoaderReference.Application);
 
         // Iterate all classes in Application scope
@@ -131,7 +136,7 @@ public class GraphVizOutputTransformer {
                 } else {
                     typeValue = IMPLEMENTED_METHOD;
                 }
-                addVertexWithAttribute(declaredMethod.getReference(), VertexAttributes.type, typeValue);
+                addVertexWithAttribute(declaredMethod.getReference(), AttributeMap.TYPE, typeValue);
 
 
                 IMethod superMethod = superKlass.getMethod(declaredMethod.getSelector());
@@ -143,7 +148,7 @@ public class GraphVizOutputTransformer {
 
                 IMethod interfaceMethod = interfaceMethods.get(declaredMethod.getSelector());
                 if (interfaceMethod != null) {
-                    addVertexWithAttribute(interfaceMethod.getReference(), VertexAttributes.type, INTERFACE_METHOD);
+                    addVertexWithAttribute(interfaceMethod.getReference(), AttributeMap.TYPE, INTERFACE_METHOD);
                     graph.addEdge(interfaceMethod.getReference(), declaredMethod.getReference(), new GraphEdge.ImplementsEdge());
 
                 }
@@ -159,7 +164,7 @@ public class GraphVizOutputTransformer {
 
                     IMethod abstractSuperClassInterfaceMethod = abstractSuperClassInterfaceMethods.get(declaredMethod.getSelector());
                     if (abstractSuperClassInterfaceMethod != null) {
-                        addVertexWithAttribute(abstractSuperClassInterfaceMethod.getReference(), VertexAttributes.type, INTERFACE_METHOD);
+                        addVertexWithAttribute(abstractSuperClassInterfaceMethod.getReference(), AttributeMap.TYPE, INTERFACE_METHOD);
                         graph.addEdge(abstractSuperClassInterfaceMethod.getReference(), declaredMethod.getReference(), new GraphEdge.ImplementsEdge());
                     }
                 }
@@ -171,7 +176,9 @@ public class GraphVizOutputTransformer {
         return this.vertexAttributeMap;
     }
 
-    private AttributeMap addVertexWithAttribute(MethodReference methodReference, VertexAttributes attributeName, String value) {
+    public Graph<MethodReference, GraphEdge> getGraph() { return this.graph;}
+
+    private AttributeMap addVertexWithAttribute(MethodReference methodReference, String attributeName, String value) {
         graph.addVertex(methodReference);
 
         AttributeMap attributes = vertexAttributeMap.computeIfAbsent(methodReference, emptyAttributeMapProvider);
