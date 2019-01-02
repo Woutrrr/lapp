@@ -3,19 +3,19 @@ package nl.wvdzwan.timemachine.callgraph;
 import java.io.File;
 import java.util.Arrays;
 import java.util.concurrent.Callable;
-import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
-import com.ibm.wala.ipa.callgraph.CGNode;
 import com.ibm.wala.ipa.callgraph.CallGraph;
-import com.ibm.wala.ipa.cha.IClassHierarchy;
 import com.ibm.wala.types.ClassLoaderReference;
 import com.ibm.wala.util.strings.Atom;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import picocli.CommandLine;
 
+import nl.wvdzwan.timemachine.callgraph.FolderLayout.ArtifactFolderLayout;
+import nl.wvdzwan.timemachine.callgraph.FolderLayout.MavenFolderLayout;
 import nl.wvdzwan.timemachine.callgraph.outputs.GraphVizOutput;
+import nl.wvdzwan.timemachine.callgraph.outputs.HumanReadableDotGraph;
 import nl.wvdzwan.timemachine.resolver.util.Booter;
 
 import static com.ibm.wala.types.ClassLoaderReference.Java;
@@ -57,9 +57,11 @@ public class CallGraphMain implements Callable<Void> {
         CommandLine.call(new CallGraphMain(), args);
     }
 
+
     @Override
     public Void call() throws Exception {
 
+        // Setup
         String mainJar = jars[0];
 
         String classPath;
@@ -69,32 +71,24 @@ public class CallGraphMain implements Callable<Void> {
             classPath = "";
         }
 
+        // Analysis
         WalaAnalysis analysis = new WalaAnalysis(mainJar, classPath, exclusionFile);
-
         CallGraph cg = analysis.run();
 
-        String localRepoPrefix = (new File(Booter.LOCAL_REPO)).getAbsolutePath();
+        // Build IR graph
+        IRGraphBuilder builder = new IRGraphBuilder(cg, analysis.getExtendedCha());
+        builder.build();
 
-        makeApplicationScopeGraph(cg, localRepoPrefix, analysis.getExtendedCha());
+        // Output
+        String localRepoPrefix = (new File(Booter.LOCAL_REPO)).getAbsolutePath();
+        ArtifactFolderLayout folderLayout = new MavenFolderLayout(localRepoPrefix);
+        GraphVizOutput dotOutput = new HumanReadableDotGraph(
+                folderLayout,
+                builder.getGraph(),
+                builder.getVertexAttributeMapMap());
+        dotOutput.export(new File(outputDirectory, "app.dot"));
+
 
         return null;
     }
-
-
-
-    private boolean makeApplicationScopeGraph(CallGraph cg, String localRepoPrefix, IClassHierarchy extendedCha) {
-        Predicate<CGNode> onlyApplicationScope = node -> {
-            return !node.getMethod()
-                    .getDeclaringClass()
-                    .getClassLoader().getReference()
-                    .equals(ClassLoaderReference.Application);
-        };
-        GraphVizOutput applicationScopeCallGraph = new GraphVizOutput(
-                new File(outputDirectory, "app.dot"),
-                onlyApplicationScope,
-                localRepoPrefix);
-
-        return applicationScopeCallGraph.makeOutput(cg, extendedCha);
-    }
-
 }
