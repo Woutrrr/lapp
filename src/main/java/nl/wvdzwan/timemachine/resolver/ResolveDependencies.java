@@ -20,7 +20,6 @@ import org.eclipse.aether.util.artifact.JavaScopes;
 import org.eclipse.aether.util.filter.DependencyFilterUtils;
 import org.eclipse.aether.version.Version;
 
-import nl.wvdzwan.librariesio.LibrariesIoInterface;
 import nl.wvdzwan.timemachine.resolver.util.Booter;
 import nl.wvdzwan.timemachine.resolver.util.VersionNotFoundException;
 
@@ -28,15 +27,15 @@ import nl.wvdzwan.timemachine.resolver.util.VersionNotFoundException;
 public class ResolveDependencies {
 
     private static Logger logger = LogManager.getLogger();
-    private final LibrariesIoInterface api;
 
     private RepositorySystem system;
     private DefaultRepositorySystemSession session;
+    private ArtifactVersionResolver versionFinder;
 
-    public ResolveDependencies(RepositorySystem system, LibrariesIoInterface api) {
+    public ResolveDependencies(RepositorySystem system, ArtifactVersionResolver versionFinder) {
 
         this.system = system;
-        this.api = api;
+        this.versionFinder = versionFinder;
         this.session = Booter.newRepositorySystemSession(system);
     }
 
@@ -44,7 +43,6 @@ public class ResolveDependencies {
             throws VersionRangeResolutionException, DependencyResolutionException {
 
         //  Find version for date
-        ArtifactVersionResolver versionFinder = new ArtifactVersionResolver(system, api);
         Version latestVersion = versionFinder.latestBeforeDate(packageIdentfier, dateLimit);
 
         // Resolve for version & date
@@ -54,9 +52,6 @@ public class ResolveDependencies {
 
     public DependencyResult resolveFromVersion(String packageIdentifier, String version)
             throws DependencyResolutionException, VersionNotFoundException {
-
-        // Find date for version
-        ArtifactVersionResolver versionFinder = new ArtifactVersionResolver(system, api);
 
         // Add 1 day to compare to before or on this day with less than
         LocalDateTime dateLimit = versionFinder.dateOfVersion(packageIdentifier, version).plusDays(1).truncatedTo(ChronoUnit.DAYS);

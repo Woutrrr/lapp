@@ -96,8 +96,10 @@ public class Main implements Callable<Void> {
         initLibrariesIoApi(locator, new ApiConnectionParameters(apiBaseUrl, apiKey));
 
         RepositorySystem system = Booter.newRepositorySystem(locator);
+        ArtifactVersionResolver versionFinder = new ArtifactVersionResolver(system, locator.getService(LibrariesIoInterface.class));
 
-        ResolveDependencies resolver = new ResolveDependencies(system, locator.getService(LibrariesIoInterface.class));
+
+        ResolveDependencies resolver = new ResolveDependencies(system, versionFinder);
         DependencyResult resolveResult;
 
         if (searchByDate) {
