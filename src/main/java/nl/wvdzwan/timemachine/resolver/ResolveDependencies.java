@@ -78,7 +78,7 @@ public class ResolveDependencies {
         Artifact artifact = new DefaultArtifact(packageIdentifier + ":" + version);
         CollectRequest collectRequest = new CollectRequest();
         collectRequest.setRoot(new Dependency(artifact, ""));
-        collectRequest.setRepositories(Booter.newRepositories(system, session));
+        collectRequest.setRepositories(Booter.newRepositories());
 
 //        DependencyFilter dependencyFilter = new AndDependencyFilter(
 //                DependencyFilterUtils.classpathFilter(JavaScopes.COMPILE),

@@ -58,7 +58,7 @@ public class ArtifactVersionResolver {
 
         VersionRangeRequest rangeRequest = new VersionRangeRequest();
         rangeRequest.setArtifact(artifact);
-        rangeRequest.setRepositories(Booter.newRepositories(system, session));
+        rangeRequest.setRepositories(Booter.newRepositories());
 
 
         VersionRangeResult rangeResult = system.resolveVersionRange(session, rangeRequest);

@@ -7,7 +7,6 @@ import java.util.List;
 import org.apache.maven.repository.internal.MavenRepositorySystemUtils;
 import org.eclipse.aether.DefaultRepositorySystemSession;
 import org.eclipse.aether.RepositorySystem;
-import org.eclipse.aether.RepositorySystemSession;
 import org.eclipse.aether.connector.basic.BasicRepositoryConnectorFactory;
 import org.eclipse.aether.impl.DefaultServiceLocator;
 import org.eclipse.aether.impl.VersionRangeResolver;
@@ -80,7 +79,7 @@ public class Booter {
         return session;
     }
 
-    public static List<RemoteRepository> newRepositories(RepositorySystem system, RepositorySystemSession session) {
+    public static List<RemoteRepository> newRepositories() {
         return new ArrayList<>(Collections.singletonList(newCentralRepository()));
     }
 
