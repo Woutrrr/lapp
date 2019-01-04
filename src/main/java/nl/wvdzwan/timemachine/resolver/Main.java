@@ -29,10 +29,9 @@ import nl.wvdzwan.timemachine.resolver.util.Booter;
 
 
 @CommandLine.Command(
-        name = "timemachine",
-        description = "Resolve and download dependencies for a maven artifact for a specific date in history.",
-        mixinStandardHelpOptions = true,
-        version = "timemachine version 1.0"
+        name = "resolve",
+        description = "Resolve and download dependencies for a maven artifact for a specific date or version in history.",
+        mixinStandardHelpOptions = true
 )
 public class Main implements Callable<Void> {
     private static Logger logger = LogManager.getLogger();

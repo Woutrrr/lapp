@@ -21,10 +21,9 @@ import nl.wvdzwan.timemachine.resolver.util.Booter;
 import static com.ibm.wala.types.ClassLoaderReference.Java;
 
 @CommandLine.Command(
-        name = "timemachine-graph",
-        description = "Create a call graph from timemachine output",
-        mixinStandardHelpOptions = true,
-        version = "timemachine-graph version 1.0"
+        name = "callgraph",
+        description = "Create a call graph from resolve output",
+        mixinStandardHelpOptions = true
 )
 public class CallGraphMain implements Callable<Void> {
     private static Logger logger = LogManager.getLogger();
