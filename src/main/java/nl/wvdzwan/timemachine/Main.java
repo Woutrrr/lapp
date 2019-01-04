@@ -3,7 +3,6 @@ package nl.wvdzwan.timemachine;
 import java.util.concurrent.Callable;
 
 import picocli.CommandLine;
-import picocli.CommandLine.RunFirst;
 
 @CommandLine.Command(
         name = "timemachine",
@@ -23,7 +22,7 @@ public class Main implements Callable<Void> {
 
         CommandLine commandLine = new CommandLine(new Main());
 
-        commandLine.parseWithHandler(new RunFirst(), args);
+        commandLine.parseWithHandler(new CommandLine.RunLast(), args);
 
     }
 
