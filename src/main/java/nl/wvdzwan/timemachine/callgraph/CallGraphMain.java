@@ -40,11 +40,11 @@ public class CallGraphMain implements Callable<Void> {
     )
     private File outputDirectory = new File("output");
 
-
     @CommandLine.Parameters(
             index = "0..*",
+            arity = "1..*",
             paramLabel = "jars",
-            description = "Application/Libary jars to analyse, first jar will be considered as main jar"
+            description = "Application/Library jars to analyse, first jar will be considered as main jar"
     )
     private String[] jars;
 
