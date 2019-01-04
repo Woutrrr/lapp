@@ -1,13 +1,9 @@
 package nl.wvdzwan.timemachine.callgraph;
 
 import java.io.File;
-import java.util.Arrays;
 import java.util.concurrent.Callable;
-import java.util.stream.Collectors;
 
 import com.ibm.wala.ipa.callgraph.CallGraph;
-import com.ibm.wala.types.ClassLoaderReference;
-import com.ibm.wala.util.strings.Atom;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import picocli.CommandLine;
@@ -17,8 +13,6 @@ import nl.wvdzwan.timemachine.callgraph.FolderLayout.MavenFolderLayout;
 import nl.wvdzwan.timemachine.callgraph.outputs.GraphVizOutput;
 import nl.wvdzwan.timemachine.callgraph.outputs.HumanReadableDotGraph;
 import nl.wvdzwan.timemachine.resolver.util.Booter;
-
-import static com.ibm.wala.types.ClassLoaderReference.Java;
 
 @CommandLine.Command(
         name = "callgraph",
@@ -41,37 +35,34 @@ public class CallGraphMain implements Callable<Void> {
     private File outputDirectory = new File("output");
 
     @CommandLine.Parameters(
-            index = "0..*",
-            arity = "1..*",
-            paramLabel = "jars",
-            description = "Application/Library jars to analyse, first jar will be considered as main jar"
+            index = "0",
+            paramLabel = "jar",
+            description = "jar to generate IR graph of."
     )
-    private String[] jars;
+    private String jar;
 
-    private static final ClassLoaderReference ClassLoaderMissing = new ClassLoaderReference(Atom.findOrCreateUnicodeAtom("Missing"), Java, null);
+    @CommandLine.Parameters(
+            index = "1..*",
+            arity = "0..*",
+            paramLabel = "dependencies",
+            description = "Dependency jars consider when building IR graph."
+    )
+    private String[] dependencies;
 
 
     public static void main(String[] args) {
-        logger.debug("Supplied arguments: {}", Arrays.toString(args));
         CommandLine.call(new CallGraphMain(), args);
     }
-
 
     @Override
     public Void call() throws Exception {
 
         // Setup
-        String mainJar = jars[0];
-
-        String classPath;
-        if (jars.length > 1) {
-            classPath = Arrays.stream(jars).skip(1).collect(Collectors.joining(":"));
-        } else {
-            classPath = "";
-        }
+        String classPath = String.join(":", dependencies);
 
         // Analysis
-        WalaAnalysis analysis = new WalaAnalysis(mainJar, classPath, exclusionFile);
+        logger.info("Starting analysis for {} with dependencies: {}", jar, classPath);
+        WalaAnalysis analysis = new WalaAnalysis(jar, classPath, exclusionFile);
         CallGraph cg = analysis.run();
 
         // Build IR graph
