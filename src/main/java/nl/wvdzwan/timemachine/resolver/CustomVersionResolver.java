@@ -1,7 +1,10 @@
 package nl.wvdzwan.timemachine.resolver;
 
 import java.time.LocalDateTime;
+import java.util.HashSet;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.maven.repository.internal.DefaultVersionResolver;
 import org.eclipse.aether.RepositorySystemSession;
 import org.eclipse.aether.artifact.Artifact;
@@ -13,18 +16,29 @@ import org.eclipse.aether.spi.locator.ServiceLocator;
 import nl.wvdzwan.librariesio.LibrariesIoInterface;
 import nl.wvdzwan.librariesio.Project;
 import nl.wvdzwan.librariesio.VersionDate;
+import nl.wvdzwan.timemachine.callgraph.ArtifactRecord;
 
 public class CustomVersionResolver extends DefaultVersionResolver {
+    protected static Logger logger = LogManager.getLogger("VersionRangeResolver");
 
     private LibrariesIoInterface api;
+
+    private HashSet<String> verifiedArtifacts = new HashSet<>();
 
     @Override
     public VersionResult resolveVersion(RepositorySystemSession session, VersionRequest request)
             throws VersionResolutionException {
         VersionResult parentResult = super.resolveVersion(session, request);
 
-
         Artifact artifact = request.getArtifact();
+
+        if (verifiedArtifacts.contains(ArtifactRecord.getIdentifier(artifact))) {
+            logger.debug("Artifact {} publish date already verified this session, just accept", () -> ArtifactRecord.getIdentifier(artifact));
+            return parentResult;
+        }
+
+        logger.info("Check publish date of {}", () -> ArtifactRecord.getIdentifier(artifact));
+
         Project project = api.getProjectInfo(artifact.getGroupId() + ":" + artifact.getArtifactId());
 
         LocalDateTime date = (LocalDateTime) session.getConfigProperties().get(CustomVersionRangeResolver.CONFIG_LIMIT_DATE);
@@ -38,6 +52,8 @@ public class CustomVersionResolver extends DefaultVersionResolver {
         if (!foundVersion) {
             throw new VersionResolutionException(parentResult);
         }
+
+        verifiedArtifacts.add(ArtifactRecord.getIdentifier(artifact));
 
         return parentResult;
 
