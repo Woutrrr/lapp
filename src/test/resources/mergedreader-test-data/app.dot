@@ -1,0 +1,14 @@
+strict digraph G {
+  overlap=false;
+  ranksep=1;
+  "group.app.Farm.AnimalFarm.<init>()V" [ label="Implementation - group.app.Farm.AnimalFarm.<init>()V" type="Implementation" ];
+  "java.lang.Object.<init>()V" [ label="java.lang.Object.<init>()V" ];
+  "group.app.Farm.AnimalFarm.main([Ljava/lang/String;)V" [ label="Implementation - group.app.Farm.AnimalFarm.main([Ljava/lang/String;)V" type="Implementation" ];
+  "java.lang.Object.<init>()V" [ label="java.lang.Object.<init>()V" ];
+  "group.core.Farm.Dog.<init>()V" [ label="group.core.Farm.Dog.<init>()V" ];
+  "group.core.Farm.Animal.move(I)V" [ label="group.core.Farm.Animal.move(I)V" ];
+  "java.lang.Object.<init>()V" -> "group.app.Farm.AnimalFarm.<init>()V" [ label="overridden by" style="dotted" ];
+  "group.app.Farm.AnimalFarm.<init>()V" -> "java.lang.Object.<init>()V" [ label="invoke_special" ];
+  "group.app.Farm.AnimalFarm.main([Ljava/lang/String;)V" -> "group.core.Farm.Dog.<init>()V" [ label="invoke_special" ];
+  "group.app.Farm.AnimalFarm.main([Ljava/lang/String;)V" -> "group.core.Farm.Animal.move(I)V" [ label="invoke_interface" style="bold" ];
+}
