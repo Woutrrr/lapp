@@ -74,9 +74,7 @@ public class IRGraphBuilder {
             for (Iterator<CallSiteReference> callsites = node.iterateCallSites(); callsites.hasNext(); ) {
                 CallSiteReference callsite = callsites.next();
 
-
                 MethodReference targetReference = callsite.getDeclaredTarget();
-                targetReference = cha.resolveMethod(targetReference).getReference();
 
                 switch ((IInvokeInstruction.Dispatch) callsite.getInvocationCode()) {
                     case INTERFACE:
