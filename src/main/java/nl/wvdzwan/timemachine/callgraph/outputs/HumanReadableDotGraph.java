@@ -31,10 +31,15 @@ public class HumanReadableDotGraph extends GraphVizOutput {
     @Override
     protected String vertexLabelProvider(MethodReference reference) {
         String label = reference.getSignature();
-        AttributeMap attributes = vertexAttributeMap.get(reference);
-        if (attributes.containsKey(AttributeMap.TYPE)) {
-            label = "" + attributes.get(AttributeMap.TYPE) + " - " + label;
+
+        if (vertexAttributeMap.containsKey(reference)) {
+            AttributeMap attributes = vertexAttributeMap.get(reference);
+
+            if (attributes.containsKey(AttributeMap.TYPE)) {
+                label = "" + attributes.get(AttributeMap.TYPE) + " - " + label;
+            }
         }
+
         return label;
     }
 
