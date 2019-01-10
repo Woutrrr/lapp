@@ -34,7 +34,7 @@ public class Booter {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(Booter.class);
 
-    public static final String LOCAL_REPO = "target/local-repo";
+    public static final String LOCAL_REPO = "local-repo";
 
     public static DefaultServiceLocator newServiceLocator() {
         DefaultServiceLocator locator = MavenRepositorySystemUtils.newServiceLocator();
