@@ -21,17 +21,16 @@ import picocli.CommandLine;
 
 import nl.wvdzwan.librariesio.ApiConnectionParameters;
 import nl.wvdzwan.librariesio.LibrariesIoInterface;
-import nl.wvdzwan.timemachine.resolver.outputs.ClassPathFile;
 import nl.wvdzwan.timemachine.resolver.outputs.ConsoleOutput;
 import nl.wvdzwan.timemachine.resolver.outputs.DependencyJarFolder;
+import nl.wvdzwan.timemachine.resolver.outputs.DependencyTreeWriterOutput;
 import nl.wvdzwan.timemachine.resolver.outputs.OutputHandler;
 import nl.wvdzwan.timemachine.resolver.util.Booter;
 
 
 @CommandLine.Command(
         name = "resolve",
-        description = "Resolve and download dependencies for a maven artifact for a specific date or version in history.",
-        mixinStandardHelpOptions = true
+        description = "Resolve and download dependencies for a maven artifact for a specific date or version in history."
 )
 public class Main implements Callable<Void> {
     private static Logger logger = LogManager.getLogger();

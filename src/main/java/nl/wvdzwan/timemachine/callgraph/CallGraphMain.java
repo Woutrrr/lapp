@@ -16,11 +16,10 @@ import nl.wvdzwan.timemachine.resolver.util.Booter;
 
 @CommandLine.Command(
         name = "callgraph",
-        description = "Create a call graph from resolve output",
-        mixinStandardHelpOptions = true
+        description = "Create a call graph from resolve output"
 )
 public class CallGraphMain implements Callable<Void> {
-    private static Logger logger = LogManager.getLogger();
+    private static final Logger logger = LogManager.getLogger();
 
     @CommandLine.Option(
             names = {"-e", "--exclusion"},
