@@ -156,6 +156,7 @@ public class Main implements Callable<Void> {
         OutputHandler handler = new OutputHandler();
 
         handler.add(new ConsoleOutput());
+        handler.add(new DependencyTreeWriterOutput(new File(outputDirectory, "dependency_tree.txt")));
         handler.add(new DependencyJarFolder(outputDirectory));
 
         return handler;
