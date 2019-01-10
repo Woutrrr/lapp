@@ -5,6 +5,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.maven.repository.internal.DefaultVersionRangeResolver;
 import org.eclipse.aether.RepositorySystemSession;
 import org.eclipse.aether.artifact.Artifact;
@@ -19,6 +21,7 @@ import nl.wvdzwan.librariesio.Project;
 import nl.wvdzwan.librariesio.VersionDate;
 
 public class CustomVersionRangeResolver extends DefaultVersionRangeResolver {
+    protected static Logger logger = LogManager.getLogger("VersionRangeResolver");
 
     public static final String CONFIG_LIMIT_DATE = "time-machine.date";
 
@@ -32,6 +35,7 @@ public class CustomVersionRangeResolver extends DefaultVersionRangeResolver {
 
         // Only filter if version was actually a range
         if (parentResult.getVersionConstraint().getRange() != null) {
+            logger.info("Resolve version range for {}", () -> request.getArtifact().getArtifactId());
 
             Artifact artifact = request.getArtifact();
             Project project = api.getProjectInfo(artifact.getGroupId() + ":" + artifact.getArtifactId());
