@@ -1,5 +1,7 @@
 package nl.wvdzwan.timemachine;
 
+import org.eclipse.aether.artifact.Artifact;
+import org.eclipse.aether.artifact.DefaultArtifact;
 import org.junit.jupiter.api.Test;
 
 import nl.wvdzwan.timemachine.callgraph.ArtifactRecord;
@@ -90,5 +92,12 @@ class ArtifactRecordTest {
         ArtifactRecord record = new ArtifactRecord("com.example.company", "myapp", "1.2.3");
 
         assertEquals("com.example.company:myapp:1.2.3", record.getIdentifier());
+    }
+
+    @Test
+    void artifactToIdentifier() {
+        Artifact artifact = new DefaultArtifact("com.example.company", "my-app", "jar", "3.2.1");
+
+        assertEquals("com.example.company:my-app:3.2.1", ArtifactRecord.getIdentifier(artifact));
     }
 }

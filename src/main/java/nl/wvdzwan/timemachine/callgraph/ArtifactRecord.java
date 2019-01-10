@@ -2,6 +2,8 @@ package nl.wvdzwan.timemachine.callgraph;
 
 import java.util.Objects;
 
+import org.eclipse.aether.artifact.Artifact;
+
 public class ArtifactRecord {
 
     private String groupId;
@@ -57,7 +59,7 @@ public class ArtifactRecord {
     }
 
     public String getIdentifier() {
-        return String.format("%s:%s:%s", groupId, artifactId, version);
+        return getIdentifier(groupId, artifactId, version);
     }
 
     public static boolean isValidIdentifier(String identifier) {
@@ -78,5 +80,13 @@ public class ArtifactRecord {
         }
 
         return true;
+    }
+
+    public static String getIdentifier(Artifact artifact) {
+        return getIdentifier(artifact.getGroupId(), artifact.getArtifactId(), artifact.getVersion());
+    }
+
+    public static String getIdentifier(String groupId, String artifactId, String version) {
+        return String.format("%s:%s:%s", groupId, artifactId, version);
     }
 }

@@ -142,6 +142,10 @@ public class Main implements Callable<Void> {
 
         System.out.println(jarPaths);
 
+        if (!resolveResult.getArtifactResults().get(0).isResolved()) {
+            logger.warn("Main artifact not resolved, abort ");
+            return null;
+        }
         OutputHandler handler = buildOutputHandler(outputDirectory);
         handler.process(resolveResult);
 
@@ -151,9 +155,8 @@ public class Main implements Callable<Void> {
     private OutputHandler buildOutputHandler(File outputDirectory) {
         OutputHandler handler = new OutputHandler();
 
-        handler.add(new ClassPathFile(outputDirectory));
         handler.add(new ConsoleOutput());
-        handler.add(new DependencyJarFolder(new File(outputDirectory, "jars")));
+        handler.add(new DependencyJarFolder(outputDirectory));
 
         return handler;
     }
