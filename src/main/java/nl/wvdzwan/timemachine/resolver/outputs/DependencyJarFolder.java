@@ -47,7 +47,7 @@ public class DependencyJarFolder implements ResolveOutputTask {
                 .map(ArtifactResult::getArtifact)
                 .map(artifact -> {
                     File file = artifact.getFile();
-                    String fileName = ArtifactRecord.getIdentifier(artifact) + ".jar";
+                    String fileName = ArtifactRecord.getIdentifier(artifact).replace(":", "$") + ".jar";
                     Path dest = Paths.get(jarOutputFolder.getPath(), fileName);
 
                     try {
