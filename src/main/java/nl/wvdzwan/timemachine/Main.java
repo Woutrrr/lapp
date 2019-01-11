@@ -18,7 +18,8 @@ import nl.wvdzwan.timemachine.filter.FilterMain;
         subcommands = {
                 nl.wvdzwan.timemachine.resolver.Main.class,
                 nl.wvdzwan.timemachine.callgraph.CallGraphMain.class,
-                IRDotMerger.class
+                IRDotMerger.class,
+                FilterMain.class
         }
 )
 public class Main implements Callable<Void> {
