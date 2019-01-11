@@ -20,17 +20,17 @@ class MergedInputReaderTest {
 
         MergedInputReader reader = new MergedInputReader(new FileReader(file1),
                 new FileReader(file2));
-        char[] buf = new char[10000];
+        char[] buf = new char[25000];
 
         // Act
-        int read = reader.read(buf, 0, 10000);
+        int read = reader.read(buf, 0, 25000);
 
 
         String output = new String(buf);
 
         // Assert
         assertEquals(read, output.indexOf('\0'));
-        assertEquals(6403, read);
+        assertEquals(11913, read);
     }
 
     @Test
@@ -40,17 +40,17 @@ class MergedInputReaderTest {
         File file2 = new File(getClass().getClassLoader().getResource("mergedreader-test-data/core.dot").getFile());
 
         File combinedFile = new File(getClass().getClassLoader().getResource("mergedreader-test-data/combined.dot").getFile());
-        char[] expected_buf = new char[10000];
+        char[] expected_buf = new char[25000];
         int expected_read = (new FileReader(combinedFile)).read(expected_buf);
 
 
 
         MergedInputReader reader = new MergedInputReader(new FileReader(file1),
                 new FileReader(file2));
-        char[] buf = new char[10000];
+        char[] buf = new char[25000];
 
         // Act
-        int read = reader.read(buf, 0, 10000);
+        int read = reader.read(buf, 0, 25000);
 
         // Assert
         assertEquals(expected_read, read);

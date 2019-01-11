@@ -10,6 +10,7 @@ import org.jgrapht.io.ImportException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import nl.wvdzwan.timemachine.callgraph.outputs.UnifiedCallGraphExport;
 import nl.wvdzwan.timemachine.callgraph.outputs.GraphEdge;
 
 class IRDotMergerTest {
@@ -26,7 +27,8 @@ class IRDotMergerTest {
 
         Graph<AnnotatedVertex, GraphEdge> graph = IRDotMerger.importGraphs(file1, file2);
         StringWriter output = new StringWriter();
-        IRDotMerger.exportGraph(graph, output);
+        UnifiedCallGraphExport exporter = new UnifiedCallGraphExport(graph);
+        exporter.export(output);
 
 
         Assertions.assertEquals(expected, output.toString());

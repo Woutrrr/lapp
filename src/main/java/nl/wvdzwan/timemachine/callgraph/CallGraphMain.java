@@ -1,6 +1,7 @@
 package nl.wvdzwan.timemachine.callgraph;
 
 import java.io.File;
+import java.io.FileWriter;
 import java.util.concurrent.Callable;
 
 import com.ibm.wala.ipa.callgraph.CallGraph;
@@ -8,11 +9,9 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import picocli.CommandLine;
 
-import nl.wvdzwan.timemachine.callgraph.FolderLayout.ArtifactFolderLayout;
-import nl.wvdzwan.timemachine.callgraph.FolderLayout.MavenFolderLayout;
+import nl.wvdzwan.timemachine.callgraph.FolderLayout.DollarSeparatedLayout;
 import nl.wvdzwan.timemachine.callgraph.outputs.GraphVizOutput;
-import nl.wvdzwan.timemachine.callgraph.outputs.HumanReadableDotGraph;
-import nl.wvdzwan.timemachine.resolver.util.Booter;
+import nl.wvdzwan.timemachine.callgraph.outputs.UnifiedCallGraphExport;
 
 @CommandLine.Command(
         name = "callgraph",
@@ -57,7 +56,7 @@ public class CallGraphMain implements Callable<Void> {
     public Void call() throws Exception {
 
         // Setup
-        String classPath = String.join(":", dependencies);
+        String classPath = makeClassPath();
 
         // Analysis
         logger.info("Starting analysis for {} with dependencies: {}", jar, classPath);
@@ -65,19 +64,24 @@ public class CallGraphMain implements Callable<Void> {
         CallGraph cg = analysis.run();
 
         // Build IR graph
-        IRGraphBuilder builder = new IRGraphBuilder(cg, analysis.getExtendedCha());
+        ClassToArtifactResolver artifactResolver = new ClassToArtifactResolver(analysis.getExtendedCha(), new DollarSeparatedLayout());
+        IRGraphBuilder builder = new IRGraphBuilder(cg, analysis.getExtendedCha(), artifactResolver);
         builder.build();
 
         // Output
-        String localRepoPrefix = (new File(Booter.LOCAL_REPO)).getAbsolutePath();
-        ArtifactFolderLayout folderLayout = new MavenFolderLayout(localRepoPrefix);
-        GraphVizOutput dotOutput = new HumanReadableDotGraph(
-                folderLayout,
-                builder.getGraph(),
-                builder.getVertexAttributeMapMap());
-        dotOutput.export(new File(outputDirectory, "app.dot"));
+        GraphVizOutput dotOutput = new UnifiedCallGraphExport(builder.getGraph());
 
+        FileWriter writer = new FileWriter(new File(outputDirectory, "app.dot"));
+        dotOutput.export(writer);
 
         return null;
+    }
+
+    private String makeClassPath() {
+        if (dependencies != null) {
+            return String.join(":", dependencies);
+        }
+
+        return "";
     }
 }

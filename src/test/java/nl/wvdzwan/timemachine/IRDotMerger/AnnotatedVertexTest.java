@@ -9,18 +9,22 @@ import org.jgrapht.io.DefaultAttribute;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import nl.wvdzwan.timemachine.callgraph.ArtifactRecord;
 
 class AnnotatedVertexTest {
+
+    ArtifactRecord record = new ArtifactRecord("com.company", "app", "3.2");
 
     @Test
     void mergeAttributes() {
 
         final Attribute nullAttribute = new DefaultAttribute<>(null, AttributeType.STRING);
 
-        Map<String, Attribute> attributeMap = new HashMap<>();
+
+        AnnotatedVertex vertex = AnnotatedVertex.findOrCreate(record, "class", "fn()");
+        Map<String, Attribute> attributeMap = vertex.getAttributes();
         attributeMap.put("key1", DefaultAttribute.createAttribute("testValue1"));
         attributeMap.put("key2", DefaultAttribute.createAttribute("testValue2"));
-        AnnotatedVertex vertex = new AnnotatedVertex("testVertex", attributeMap);
 
         Map<String, Attribute> attributeMapOther = new HashMap<>();
         attributeMapOther.put("key2", DefaultAttribute.createAttribute("testValueOther"));
@@ -52,10 +56,10 @@ class AnnotatedVertexTest {
 
         final Attribute nullAttribute = new DefaultAttribute<>(null, AttributeType.STRING);
 
-        Map<String, Attribute> attributeMap = new HashMap<>();
+        AnnotatedVertex vertex = AnnotatedVertex.findOrCreate(record, "klass", "function()");
+        Map<String, Attribute> attributeMap = vertex.getAttributes();
         attributeMap.put("key1", DefaultAttribute.createAttribute("testValue1"));
         attributeMap.put("key2", DefaultAttribute.createAttribute("testValue2"));
-        AnnotatedVertex vertex = new AnnotatedVertex("testVertex", attributeMap);
 
         Map<String, Attribute> attributeMapOther = new HashMap<>();
         attributeMapOther.put("key2", DefaultAttribute.createAttribute("short"));
@@ -82,85 +86,27 @@ class AnnotatedVertexTest {
 
     }
 
-    @Test
-    void newVertexClonesAttributes() {
-
-        Map<String, Attribute> attributeMap = new HashMap<>();
-        attributeMap.put("key1", DefaultAttribute.createAttribute("testValue1"));
-        attributeMap.put("key2", DefaultAttribute.createAttribute("testValue2"));
-        AnnotatedVertex vertex = new AnnotatedVertex("testVertex", attributeMap);
-
-
-        Map<String, Attribute> vertexAttributes = vertex.getAttributes();
-
-
-        Assertions.assertNotSame(attributeMap, vertexAttributes);
-        Assertions.assertEquals(2, vertexAttributes.size());
-        Assertions.assertEquals("testValue1", vertexAttributes.get("key1").getValue());
-        Assertions.assertEquals("testValue2", vertexAttributes.get("key2").getValue());
-
-    }
 
     @Test
     void testEquals() {
+        AnnotatedVertex vertex = AnnotatedVertex.findOrCreate(record, "is.this.the", "same()");
         Map<String, Attribute> attributeMap = new HashMap<>();
         attributeMap.put("key1", DefaultAttribute.createAttribute("testValue1"));
         attributeMap.put("key2", DefaultAttribute.createAttribute("testValue2"));
-        AnnotatedVertex vertex = new AnnotatedVertex("testVertex", attributeMap);
 
-        Map<String, Attribute> attributeMap2 = new HashMap<>();
-        attributeMap2.put("key1", DefaultAttribute.createAttribute("testValue1"));
-        attributeMap2.put("key2", DefaultAttribute.createAttribute("testValue2"));
-        AnnotatedVertex vertex2 = new AnnotatedVertex("testVertex", attributeMap2);
+
+        AnnotatedVertex vertex2 = AnnotatedVertex.findOrCreate(record, "is.this.the", "same()");
 
         Assertions.assertEquals(vertex, vertex);
         Assertions.assertEquals(vertex, vertex2);
     }
 
-    @Test
-    void testEqualsOnlyNameMatters() {
-        Map<String, Attribute> attributeMap = new HashMap<>();
-        attributeMap.put("key1", DefaultAttribute.createAttribute("testValue1"));
-        attributeMap.put("key2", DefaultAttribute.createAttribute("testValue2"));
-        AnnotatedVertex vertex = new AnnotatedVertex("testVertex", attributeMap);
-
-        Map<String, Attribute> attributeMap2 = new HashMap<>();
-        attributeMap2.put("key3", DefaultAttribute.createAttribute("testValue3"));
-        attributeMap2.put("key4", DefaultAttribute.createAttribute("testValue4"));
-        AnnotatedVertex vertex2 = new AnnotatedVertex("testVertex", attributeMap2);
-
-        Assertions.assertEquals(vertex, vertex2);
-    }
 
     @Test
     void constructorNullNameThrowsNPE() {
 
         Assertions.assertThrows(NullPointerException.class, () -> {
-            new AnnotatedVertex(null, new HashMap<>());
+            AnnotatedVertex.findOrCreate(null, "namespace", "symbol");
         });
-    }
-
-    @Test
-    void constructNullAttributes() {
-
-        Assertions.assertDoesNotThrow(() -> {
-            new AnnotatedVertex("test", null);
-        });
-    }
-
-    @Test
-    void hashCodeOnlyFromName() {
-
-        String name = "testName";
-
-        Map<String, Attribute> attributeMap2 = new HashMap<>();
-        attributeMap2.put("key3", DefaultAttribute.createAttribute("testValue3"));
-        attributeMap2.put("key4", DefaultAttribute.createAttribute("testValue4"));
-        AnnotatedVertex vertex = new AnnotatedVertex("testName", attributeMap2);
-
-
-        Assertions.assertEquals(name.hashCode(), vertex.hashCode());
-        Assertions.assertEquals(name.hashCode(), vertex.getName().hashCode());
-
     }
 }

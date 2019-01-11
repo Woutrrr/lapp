@@ -2,6 +2,8 @@ package nl.wvdzwan.timemachine.callgraph;
 
 import java.util.Objects;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.eclipse.aether.artifact.Artifact;
 
 public class ArtifactRecord {
@@ -88,5 +90,30 @@ public class ArtifactRecord {
 
     public static String getIdentifier(String groupId, String artifactId, String version) {
         return String.format("%s:%s:%s", groupId, artifactId, version);
+    }
+
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+
+        if (o == null || getClass() != o.getClass()) return false;
+
+        ArtifactRecord that = (ArtifactRecord) o;
+
+        return new EqualsBuilder()
+                .append(groupId, that.groupId)
+                .append(artifactId, that.artifactId)
+                .append(version, that.version)
+                .isEquals();
+    }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder(17, 37)
+                .append(groupId)
+                .append(artifactId)
+                .append(version)
+                .toHashCode();
     }
 }

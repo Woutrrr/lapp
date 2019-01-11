@@ -5,52 +5,43 @@ import java.util.Map;
 
 import org.jgrapht.Graph;
 import org.jgrapht.io.Attribute;
-import org.jgrapht.io.DOTExporter;
 import org.jgrapht.io.DefaultAttribute;
 
 import nl.wvdzwan.timemachine.IRDotMerger.AnnotatedVertex;
 
-public class HumanReadableDotGraph extends GraphVizOutput {
+public class UnifiedCallGraphExport extends GraphVizOutput {
 
-    public HumanReadableDotGraph(Graph<AnnotatedVertex, GraphEdge> graph) {
+    public UnifiedCallGraphExport(Graph<AnnotatedVertex, GraphEdge> graph) {
         super(graph);
     }
 
     @Override
-    protected void setGraphAttributes(DOTExporter<AnnotatedVertex, GraphEdge> dotExporter) {
-        dotExporter.putGraphAttribute("overlap", "false");
-        dotExporter.putGraphAttribute("ranksep", "1");
+    public String vertexIdProvider(AnnotatedVertex vertex) {
+        return "\"" + vertex.toGlobalIdentifier() + "\"";
     }
 
-    @Override
-    protected String vertexIdProvider(AnnotatedVertex vertex) {
-        return "\"" + vertex.getNamespace() + "." + vertex.getSymbol() + "\""; //.replaceAll("[\\.\\(\\)<>/;]", "_");
-    }
 
-    @Override
-    protected String vertexLabelProvider(AnnotatedVertex vertex) {
-        String label = vertex.getNamespace() + "." + vertex.getSymbol();
+    public String vertexLabelProvider(AnnotatedVertex vertex) {
+        String label = vertex.toGlobalIdentifier();
 
-        if (vertex.getAttributes().containsKey(AttributeMap.TYPE)) {
-            label = "" + vertex.getAttributes().get(AttributeMap.TYPE) + " - " + label;
+        Map<String, Attribute> attributes = vertex.getAttributes();
+        if (attributes != null && attributes.containsKey("type")) {
+            label = "" + attributes.get("type").getValue() + " - " + label;
         }
-
         return label;
     }
 
-    @Override
-    protected Map<String, Attribute> vertexAttributeProvider(AnnotatedVertex vertex) {
+
+    public Map<String, Attribute> vertexAttributeProvider(AnnotatedVertex vertex) {
         return vertex.getAttributes();
     }
 
-    @Override
-    protected String edgeLabelProvider(GraphEdge edge) {
+    public String edgeLabelProvider(GraphEdge edge) {
         return edge.getLabel();
     }
 
 
-    @Override
-    protected Map<String, Attribute> edgeAttributeProvider(GraphEdge edge) {
+    public Map<String, Attribute> edgeAttributeProvider(GraphEdge edge) {
         Map<String, Attribute> attributes = new HashMap<>();
 
         if (edge instanceof GraphEdge.InterfaceDispatchEdge) {
@@ -71,7 +62,4 @@ public class HumanReadableDotGraph extends GraphVizOutput {
 
         return attributes;
     }
-
 }
-
-

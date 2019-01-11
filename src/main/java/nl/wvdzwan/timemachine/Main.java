@@ -4,6 +4,9 @@ import java.util.concurrent.Callable;
 
 import picocli.CommandLine;
 
+import nl.wvdzwan.timemachine.IRDotMerger.IRDotMerger;
+import nl.wvdzwan.timemachine.filter.FilterMain;
+
 @CommandLine.Command(
         name = "timemachine",
         descriptionHeading = "%n",
@@ -13,7 +16,9 @@ import picocli.CommandLine;
         commandListHeading = "%nCommands:%n",
         version = "0.1",
         subcommands = {
-                nl.wvdzwan.timemachine.resolver.Main.class, nl.wvdzwan.timemachine.callgraph.CallGraphMain.class
+                nl.wvdzwan.timemachine.resolver.Main.class,
+                nl.wvdzwan.timemachine.callgraph.CallGraphMain.class,
+                IRDotMerger.class
         }
 )
 public class Main implements Callable<Void> {

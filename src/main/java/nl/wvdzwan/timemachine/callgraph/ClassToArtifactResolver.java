@@ -1,6 +1,7 @@
 package nl.wvdzwan.timemachine.callgraph;
 
 import java.util.HashMap;
+import java.util.Objects;
 import java.util.jar.JarFile;
 
 import com.ibm.wala.classLoader.IClass;
@@ -38,6 +39,8 @@ public class ClassToArtifactResolver {
     }
 
     public ArtifactRecord artifactRecordFromClass(IClass klass) {
+        Objects.requireNonNull(klass);
+
         if (classArtifactRecordCache.containsKey(klass)) {
             return classArtifactRecordCache.get(klass);
         }
@@ -49,14 +52,16 @@ public class ClassToArtifactResolver {
         }
 
         ArtifactRecord artifactRecord = transformer.artifactRecordFromJarFile(jarFile);
+
+        // Store in cache
         classArtifactRecordCache.put(klass, artifactRecord);
+
         return artifactRecord;
     }
 
     private JarFile classToJarFile(IClass klass) {
-        if (klass == null) {
-            return null;
-        }
+        Objects.requireNonNull(klass);
+
         try {
             ShrikeClass shrikeKlass = (ShrikeClass) klass;
             JarFileEntry moduleEntry = (JarFileEntry) shrikeKlass.getModuleEntry();
