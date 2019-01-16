@@ -4,8 +4,8 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>nl.wvdzwan.timemachine</groupId>
-    <artifactId>maven-timemachine</artifactId>
+    <groupId>nl.wvdzwan.lapp</groupId>
+    <artifactId>lapp</artifactId>
     <version>1.0-SNAPSHOT</version>
 
     <properties>
@@ -37,7 +37,7 @@
                     <archive>
                         <manifest>
                             <addClasspath>true</addClasspath>
-                            <mainClass>nl.wvdzwan.timemachine.Main</mainClass>
+                            <mainClass>nl.wvdzwan.lapp.Main</mainClass>
                         </manifest>
                     </archive>
                 </configuration>
@@ -50,7 +50,7 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>nl.wvdzwan.timemachine.Main</mainClass>
+                            <mainClass>nl.wvdzwan.lapp.Main</mainClass>
                         </manifest>
                     </archive>
                     <descriptorRefs>
