@@ -59,7 +59,10 @@ public class DependencyJarFolder implements ResolveOutputTask {
                     logger.debug("Copied {}", file);
                     return dest;
 
-                }).filter(Objects::nonNull).collect(Collectors.toList());
+                })
+                .filter(Objects::nonNull)
+                .map(Path::getFileName)
+                .collect(Collectors.toList());
 
 
         logger.info("Copied {}/{} files to jar folder (\"{}\")",
@@ -76,12 +79,6 @@ public class DependencyJarFolder implements ResolveOutputTask {
     protected boolean makeClassPathFile(List<Path> jarList) {
 
         logger.info("Generating Classpath file...");
-
-        String dependencyClasspath = jarList.stream()
-                .skip(1) // Skip first (main application/library) artifact
-                .map(Path::toString)
-                .collect(Collectors.joining(":"));
-
         File classPathFile = new File(outputFolder, "classpath.txt");
 
         PrintWriter writer = makeClassFileWriter(classPathFile);
@@ -90,9 +87,11 @@ public class DependencyJarFolder implements ResolveOutputTask {
             return false;
         }
 
+
         logger.info("Writing to {}", classPathFile);
-        writer.println(jarList.get(0).toString());
-        writer.println(dependencyClasspath);
+        for (Path path : jarList) {
+            writer.println(path.toString());
+        }
         return true;
     }
 
