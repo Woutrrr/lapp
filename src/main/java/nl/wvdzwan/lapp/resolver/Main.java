@@ -1,21 +1,5 @@
 package nl.wvdzwan.lapp.resolver;
 
-import nl.wvdzwan.lapp.resolver.outputs.ConsoleOutput;
-import nl.wvdzwan.lapp.resolver.outputs.DependencyJarFolder;
-import nl.wvdzwan.lapp.resolver.outputs.DependencyTreeWriterOutput;
-import nl.wvdzwan.lapp.resolver.outputs.OutputHandler;
-import nl.wvdzwan.lapp.resolver.util.Booter;
-import nl.wvdzwan.librariesio.ApiConnectionParameters;
-import nl.wvdzwan.librariesio.LibrariesIoInterface;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.eclipse.aether.RepositorySystem;
-import org.eclipse.aether.artifact.Artifact;
-import org.eclipse.aether.impl.DefaultServiceLocator;
-import org.eclipse.aether.resolution.ArtifactResult;
-import org.eclipse.aether.resolution.DependencyResult;
-import picocli.CommandLine;
-
 import java.io.File;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -26,7 +10,23 @@ import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.stream.Collectors;
 
-import nl.wvdzwan.lapp.resolver.util.VersionNotFoundException;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.eclipse.aether.RepositorySystem;
+import org.eclipse.aether.artifact.Artifact;
+import org.eclipse.aether.impl.DefaultServiceLocator;
+import org.eclipse.aether.resolution.ArtifactResult;
+import org.eclipse.aether.resolution.DependencyResult;
+import picocli.CommandLine;
+
+import nl.wvdzwan.lapp.resolver.outputs.ConsoleOutput;
+import nl.wvdzwan.lapp.resolver.outputs.DependencyJarFolder;
+import nl.wvdzwan.lapp.resolver.outputs.DependencyTreeWriterOutput;
+import nl.wvdzwan.lapp.resolver.outputs.OutputHandler;
+import nl.wvdzwan.lapp.resolver.util.Booter;
+import nl.wvdzwan.librariesio.ApiConnectionParameters;
+import nl.wvdzwan.librariesio.LibrariesIoInterface;
+
 
 @CommandLine.Command(
         name = "resolve",
@@ -59,9 +59,9 @@ public class Main implements Callable<Void> {
 
     @CommandLine.Option(
             names = {"-o", "--output"},
-            description = "Output folder"
+            description = "Output folder, defaults to \"output/[group]_[artifact]_[version]\""
     )
-    private File outputDirectory = new File("output");
+    private File outputDirectoryArgument = null;
 
 
     @CommandLine.Parameters(
@@ -149,10 +149,30 @@ public class Main implements Callable<Void> {
             logger.warn("Main artifact not resolved, abort ");
             return null;
         }
-        OutputHandler handler = buildOutputHandler(outputDirectory);
+
+        File outputFolder = getOutputFolder(outputDirectoryArgument, resolveResult);
+
+        if (!outputFolder.exists()) {
+            outputFolder.mkdirs();
+        }
+
+        OutputHandler handler = buildOutputHandler(outputFolder);
         handler.process(resolveResult);
 
         return null;
+    }
+
+    private File getOutputFolder(File outputDirectory, DependencyResult resolveResult) {
+
+        // If output directory is supplied by the user just return that folder
+        if (outputDirectory != null) {
+            return outputDirectory;
+        }
+
+        Artifact mainArtifact = resolveResult.getArtifactResults().get(0).getArtifact();
+        String artifactFolderName = String.format("%s_%s_%s", mainArtifact.getGroupId(), mainArtifact.getArtifactId(), mainArtifact.getVersion());
+
+        return new File("output", artifactFolderName);
     }
 
     private OutputHandler buildOutputHandler(File outputDirectory) {
