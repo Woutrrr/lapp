@@ -26,6 +26,7 @@ import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.stream.Collectors;
 
+import nl.wvdzwan.lapp.resolver.util.VersionNotFoundException;
 
 @CommandLine.Command(
         name = "resolve",
@@ -121,8 +122,12 @@ public class Main implements Callable<Void> {
         } else {
 
             String version = versionOrDate;
-
-            resolveResult = resolver.resolveFromVersion(packageIdentifier, version);
+            try {
+                resolveResult = resolver.resolveFromVersion(packageIdentifier, version);
+            } catch (VersionNotFoundException e) {
+                logger.error(e.getMessage());
+                return null;
+            }
         }
 
 
