@@ -24,6 +24,7 @@ import nl.wvdzwan.lapp.resolver.outputs.DependencyJarFolder;
 import nl.wvdzwan.lapp.resolver.outputs.DependencyTreeWriterOutput;
 import nl.wvdzwan.lapp.resolver.outputs.OutputHandler;
 import nl.wvdzwan.lapp.resolver.util.Booter;
+import nl.wvdzwan.lapp.resolver.util.VersionNotFoundException;
 import nl.wvdzwan.librariesio.ApiConnectionParameters;
 import nl.wvdzwan.librariesio.LibrariesIoInterface;
 

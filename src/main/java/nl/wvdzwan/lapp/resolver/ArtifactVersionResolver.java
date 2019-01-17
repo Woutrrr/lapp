@@ -1,6 +1,7 @@
 package nl.wvdzwan.lapp.resolver;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.stream.Collectors;
 
 import org.apache.logging.log4j.LogManager;
@@ -13,11 +14,11 @@ import org.eclipse.aether.resolution.VersionRangeResolutionException;
 import org.eclipse.aether.resolution.VersionRangeResult;
 import org.eclipse.aether.version.Version;
 
+import nl.wvdzwan.lapp.resolver.util.Booter;
+import nl.wvdzwan.lapp.resolver.util.VersionNotFoundException;
 import nl.wvdzwan.librariesio.LibrariesIoInterface;
 import nl.wvdzwan.librariesio.Project;
 import nl.wvdzwan.librariesio.VersionDate;
-import nl.wvdzwan.lapp.resolver.util.Booter;
-import nl.wvdzwan.lapp.resolver.util.VersionNotFoundException;
 
 
 /**
@@ -94,14 +95,10 @@ public class ArtifactVersionResolver {
             }
         }
 
-        String foundVersions = project.getVersions().stream()
+        List<String> foundVersions = project.getVersions().stream()
                 .map(VersionDate::getNumber)
-                .collect(Collectors.joining(", "));
-        throw new VersionNotFoundException(
-                String.format(
-                        "Version %s for %s not found! Found versions: %s",
-                        version, packageIdentifier,  foundVersions
-                ));
+                .collect(Collectors.toList());
+        throw new VersionNotFoundException(packageIdentifier, version, foundVersions);
 
     }
 
