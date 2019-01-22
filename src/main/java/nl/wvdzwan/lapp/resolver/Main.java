@@ -10,12 +10,14 @@ import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.stream.Collectors;
 
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.eclipse.aether.RepositorySystem;
 import org.eclipse.aether.artifact.Artifact;
 import org.eclipse.aether.impl.DefaultServiceLocator;
 import org.eclipse.aether.resolution.ArtifactResult;
+import org.eclipse.aether.resolution.DependencyResolutionException;
 import org.eclipse.aether.resolution.DependencyResult;
 import picocli.CommandLine;
 
@@ -24,6 +26,7 @@ import nl.wvdzwan.lapp.resolver.outputs.DependencyJarFolder;
 import nl.wvdzwan.lapp.resolver.outputs.DependencyTreeWriterOutput;
 import nl.wvdzwan.lapp.resolver.outputs.OutputHandler;
 import nl.wvdzwan.lapp.resolver.util.Booter;
+import nl.wvdzwan.lapp.resolver.util.LibIOVersionResolutionException;
 import nl.wvdzwan.lapp.resolver.util.VersionNotFoundException;
 import nl.wvdzwan.librariesio.ApiConnectionParameters;
 import nl.wvdzwan.librariesio.LibrariesIoInterface;
@@ -128,6 +131,14 @@ public class Main implements Callable<Void> {
             } catch (VersionNotFoundException e) {
                 logger.error(e.getMessage());
                 return null;
+            } catch (DependencyResolutionException e) {
+                Throwable cause = ExceptionUtils.getRootCause(e);
+                if (cause instanceof LibIOVersionResolutionException) {
+                    logger.error(cause.getMessage());
+                    return null;
+                } else {
+                    throw e;
+                }
             }
         }
 

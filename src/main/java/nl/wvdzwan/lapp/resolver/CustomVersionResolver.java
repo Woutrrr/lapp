@@ -13,6 +13,7 @@ import org.eclipse.aether.resolution.VersionResolutionException;
 import org.eclipse.aether.resolution.VersionResult;
 import org.eclipse.aether.spi.locator.ServiceLocator;
 
+import nl.wvdzwan.lapp.resolver.util.LibIOVersionResolutionException;
 import nl.wvdzwan.librariesio.LibrariesIoInterface;
 import nl.wvdzwan.librariesio.Project;
 import nl.wvdzwan.librariesio.VersionDate;
@@ -33,7 +34,7 @@ public class CustomVersionResolver extends DefaultVersionResolver {
         Artifact artifact = request.getArtifact();
 
         if (verifiedArtifacts.contains(ArtifactRecord.getIdentifier(artifact))) {
-            logger.debug("Artifact {} publish date already verified this session, just accept", () -> ArtifactRecord.getIdentifier(artifact));
+            logger.trace("Artifact {} publish date already verified this session, just accept", () -> ArtifactRecord.getIdentifier(artifact));
             return parentResult;
         }
 
@@ -50,7 +51,7 @@ public class CustomVersionResolver extends DefaultVersionResolver {
                 .anyMatch(s -> s.equals(parentResult.getVersion()));
 
         if (!foundVersion) {
-            throw new VersionResolutionException(parentResult);
+            throw new LibIOVersionResolutionException(parentResult);
         }
 
         verifiedArtifacts.add(ArtifactRecord.getIdentifier(artifact));
