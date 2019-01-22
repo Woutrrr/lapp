@@ -20,12 +20,12 @@ import org.eclipse.aether.transport.http.HttpTransporterFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import nl.wvdzwan.librariesio.HttpClient;
-import nl.wvdzwan.librariesio.HttpClientInterface;
-import nl.wvdzwan.librariesio.LibrariesIoInterface;
-import nl.wvdzwan.librariesio.RateLimitedClient;
 import nl.wvdzwan.lapp.resolver.CustomVersionRangeResolver;
 import nl.wvdzwan.lapp.resolver.CustomVersionResolver;
+import nl.wvdzwan.librariesio.HttpClient;
+import nl.wvdzwan.librariesio.HttpClientInterface;
+import nl.wvdzwan.librariesio.LibrariesIoClient;
+import nl.wvdzwan.librariesio.LibrariesIoInterface;
 
 /**
  * A helper to boot the service locator, the repository system and a repository system session.
@@ -40,7 +40,7 @@ public class Booter {
         DefaultServiceLocator locator = MavenRepositorySystemUtils.newServiceLocator();
 
         locator.setService(HttpClientInterface.class, HttpClient.class);
-        locator.setService(LibrariesIoInterface.class, RateLimitedClient.class);
+        locator.setService(LibrariesIoInterface.class, LibrariesIoClient.class);
 
         return locator;
     }

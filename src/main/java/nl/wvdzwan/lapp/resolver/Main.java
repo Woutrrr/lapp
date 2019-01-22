@@ -30,28 +30,34 @@ import nl.wvdzwan.lapp.resolver.util.LibIOVersionResolutionException;
 import nl.wvdzwan.lapp.resolver.util.VersionNotFoundException;
 import nl.wvdzwan.librariesio.ApiConnectionParameters;
 import nl.wvdzwan.librariesio.LibrariesIoInterface;
+import nl.wvdzwan.librariesio.RateLimitedClient;
 
 
 @CommandLine.Command(
         name = "resolve",
         description = "Resolve and download dependencies for a maven artifact for a specific date or version in history."
 )
-public class Main implements Callable<Void> {
+public class Main implements Callable<File> {
     private static Logger logger = LogManager.getLogger();
 
     @CommandLine.Option(
             names = {"-k", "--api-key"},
-            required = true,
             description = "Libraries.io api key, see https://libraries.io/account"
     )
-    private String apiKey;
+    private String apiKey = "";
 
 
     @CommandLine.Option(
             names = {"-s", "--api-source"},
             description = "Url to use for custom project version-date source, defaults to Libraries.io"
     )
-    private String apiBaseUrl = "https://libraries.io/api/";
+    private String apiBaseUrl = "http://libio:8088/api/";
+
+    @CommandLine.Option(
+            names = {"--limit"},
+            description = "Rate limit requests to libio api"
+    )
+    private boolean rateLimit = false;
 
 
     @CommandLine.Option(
@@ -91,10 +97,14 @@ public class Main implements Callable<Void> {
     }
 
 
-    public Void call() throws Exception {
+    public File call() throws Exception {
         logger.info("Start analysis of {}", packageIdentifier);
 
         DefaultServiceLocator locator = Booter.newServiceLocator();
+        if (rateLimit) {
+            locator.setService(LibrariesIoInterface.class, RateLimitedClient.class);
+        }
+
         initLibrariesIoApi(locator, new ApiConnectionParameters(apiBaseUrl, apiKey));
 
         RepositorySystem system = Booter.newRepositorySystem(locator);
@@ -171,7 +181,7 @@ public class Main implements Callable<Void> {
         OutputHandler handler = buildOutputHandler(outputFolder);
         handler.process(resolveResult);
 
-        return null;
+        return outputFolder;
     }
 
     private File getOutputFolder(File outputDirectory, DependencyResult resolveResult) {

@@ -1,10 +1,12 @@
 package nl.wvdzwan.lapp;
 
-import nl.wvdzwan.lapp.IRDotMerger.IRDotMerger;
-import nl.wvdzwan.lapp.filter.FilterMain;
+import java.util.concurrent.Callable;
+
 import picocli.CommandLine;
 
-import java.util.concurrent.Callable;
+import nl.wvdzwan.lapp.IRDotMerger.IRDotMerger;
+import nl.wvdzwan.lapp.analyse.AnalyseCommand;
+import nl.wvdzwan.lapp.filter.FilterMain;
 
 @CommandLine.Command(
         name = "lapp",
@@ -17,6 +19,7 @@ import java.util.concurrent.Callable;
         subcommands = {
                 nl.wvdzwan.lapp.resolver.Main.class,
                 nl.wvdzwan.lapp.callgraph.CallGraphMain.class,
+                AnalyseCommand.class,
                 IRDotMerger.class,
                 FilterMain.class
         }

@@ -66,7 +66,7 @@ public class DependencyJarFolder implements ResolveOutputTask {
 
 
         logger.info("Copied {}/{} files to jar folder (\"{}\")",
-                copyResults,
+                copyResults.size(),
                 total,
                 outputFolder);
 
