@@ -1,9 +1,11 @@
 package nl.wvdzwan.lapp.callgraph;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Objects;
 import java.util.jar.JarFile;
 
+import com.ibm.wala.classLoader.ArrayClass;
 import com.ibm.wala.classLoader.IClass;
 import com.ibm.wala.classLoader.JarFileEntry;
 import com.ibm.wala.classLoader.ShrikeClass;
@@ -61,6 +63,24 @@ public class ClassToArtifactResolver {
 
     private JarFile classToJarFile(IClass klass) {
         Objects.requireNonNull(klass);
+
+        if (klass instanceof ArrayClass)  {
+            ArrayClass arrayClass = (ArrayClass) klass;
+            IClass innerClass = arrayClass.getElementClass();
+
+            if (innerClass == null) {
+                // getElementClass returns null for primitive types
+                if (klass.getReference().getArrayElementType().isPrimitiveType()) {
+                    try {
+                        return new JarFile("rt.jar");
+                    } catch (IOException e) {
+                        return null;
+                    }
+                }
+
+                return null;
+            }
+        }
 
         try {
             ShrikeClass shrikeKlass = (ShrikeClass) klass;
