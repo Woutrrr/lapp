@@ -6,6 +6,8 @@
         </Console>
     </Appenders>
     <Loggers>
+        <Logger name="DefaultTransporterProvider" level="info" />
+        <Logger name="LoggerTransferListener" level="info" />
         <Logger name="org.apache.http" level="info" />
         <Root level="debug">
             <AppenderRef ref="Console"/>
