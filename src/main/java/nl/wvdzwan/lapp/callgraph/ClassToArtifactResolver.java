@@ -13,10 +13,13 @@ import com.ibm.wala.ipa.cha.IClassHierarchy;
 import com.ibm.wala.types.ClassLoaderReference;
 import com.ibm.wala.types.MethodReference;
 import com.ibm.wala.types.TypeReference;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import nl.wvdzwan.lapp.callgraph.FolderLayout.ArtifactFolderLayout;
 
 public class ClassToArtifactResolver {
+    protected static final Logger logger = LogManager.getLogger();
 
     private final ArtifactFolderLayout transformer;
     private IClassHierarchy cha;
@@ -35,6 +38,11 @@ public class ClassToArtifactResolver {
             // Try harder
             TypeReference t = TypeReference.findOrCreate(cha.getLoader(ClassLoaderReference.Application).getReference(), n.getDeclaringClass().getName());
             klass = cha.lookupClass(t);
+        }
+
+        if (klass == null) {
+            logger.warn("Couldn't find class for {}", () -> n);
+            return new ArtifactRecord("unknown", n.getDeclaringClass().toString(), "unknown");
         }
 
         return artifactRecordFromClass(klass);
