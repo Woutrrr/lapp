@@ -1,9 +1,8 @@
 package nl.wvdzwan.lapp.callgraph;
 
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 import java.util.function.Predicate;
@@ -20,6 +19,8 @@ import com.ibm.wala.shrikeBT.IInvokeInstruction;
 import com.ibm.wala.types.ClassLoaderReference;
 import com.ibm.wala.types.MethodReference;
 import com.ibm.wala.types.Selector;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.jgrapht.Graph;
 import org.jgrapht.graph.DefaultDirectedGraph;
 
@@ -28,6 +29,9 @@ import nl.wvdzwan.lapp.callgraph.outputs.AttributeMap;
 import nl.wvdzwan.lapp.callgraph.outputs.GraphEdge;
 
 public class IRGraphBuilder {
+
+    private static final Logger logger = LogManager.getLogger();
+
     static final String INTERFACE_METHOD = "Interface";
     static final String ABSTRACT_METHOD = "Abstract";
     static final String IMPLEMENTED_METHOD = "Implementation";
@@ -117,8 +121,12 @@ public class IRGraphBuilder {
             IClass klass = it.next();
             IClass superKlass = klass.getSuperclass();
 
-            Collection<IClass> interfaces = new ArrayList<>(klass.getDirectInterfaces());
-            Map<Selector, IMethod> interfaceMethods = interfaces.stream().flatMap(o -> o.getDeclaredMethods().stream()).collect(Collectors.toMap(IMethod::getSelector, Function.identity()));
+            Map<Selector, List<IMethod>> interfaceMethods = klass.getDirectInterfaces()
+                    .stream()
+                    .flatMap(o -> o.getDeclaredMethods().stream())
+                    .collect(
+                            Collectors.groupingBy(IMethod::getSelector)
+                    );
 
             for (IMethod declaredMethod : klass.getDeclaredMethods()) {
 
@@ -149,16 +157,17 @@ public class IRGraphBuilder {
                 }
 
 
-                IMethod interfaceMethod = interfaceMethods.get(declaredMethod.getSelector());
-                if (interfaceMethod != null) {
-                    AnnotatedVertex interfaceNodeVertex = addVertexWithAttribute(interfaceMethod.getReference(), AttributeMap.TYPE, INTERFACE_METHOD);
-                    graph.addEdge(interfaceNodeVertex, declaredNodeVertex, new GraphEdge.ImplementsEdge());
-
+                List<IMethod> methodInterfaces = interfaceMethods.get(declaredMethod.getSelector());
+                if (methodInterfaces != null) {
+                    for (IMethod interfaceMethod : methodInterfaces) {
+                        AnnotatedVertex interfaceNodeVertex = addVertexWithAttribute(interfaceMethod.getReference(), AttributeMap.TYPE, INTERFACE_METHOD);
+                        graph.addEdge(interfaceNodeVertex, declaredNodeVertex, new GraphEdge.ImplementsEdge());
+                    }
                 }
 
                 // An abstract class doesn't have to define abstract functions for interface methods
                 // So if this method doesn't have a super method or an interface method look for them in the interfaces of the abstract superclass
-                if (superKlass.isAbstract() && superMethod == null && interfaceMethod == null) {
+                if (superKlass.isAbstract() && superMethod == null && methodInterfaces == null) {
 
                     Map<Selector, IMethod> abstractSuperClassInterfaceMethods = superKlass.getDirectInterfaces()
                             .stream()
