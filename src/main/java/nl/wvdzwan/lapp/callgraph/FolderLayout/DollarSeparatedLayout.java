@@ -33,6 +33,11 @@ public class DollarSeparatedLayout implements ArtifactFolderLayout {
                     .replace('$', ':');
         }
 
+        if (filename.equals("rt")) {
+            // TODO find jdk version
+            return new ArtifactRecord("jdk", filename, "?");
+        }
+
         try {
             return new ArtifactRecord(filename);
         } catch (IllegalArgumentException e) {
