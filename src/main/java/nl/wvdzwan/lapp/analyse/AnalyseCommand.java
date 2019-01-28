@@ -32,7 +32,7 @@ public class AnalyseCommand implements Callable<Void> {
             names = {"-s", "--api-source"},
             description = "Url to use for custom project version-date source, defaults to Libraries.io"
     )
-    private String apiBaseUrl = "http://libio:8088/api/";
+    private String apiBaseUrl = "http://libio:4567/api/";
 
     @CommandLine.Option(
             names = {"--limit"},
@@ -71,7 +71,6 @@ public class AnalyseCommand implements Callable<Void> {
         resolveArgs.add("-s");   resolveArgs.add(apiBaseUrl);
                 resolveArgs.add("-k");   resolveArgs.add(apiKey);
 
-//resolveArgs.set(4, "hoi");
         if (searchByDate) {
             resolveArgs.add("--date");
         }
