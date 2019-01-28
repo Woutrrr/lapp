@@ -51,7 +51,8 @@ public class WalaAnalysis {
             AnalysisScopeReader.addClassPathToScope(mainJar, scope, scope.getLoader(AnalysisScope.APPLICATION));
 
             logger.debug("Building class hierarchy...");
-            ClassHierarchy cha = ClassHierarchyFactory.make(scope);
+            // TODO : This really should use makeWithPhantom however that function is not yet stable and will cause NPE's later in the analysis
+            ClassHierarchy cha = ClassHierarchyFactory.makeWithRoot(scope);
             logger.info("Class hierarchy built, {} classes", cha::getNumberOfClasses);
 
             for (Warning warning : filterExclusionsWarnings(scope.getExclusions())) {
@@ -71,7 +72,8 @@ public class WalaAnalysis {
             }
 
             logger.debug("Building extended class hierarchy with dependencies...");
-            ClassHierarchy extendedCha = ClassHierarchyFactory.make(extendedScope);
+            // TODO : This really should use makeWithPhantom however that function is not yet stable and will cause NPE's later in the analysis
+            ClassHierarchy extendedCha = ClassHierarchyFactory.makeWithRoot(extendedScope);
             logger.info("Extended class hierarchy built, {} classes", extendedCha::getNumberOfClasses);
             this.extendedCha = extendedCha;
 
