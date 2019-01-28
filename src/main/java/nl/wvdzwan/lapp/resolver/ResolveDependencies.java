@@ -2,6 +2,7 @@ package nl.wvdzwan.lapp.resolver;
 
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
+import java.util.HashSet;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -17,8 +18,7 @@ import org.eclipse.aether.resolution.DependencyResolutionException;
 import org.eclipse.aether.resolution.DependencyResult;
 import org.eclipse.aether.resolution.VersionRangeResolutionException;
 import org.eclipse.aether.util.artifact.JavaScopes;
-import org.eclipse.aether.util.filter.AndDependencyFilter;
-import org.eclipse.aether.util.filter.DependencyFilterUtils;
+import org.eclipse.aether.util.filter.ScopeDependencyFilter;
 import org.eclipse.aether.version.Version;
 
 import nl.wvdzwan.lapp.resolver.util.Booter;
@@ -76,12 +76,9 @@ public class ResolveDependencies {
         collectRequest.setRoot(new Dependency(artifact, ""));
         collectRequest.setRepositories(Booter.newRepositories());
 
-        DependencyFilter dependencyFilter = new AndDependencyFilter(
-                DependencyFilterUtils.classpathFilter(JavaScopes.COMPILE),
-                new OptionalDependencyFilter()
-        );
-
-//        DependencyFilter dependencyFilter = DependencyFilterUtils.classpathFilter(JavaScopes.COMPILE);
+        HashSet<String> included = new HashSet<>();
+        included.add(JavaScopes.COMPILE);
+        DependencyFilter dependencyFilter = new ScopeDependencyFilter(included, null);
 
         DependencyRequest dependencyRequest = new DependencyRequest(collectRequest, dependencyFilter);
 
