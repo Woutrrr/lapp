@@ -40,7 +40,7 @@ public abstract class GraphVizOutput {
 
     protected void setGraphAttributes(DOTExporter<AnnotatedVertex, GraphEdge> exported) {
         // No graph attributes by default
-    };
+    }
 
     abstract String vertexIdProvider(AnnotatedVertex vertex);
     abstract String vertexLabelProvider(AnnotatedVertex vertex);

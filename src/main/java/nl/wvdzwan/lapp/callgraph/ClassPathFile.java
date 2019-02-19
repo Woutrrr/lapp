@@ -30,7 +30,7 @@ public class ClassPathFile {
                 throw new IllegalArgumentException("Invalid classpath file, first line must contain jar filename");
             }
 
-            mainJar = jarsFolder.resolve(Paths.get(line)).toString();;
+            mainJar = jarsFolder.resolve(Paths.get(line)).toString();
 
         } catch (IOException e) {
             // Client responsibility

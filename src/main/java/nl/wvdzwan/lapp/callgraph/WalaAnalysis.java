@@ -103,14 +103,6 @@ public class WalaAnalysis {
         }
     }
 
-    private void removeClassNotFoundWarnings(ArrayList<Warning> filteredWarnings) {
-        for (Warning warning : filteredWarnings) {
-            if (warning.getMsg().startsWith("class com.ibm.wala.classLoader.BytecodeClass$ClassNotFoundWarning")) {
-                filteredWarnings.remove(warning);
-            }
-        }
-    }
-
     private ArrayList<Warning> filterExclusionsWarnings(SetOfClasses exclusions) {
         ArrayList<Warning> result = new ArrayList<>();
 

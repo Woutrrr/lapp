@@ -24,7 +24,7 @@ public class LoggerTransferListener
     static Level logLevel = Level.TRACE;
 
 
-    private Map<TransferResource, Long> downloads = new ConcurrentHashMap<TransferResource, Long>();
+    private Map<TransferResource, Long> downloads = new ConcurrentHashMap<>();
 
     private int lastLength;
 
@@ -43,13 +43,13 @@ public class LoggerTransferListener
     @Override
     public void transferProgressed(TransferEvent event) {
         TransferResource resource = event.getResource();
-        downloads.put(resource, Long.valueOf(event.getTransferredBytes()));
+        downloads.put(resource, event.getTransferredBytes());
 
         StringBuilder buffer = new StringBuilder(64);
 
         for (Map.Entry<TransferResource, Long> entry : downloads.entrySet()) {
             long total = entry.getKey().getContentLength();
-            long complete = entry.getValue().longValue();
+            long complete = entry.getValue();
 
             buffer.append(getStatus(complete, total)).append("  ");
         }

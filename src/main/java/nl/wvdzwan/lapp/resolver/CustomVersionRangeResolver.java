@@ -1,7 +1,6 @@
 package nl.wvdzwan.lapp.resolver;
 
 import java.time.LocalDateTime;
-import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -50,14 +49,7 @@ public class CustomVersionRangeResolver extends DefaultVersionRangeResolver {
 
             List<Version> versions = parentResult.getVersions();
 
-            Iterator<Version> it = versions.iterator();
-            while (it.hasNext()) {
-                Version testVersion = it.next();
-
-                if (!dateFilteredVersions.contains(testVersion.toString())) {
-                    it.remove();
-                }
-            }
+            versions.removeIf(testVersion -> !dateFilteredVersions.contains(testVersion.toString()));
 
         }
 

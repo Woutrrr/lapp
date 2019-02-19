@@ -12,8 +12,7 @@ public class OutputHandler {
     public boolean process(DependencyResult result) {
 
         boolean success = outputs.stream()
-                .map(temp -> temp.makeOutput(result))
-                .allMatch(Boolean::booleanValue);
+                .allMatch(temp -> temp.makeOutput(result));
 
         return success;
     }

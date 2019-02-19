@@ -1,6 +1,5 @@
 package nl.wvdzwan.lapp.callgraph;
 
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -48,10 +47,7 @@ public class IRGraphBuilder {
     };
 
     private Graph<AnnotatedVertex, GraphEdge> graph = new DefaultDirectedGraph<>(GraphEdge.class);
-    private Map<MethodReference, AttributeMap> vertexAttributeMap = new HashMap<>();
 
-    private static final Function<MethodReference, AttributeMap> emptyAttributeMapProvider =
-            methodReference -> new AttributeMap();
 
     public IRGraphBuilder(CallGraph cg, IClassHierarchy cha, ClassToArtifactResolver artifactResolver) {
         this.callGraph = cg;
