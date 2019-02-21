@@ -21,10 +21,8 @@ import com.ibm.wala.types.Selector;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jgrapht.Graph;
-import org.jgrapht.graph.DefaultDirectedGraph;
 
 import nl.wvdzwan.lapp.IRDotMerger.AnnotatedVertex;
-import nl.wvdzwan.lapp.callgraph.outputs.AttributeMap;
 import nl.wvdzwan.lapp.callgraph.outputs.GraphEdge;
 
 public class IRGraphBuilder {
@@ -46,13 +44,15 @@ public class IRGraphBuilder {
                 .equals(ClassLoaderReference.Application);
     };
 
-    private Graph<AnnotatedVertex, GraphEdge> graph = new DefaultDirectedGraph<>(GraphEdge.class);
+    private IRGraph graph;
 
 
     public IRGraphBuilder(CallGraph cg, IClassHierarchy cha, ClassToArtifactResolver artifactResolver) {
         this.callGraph = cg;
         this.cha = cha;
         this.artifactResolver = artifactResolver;
+
+        this.graph = new IRGraphWithDynamicEdges(artifactResolver);
     }
 
 
@@ -72,13 +72,13 @@ public class IRGraphBuilder {
             if (nodeFilter.test(node)) {
                 continue;
             }
-            AnnotatedVertex nodeVertex = addVertexWithAttribute(nodeReference, AttributeMap.TYPE, IMPLEMENTED_METHOD);
+            AnnotatedVertex nodeVertex = graph.addTypedVertex(nodeReference, IMPLEMENTED_METHOD);
 
             for (Iterator<CallSiteReference> callsites = node.iterateCallSites(); callsites.hasNext(); ) {
                 CallSiteReference callsite = callsites.next();
 
                 MethodReference targetReference = callsite.getDeclaredTarget();
-                AnnotatedVertex targetVertex = addVertex(targetReference);
+                AnnotatedVertex targetVertex = graph.addVertex(targetReference);
 
                 GraphEdge.DispatchEdge edge;
 
@@ -143,12 +143,12 @@ public class IRGraphBuilder {
                 } else {
                     typeValue = IMPLEMENTED_METHOD;
                 }
-                AnnotatedVertex declaredNodeVertex = addVertexWithAttribute(declaredMethod.getReference(), AttributeMap.TYPE, typeValue);
+                AnnotatedVertex declaredNodeVertex = graph.addTypedVertex(declaredMethod.getReference(), typeValue);
 
 
                 IMethod superMethod = superKlass.getMethod(declaredMethod.getSelector());
                 if (superMethod != null) {
-                    AnnotatedVertex superVertex = addVertex(superMethod.getReference());
+                    AnnotatedVertex superVertex = graph.addVertex(superMethod.getReference());
                     graph.addEdge(superVertex, declaredNodeVertex, new GraphEdge.OverridesEdge());
                 }
 
@@ -156,7 +156,7 @@ public class IRGraphBuilder {
                 List<IMethod> methodInterfaces = interfaceMethods.get(declaredMethod.getSelector());
                 if (methodInterfaces != null) {
                     for (IMethod interfaceMethod : methodInterfaces) {
-                        AnnotatedVertex interfaceNodeVertex = addVertexWithAttribute(interfaceMethod.getReference(), AttributeMap.TYPE, INTERFACE_METHOD);
+                        AnnotatedVertex interfaceNodeVertex = graph.addTypedVertex(interfaceMethod.getReference(), INTERFACE_METHOD);
                         graph.addEdge(interfaceNodeVertex, declaredNodeVertex, new GraphEdge.ImplementsEdge());
                     }
                 }
@@ -172,7 +172,7 @@ public class IRGraphBuilder {
 
                     IMethod abstractSuperClassInterfaceMethod = abstractSuperClassInterfaceMethods.get(declaredMethod.getSelector());
                     if (abstractSuperClassInterfaceMethod != null) {
-                        AnnotatedVertex abstractSuperClassInterfaceMethodVertex = addVertexWithAttribute(abstractSuperClassInterfaceMethod.getReference(), AttributeMap.TYPE, INTERFACE_METHOD);
+                        AnnotatedVertex abstractSuperClassInterfaceMethodVertex = graph.addTypedVertex(abstractSuperClassInterfaceMethod.getReference(), INTERFACE_METHOD);
                         graph.addEdge(abstractSuperClassInterfaceMethodVertex, declaredNodeVertex, new GraphEdge.ImplementsEdge());
                     }
                 }
@@ -180,26 +180,8 @@ public class IRGraphBuilder {
         }
     }
 
-    public Graph<AnnotatedVertex, GraphEdge> getGraph() { return this.graph;}
+    public Graph<AnnotatedVertex, GraphEdge> getGraph() { return this.graph.getInnerGraph();}
 
-    private AnnotatedVertex addVertexWithAttribute(MethodReference methodReference, String attributeName, String value) {
 
-        AnnotatedVertex vertex = addVertex(methodReference);
-
-        vertex.setAttribute(attributeName, value);
-
-        return vertex;
-    }
-
-    private AnnotatedVertex addVertex(MethodReference reference) {
-
-        ArtifactRecord record = artifactResolver.artifactRecordFromMethodReference(reference);
-        String namespace = reference.getDeclaringClass().getName().toString().substring(1).replace('/', '.');
-        String symbol = reference.getSelector().toString();
-
-        AnnotatedVertex result = AnnotatedVertex.findOrCreate(record, namespace, symbol);
-        graph.addVertex(result); // TODO handle already existing vertex?
-        return result;
-    }
 
 }
