@@ -125,6 +125,16 @@ public class CallGraphMain implements Callable<Void> {
         FileWriter writer = new FileWriter(new File(outputDirectory, "app.dot"));
         dotOutput.export(writer);
 
+        GraphVizOutput humanOutput = new HumanReadableDotGraph(builder.getGraph());
+        FileWriter writerHuman = new FileWriter(new File(outputDirectory, "app_human.dot"));
+        humanOutput.export(writerHuman);
+
+        CallGraphOutput dynamicEdgesOutput = new DynamicEdgesExport(new File(outputDirectory, "dynamic_edges.txt"));
+        dynamicEdgesOutput.export(builder.getIRGraph());
+
+        CallGraphOutput dynamicNodesOutput = new DynamicNodesExport(new File(outputDirectory, "dynamic_nodes.txt"));
+        dynamicNodesOutput.export(builder.getIRGraph());
+
         return null;
     }
 
