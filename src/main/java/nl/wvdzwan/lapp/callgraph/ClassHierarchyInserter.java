@@ -1,0 +1,114 @@
+package nl.wvdzwan.lapp.callgraph;
+
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.Collectors;
+
+import com.ibm.wala.classLoader.IClass;
+import com.ibm.wala.classLoader.IClassLoader;
+import com.ibm.wala.classLoader.IMethod;
+import com.ibm.wala.ipa.cha.IClassHierarchy;
+import com.ibm.wala.types.ClassLoaderReference;
+import com.ibm.wala.types.Selector;
+
+import nl.wvdzwan.lapp.IRDotMerger.AnnotatedVertex;
+import nl.wvdzwan.lapp.callgraph.outputs.GraphEdge;
+import nl.wvdzwan.lapp.callgraph.IRGraph.MethodType;
+
+public class ClassHierarchyInserter {
+
+
+    private final IClassHierarchy cha;
+    private final IRGraph graph;
+
+    public ClassHierarchyInserter(IClassHierarchy cha, IRGraph graph) {
+        this.cha = cha;
+        this.graph = graph;
+    }
+
+    public void insertCHA() {
+        IClassLoader classLoader = cha.getLoader(ClassLoaderReference.Application);
+
+        // Iterate all classes in Application scope
+        for (Iterator<IClass> it = classLoader.iterateAllClasses(); it.hasNext(); ) {
+            IClass klass = it.next();
+            processClass(klass);
+        }
+    }
+
+    public void processClass(IClass klass) {
+
+
+        Map<Selector, List<IMethod>> interfaceMethods = klass.getDirectInterfaces()
+                .stream()
+                .flatMap(o -> o.getDeclaredMethods().stream())
+                .collect(
+                        Collectors.groupingBy(IMethod::getSelector)
+                );
+
+        for (IMethod declaredMethod : klass.getDeclaredMethods()) {
+
+            List<IMethod> methodInterfaces = interfaceMethods.get(declaredMethod.getSelector());
+
+            processMethod(klass, declaredMethod, methodInterfaces);
+        }
+    }
+
+    public void processMethod(IClass klass, IMethod declaredMethod, List<IMethod> methodInterfaces) {
+        if (declaredMethod.isPrivate()) {
+            // Private methods cannot be overridden, so no need for them.
+            return;
+        }
+        IClass superKlass = klass.getSuperclass();
+
+        AnnotatedVertex declaredNodeVertex = graph.addTypedVertex(declaredMethod, getMethodType(klass, declaredMethod));
+
+
+        IMethod superMethod = superKlass.getMethod(declaredMethod.getSelector());
+        if (superMethod != null) {
+            AnnotatedVertex superVertex = graph.addVertex(superMethod.getReference());
+            graph.addEdge(superVertex, declaredNodeVertex, new GraphEdge.OverridesEdge());
+        }
+
+
+        if (methodInterfaces != null) {
+            for (IMethod interfaceMethod : methodInterfaces) {
+                AnnotatedVertex interfaceNodeVertex = graph.addTypedVertex(interfaceMethod.getReference(), MethodType.INTERFACE);
+                graph.addEdge(interfaceNodeVertex, declaredNodeVertex, new GraphEdge.ImplementsEdge());
+            }
+        }
+
+
+        // An abstract class doesn't have to define abstract functions for interface methods
+        // So if this method doesn't have a super method or an interface method look for them in the interfaces of the abstract superclass
+        if (superKlass.isAbstract() && superMethod == null && methodInterfaces == null) {
+
+            Map<Selector, IMethod> abstractSuperClassInterfaceMethods = superKlass.getDirectInterfaces()
+                    .stream()
+                    .flatMap(o -> o.getDeclaredMethods().stream())
+                    .collect(Collectors.toMap(IMethod::getSelector, Function.identity()));
+
+            IMethod abstractSuperClassInterfaceMethod = abstractSuperClassInterfaceMethods.get(declaredMethod.getSelector());
+            if (abstractSuperClassInterfaceMethod != null) {
+                AnnotatedVertex abstractSuperClassInterfaceMethodVertex = graph.addTypedVertex(abstractSuperClassInterfaceMethod.getReference(), MethodType.INTERFACE);
+                graph.addEdge(abstractSuperClassInterfaceMethodVertex, declaredNodeVertex, new GraphEdge.ImplementsEdge());
+            }
+        }
+    }
+
+    private MethodType getMethodType(IClass klass, IMethod declaredMethod) {
+        if (declaredMethod.isAbstract()) {
+
+            if (klass.isInterface()) {
+                return MethodType.INTERFACE;
+            } else {
+                return MethodType.ABSTRACT;
+            }
+
+        } else {
+            return MethodType.IMPLEMENTATION;
+        }
+    }
+}

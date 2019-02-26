@@ -15,7 +15,11 @@ import org.apache.logging.log4j.Logger;
 import picocli.CommandLine;
 
 import nl.wvdzwan.lapp.callgraph.FolderLayout.DollarSeparatedLayout;
+import nl.wvdzwan.lapp.callgraph.outputs.CallGraphOutput;
+import nl.wvdzwan.lapp.callgraph.outputs.DynamicEdgesExport;
+import nl.wvdzwan.lapp.callgraph.outputs.DynamicNodesExport;
 import nl.wvdzwan.lapp.callgraph.outputs.GraphVizOutput;
+import nl.wvdzwan.lapp.callgraph.outputs.HumanReadableDotGraph;
 import nl.wvdzwan.lapp.callgraph.outputs.UnifiedCallGraphExport;
 
 @CommandLine.Command(
@@ -118,7 +122,6 @@ public class CallGraphMain implements Callable<Void> {
 
         // Output
         GraphVizOutput dotOutput = new UnifiedCallGraphExport(builder.getGraph());
-
         FileWriter writer = new FileWriter(new File(outputDirectory, "app.dot"));
         dotOutput.export(writer);
 

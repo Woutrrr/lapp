@@ -6,6 +6,9 @@ public abstract class GraphEdge extends DefaultEdge {
 
     public abstract String getLabel();
 
+    public boolean equals(Object obj) {
+        return (this.getClass().equals(obj.getClass()));
+    }
 
     public static abstract class DispatchEdge extends GraphEdge {
     }

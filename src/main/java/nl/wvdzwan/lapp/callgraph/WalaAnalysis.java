@@ -71,9 +71,8 @@ public class WalaAnalysis {
                 AnalysisScopeReader.addClassPathToScope(classPath, extendedScope, extendedScope.getLoader(AnalysisScope.EXTENSION));
             }
 
-            logger.debug("Building extended class hierarchy with dependencies...");
-            // TODO : This really should use makeWithPhantom however that function is not yet stable and will cause NPE's later in the analysis
-            ClassHierarchy extendedCha = ClassHierarchyFactory.makeWithRoot(extendedScope);
+            logger.debug("Building extended class hierarchy with phantom super classes and dependencies...");
+            ClassHierarchy extendedCha = ClassHierarchyFactory.makeWithPhantom(extendedScope);
             logger.info("Extended class hierarchy built, {} classes", extendedCha::getNumberOfClasses);
             this.extendedCha = extendedCha;
 
