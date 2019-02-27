@@ -19,9 +19,9 @@ public class IRGraphWithDynamicEdges implements IRGraph {
     private Graph<AnnotatedVertex, GraphEdge> graph = new DefaultDirectedGraph<>(GraphEdge.class);
     private Set<AnnotatedVertex> externalNodes = new HashSet<>();
     private List<DynamicEdge> dynamicEdgeList = new ArrayList<>();
-    private ClassToArtifactResolver artifactResolver;
+    private ClassArtifactResolver artifactResolver;
 
-    public IRGraphWithDynamicEdges(ClassToArtifactResolver artifactResolver) {
+    public IRGraphWithDynamicEdges(ClassArtifactResolver artifactResolver) {
         this.artifactResolver = artifactResolver;
     }
 

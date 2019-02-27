@@ -26,7 +26,7 @@ public class IRGraphBuilder {
 
     private final CallGraph callGraph;
     private final IClassHierarchy cha;
-    private final ClassToArtifactResolver artifactResolver;
+    private final ClassArtifactResolver artifactResolver;
 
 
     private Predicate<CGNode> nodeFilter = node -> {
@@ -40,7 +40,7 @@ public class IRGraphBuilder {
     private IRGraph graph;
 
 
-    public IRGraphBuilder(CallGraph cg, IClassHierarchy cha, ClassToArtifactResolver artifactResolver) {
+    public IRGraphBuilder(CallGraph cg, IClassHierarchy cha, ClassArtifactResolver artifactResolver) {
         this.callGraph = cg;
         this.cha = cha;
         this.artifactResolver = artifactResolver;
