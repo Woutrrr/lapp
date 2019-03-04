@@ -64,6 +64,19 @@ public class WalaAnalysis {
             }
             Warnings.clear();
 
+            // Prepare call graph generation
+            ArrayList<Entrypoint> entryPoints = getEntrypoints(cha);
+
+            AnalysisOptions options = new AnalysisOptions(scope, entryPoints);
+            AnalysisCache cache = new AnalysisCacheImpl();
+
+            logger.debug("Preform RTA analysis...");
+            CallGraphBuilder builder = Util.makeRTABuilder(options, cache, cha, scope);
+            CallGraph cg = builder.makeCallGraph(options, null);
+            logger.info("RTA analysis done!");
+            logger.info(() -> CallGraphStats.getStats(cg));
+
+
 
             AnalysisScope extendedScope = AnalysisScopeReader.makePrimordialScope(exclusionsFile);
             AnalysisScopeReader.addClassPathToScope(mainJar, extendedScope, extendedScope.getLoader(AnalysisScope.APPLICATION));
@@ -81,18 +94,6 @@ public class WalaAnalysis {
             }
             Warnings.clear();
 
-
-            // Prepare call graph generation
-            ArrayList<Entrypoint> entryPoints = getEntrypoints(cha);
-
-            AnalysisOptions options = new AnalysisOptions(scope, entryPoints);
-            AnalysisCache cache = new AnalysisCacheImpl();
-
-            logger.debug("Preform RTA analysis...");
-            CallGraphBuilder builder = Util.makeRTABuilder(options, cache, cha, scope);
-            CallGraph cg = builder.makeCallGraph(options, null);
-            logger.info("RTA analysis done!");
-            logger.info(() -> CallGraphStats.getStats(cg));
 
             return cg;
 
