@@ -1,6 +1,7 @@
 package nl.wvdzwan.lapp.callgraph.outputs;
 
 import java.io.Writer;
+import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.logging.log4j.LogManager;
@@ -8,22 +9,23 @@ import org.apache.logging.log4j.Logger;
 import org.jgrapht.Graph;
 import org.jgrapht.io.Attribute;
 import org.jgrapht.io.DOTExporter;
+import org.jgrapht.io.DefaultAttribute;
 
-import nl.wvdzwan.lapp.IRDotMerger.AnnotatedVertex;
+import nl.wvdzwan.lapp.Method.Method;
 
 public abstract class GraphVizOutput {
     private static Logger logger = LogManager.getLogger();
 
-    protected final Graph<AnnotatedVertex, GraphEdge> graph;
+    protected final Graph<Method, GraphEdge> graph;
 
 
-    public GraphVizOutput(Graph<AnnotatedVertex, GraphEdge> graph) {
+    public GraphVizOutput(Graph<Method, GraphEdge> graph) {
         this.graph = graph;
     }
 
     public boolean export(Writer writer) {
 
-        DOTExporter<AnnotatedVertex, GraphEdge> exporter = new DOTExporter<>(
+        DOTExporter<Method, GraphEdge> exporter = new DOTExporter<>(
                 this::vertexIdProvider,
                 this::vertexLabelProvider,
                 this::edgeLabelProvider,
@@ -38,15 +40,32 @@ public abstract class GraphVizOutput {
         return true;
     }
 
-    protected void setGraphAttributes(DOTExporter<AnnotatedVertex, GraphEdge> exported) {
+    protected void setGraphAttributes(DOTExporter<Method, GraphEdge> exported) {
         // No graph attributes by default
     }
 
-    abstract String vertexIdProvider(AnnotatedVertex vertex);
-    abstract String vertexLabelProvider(AnnotatedVertex vertex);
-    abstract Map<String, Attribute> vertexAttributeProvider(AnnotatedVertex vertex);
+    abstract String vertexIdProvider(Method vertex);
+
+    abstract String vertexLabelProvider(Method vertex);
+
+    abstract Map<String, Attribute> vertexAttributeProvider(Method vertex);
 
     abstract String edgeLabelProvider(GraphEdge edge);
+
     abstract Map<String, Attribute> edgeAttributeProvider(GraphEdge edge);
 
+
+    protected Map<String, Attribute> mapAsAttributeMap(Map<String, String> metadata) {
+        Map<String, Attribute> result = new HashMap<>();
+
+
+        for (Map.Entry<String, String> entry : metadata.entrySet()) {
+            result.put(
+                    entry.getKey(),
+                    DefaultAttribute.createAttribute(entry.getValue())
+            );
+        }
+
+        return result;
+    }
 }

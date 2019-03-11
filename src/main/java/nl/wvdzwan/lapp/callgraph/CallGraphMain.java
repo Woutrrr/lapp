@@ -9,15 +9,14 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.concurrent.Callable;
 
-import com.ibm.wala.ipa.callgraph.CallGraph;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.jgrapht.Graph;
 import picocli.CommandLine;
 
+import nl.wvdzwan.lapp.Method.Method;
 import nl.wvdzwan.lapp.callgraph.FolderLayout.DollarSeparatedLayout;
-import nl.wvdzwan.lapp.callgraph.outputs.CallGraphOutput;
-import nl.wvdzwan.lapp.callgraph.outputs.DynamicEdgesExport;
-import nl.wvdzwan.lapp.callgraph.outputs.DynamicNodesExport;
+import nl.wvdzwan.lapp.callgraph.outputs.GraphEdge;
 import nl.wvdzwan.lapp.callgraph.outputs.GraphVizOutput;
 import nl.wvdzwan.lapp.callgraph.outputs.HumanReadableDotGraph;
 import nl.wvdzwan.lapp.callgraph.outputs.UnifiedCallGraphExport;
@@ -113,27 +112,21 @@ public class CallGraphMain implements Callable<Void> {
         // Analysis
         logger.info("Starting analysis for {} with dependencies: {}", jar, dependencyClassPath);
         WalaAnalysis analysis = new WalaAnalysis(jar, dependencyClassPath, exclusionFile);
-        CallGraph cg = analysis.run();
+        WalaAnalysisResult analysisResult = analysis.run();
 
         // Build IR graph
         ClassToArtifactResolver artifactResolver = new ClassToArtifactResolver(analysis.getExtendedCha(), new DollarSeparatedLayout());
-        IRGraphBuilder builder = new IRGraphBuilder(cg, analysis.getExtendedCha(), artifactResolver);
-        builder.build();
+        WalaGraphTransformer builder = new WalaGraphTransformer(analysisResult.cg, analysisResult.extendedCha, artifactResolver);
+        Graph<Method, GraphEdge> graph = builder.build();
 
         // Output
-        GraphVizOutput dotOutput = new UnifiedCallGraphExport(builder.getGraph());
+        GraphVizOutput dotOutput = new UnifiedCallGraphExport(graph);
         FileWriter writer = new FileWriter(new File(outputDirectory, "app.dot"));
         dotOutput.export(writer);
 
-        GraphVizOutput humanOutput = new HumanReadableDotGraph(builder.getGraph());
+        GraphVizOutput humanOutput = new HumanReadableDotGraph(graph);
         FileWriter writerHuman = new FileWriter(new File(outputDirectory, "app_human.dot"));
         humanOutput.export(writerHuman);
-
-        CallGraphOutput dynamicEdgesOutput = new DynamicEdgesExport(new File(outputDirectory, "dynamic_edges.txt"));
-        dynamicEdgesOutput.export(builder.getIRGraph());
-
-        CallGraphOutput dynamicNodesOutput = new DynamicNodesExport(new File(outputDirectory, "dynamic_nodes.txt"));
-        dynamicNodesOutput.export(builder.getIRGraph());
 
         return null;
     }

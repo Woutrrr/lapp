@@ -43,7 +43,7 @@ public class WalaAnalysis {
         this.exclusionFile = exclusionFile;
     }
 
-    public CallGraph run() throws IOException, ClassHierarchyException {
+    public WalaAnalysisResult run() throws IOException, ClassHierarchyException {
         try {
 
             File exclusionsFile = (new FileProvider()).getFile(exclusionFile);
@@ -95,11 +95,12 @@ public class WalaAnalysis {
             Warnings.clear();
 
 
-            return cg;
+
+            return new WalaAnalysisResult(cg, extendedCha);
 
         } catch (CallGraphBuilderCancelException e) {
             logger.warn("Graph building cancelled! Continuing with partial graph");
-            return e.getPartialCallGraph();
+            return new WalaAnalysisResult(e.getPartialCallGraph(), e.getPartialCallGraph().getClassHierarchy());
         }
     }
 

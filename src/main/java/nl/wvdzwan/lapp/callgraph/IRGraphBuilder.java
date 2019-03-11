@@ -1,131 +1,75 @@
 package nl.wvdzwan.lapp.callgraph;
 
-import java.util.Iterator;
-import java.util.function.Predicate;
-
-import com.ibm.wala.classLoader.CallSiteReference;
-import com.ibm.wala.classLoader.IClass;
-import com.ibm.wala.ipa.callgraph.CGNode;
-import com.ibm.wala.ipa.callgraph.CallGraph;
-import com.ibm.wala.ipa.cha.IClassHierarchy;
-import com.ibm.wala.shrikeBT.IInvokeInstruction;
+import com.ibm.wala.classLoader.IMethod;
 import com.ibm.wala.types.ClassLoaderReference;
 import com.ibm.wala.types.MethodReference;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.jgrapht.Graph;
+import org.jgrapht.graph.DefaultDirectedGraph;
 
-import nl.wvdzwan.lapp.IRDotMerger.AnnotatedVertex;
-import nl.wvdzwan.lapp.callgraph.IRGraph.MethodType;
+import nl.wvdzwan.lapp.Method.Method;
+import nl.wvdzwan.lapp.Method.ResolvedMethod;
+import nl.wvdzwan.lapp.Method.UnresolvedMethod;
 import nl.wvdzwan.lapp.callgraph.outputs.GraphEdge;
 
 public class IRGraphBuilder {
 
-    private static final Logger logger = LogManager.getLogger();
+    private Graph<Method, GraphEdge> graph = new DefaultDirectedGraph<>(GraphEdge.class);
+
+    private ClassArtifactResolver artifactResolver;
 
 
-    private final CallGraph callGraph;
-    private final IClassHierarchy cha;
-    private final ClassArtifactResolver artifactResolver;
+    enum MethodType {
+        INTERFACE, ABSTRACT, IMPLEMENTATION
+    }
 
 
-    private Predicate<CGNode> nodeFilter = node -> {
-        return !node.getMethod()
-                .getDeclaringClass()
-                .getClassLoader()
-                .getReference()
-                .equals(ClassLoaderReference.Application);
-    };
-
-    private IRGraph graph;
-
-
-    public IRGraphBuilder(CallGraph cg, IClassHierarchy cha, ClassArtifactResolver artifactResolver) {
-        this.callGraph = cg;
-        this.cha = cha;
+    public IRGraphBuilder(ClassArtifactResolver artifactResolver) {
         this.artifactResolver = artifactResolver;
-
-        this.graph = new IRGraphWithDynamicEdges(artifactResolver);
     }
 
 
-    public void build() {
+    public Method addMethod(MethodReference nodeReference, MethodType type) {
+        Method method = addMethod(nodeReference);
+        method.metadata.put("type", type.toString());
 
-        ClassHierarchyInserter chaInserter = new ClassHierarchyInserter(cha, graph);
-        chaInserter.insertCHA();
-
-        insertCallGraph();
+        return method;
     }
 
-    private void insertCallGraph() {
-        Iterator<CGNode> cgIterator = callGraph.iterator();
-        while (cgIterator.hasNext()) {
-            CGNode node = cgIterator.next();
-            MethodReference nodeReference = node.getMethod().getReference();
 
-            if (nodeFilter.test(node)) {
-                continue;
-            }
-            AnnotatedVertex nodeVertex = graph.addTypedVertex(nodeReference, MethodType.IMPLEMENTATION);
-
-            for (Iterator<CallSiteReference> callsites = node.iterateCallSites(); callsites.hasNext(); ) {
-                CallSiteReference callsite = callsites.next();
-
-                MethodReference targetReference = callsite.getDeclaredTarget();
-
-                IClass klass = cha.lookupClass(callsite.getDeclaredTarget().getDeclaringClass());
-
-                if (klass == null) {
-                    targetReference = MethodReference.findOrCreate(ClassLoaderReference.Extension,
-                            targetReference.getDeclaringClass().getName().toString(),
-                            targetReference.getName().toString(),
-                            targetReference.getDescriptor().toString());
-                } else {
-                    targetReference = MethodReference.findOrCreate(klass.getReference(), targetReference.getSelector());
-                }
-                AnnotatedVertex targetVertex = graph.addVertex(targetReference);
+    public Method addMethod(IMethod method, MethodType type) {
+        return addMethod(method.getReference(), type);
+    }
 
 
+    public Method addMethod(MethodReference reference) {
 
-                GraphEdge.DispatchEdge edge;
+        String namespace = reference.getDeclaringClass().getName().toString().substring(1).replace('/', '.');
+        String symbol = reference.getSelector().toString();
 
-                switch ((IInvokeInstruction.Dispatch) callsite.getInvocationCode()) {
-                    case INTERFACE:
-                        edge = new GraphEdge.InterfaceDispatchEdge();
-                        break;
+        Method method;
 
-                    case VIRTUAL:
-                        edge = new GraphEdge.VirtualDispatchEdge();
-                        break;
+        if (inApplicationScope(reference)) {
+            ArtifactRecord record = artifactResolver.artifactRecordFromMethodReference(reference);
 
-                    case SPECIAL:
-                        edge = new GraphEdge.SpecialDispatchEdge();
-                        break;
-
-                    case STATIC:
-                        edge = new GraphEdge.StaticDispatchEdge();
-                        break;
-                    default:
-                        assert false : "Unknown IInvokeInstruction!";
-                        edge = null;
-                }
-                graph.addEdge(nodeVertex, targetVertex, edge);
-
-            }
-
+            method = new ResolvedMethod(namespace, symbol, record.getIdentifier());
+        } else {
+            method = new UnresolvedMethod(namespace, symbol);
         }
+
+        graph.addVertex(method);
+
+        return method;
     }
 
+    public boolean addEdge(Method source, Method target, GraphEdge edge) {
+        return graph.addEdge(source, target, edge);
+    }
 
-
-    public Graph<AnnotatedVertex, GraphEdge> getGraph() { return this.graph.getInnerGraph();}
-
-    public IRGraph getIRGraph() {
+    public Graph<Method, GraphEdge> getInnerGraph() {
         return this.graph;
     }
 
-
-    public IClassHierarchy getCha() {
-        return cha;
+    private boolean inApplicationScope(MethodReference reference) {
+        return reference.getDeclaringClass().getClassLoader().equals(ClassLoaderReference.Application);
     }
 }

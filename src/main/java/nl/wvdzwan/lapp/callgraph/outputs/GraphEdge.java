@@ -48,24 +48,24 @@ public abstract class GraphEdge extends DefaultEdge {
 
 
     public static abstract class ClassHierarchyEdge extends GraphEdge {
+        public static class OverridesEdge extends ClassHierarchyEdge {
 
-    }
+            @Override
+            public String getLabel() {
+                return "overridden by";
+            }
+        }
 
-    public static class OverridesEdge extends ClassHierarchyEdge {
+        public static class ImplementsEdge extends ClassHierarchyEdge {
 
-        @Override
-        public String getLabel() {
-            return "overridden by";
+            @Override
+            public String getLabel() {
+                return "implemented by";
+            }
         }
     }
 
-    public static class ImplementsEdge extends ClassHierarchyEdge {
 
-        @Override
-        public String getLabel() {
-            return "implemented by";
-        }
-    }
 
 
 

@@ -13,17 +13,17 @@ import com.ibm.wala.ipa.cha.IClassHierarchy;
 import com.ibm.wala.types.ClassLoaderReference;
 import com.ibm.wala.types.Selector;
 
-import nl.wvdzwan.lapp.IRDotMerger.AnnotatedVertex;
+import nl.wvdzwan.lapp.Method.Method;
+import nl.wvdzwan.lapp.callgraph.IRGraphBuilder.MethodType;
 import nl.wvdzwan.lapp.callgraph.outputs.GraphEdge;
-import nl.wvdzwan.lapp.callgraph.IRGraph.MethodType;
 
 public class ClassHierarchyInserter {
 
 
     private final IClassHierarchy cha;
-    private final IRGraph graph;
+    private final IRGraphBuilder graph;
 
-    public ClassHierarchyInserter(IClassHierarchy cha, IRGraph graph) {
+    public ClassHierarchyInserter(IClassHierarchy cha, IRGraphBuilder graph) {
         this.cha = cha;
         this.graph = graph;
     }
@@ -63,20 +63,22 @@ public class ClassHierarchyInserter {
         }
         IClass superKlass = klass.getSuperclass();
 
-        AnnotatedVertex declaredNodeVertex = graph.addTypedVertex(declaredMethod, getMethodType(klass, declaredMethod));
+        Method declaredMethodNode = graph.addMethod(declaredMethod, getMethodType(klass, declaredMethod));
 
 
         IMethod superMethod = superKlass.getMethod(declaredMethod.getSelector());
         if (superMethod != null) {
-            AnnotatedVertex superVertex = graph.addVertex(superMethod.getReference());
-            graph.addEdge(superVertex, declaredNodeVertex, new GraphEdge.OverridesEdge());
+            Method superMethodNode = graph.addMethod(superMethod.getReference());
+
+            graph.addEdge(superMethodNode, declaredMethodNode, new GraphEdge.ClassHierarchyEdge.OverridesEdge());
         }
 
 
         if (methodInterfaces != null) {
             for (IMethod interfaceMethod : methodInterfaces) {
-                AnnotatedVertex interfaceNodeVertex = graph.addTypedVertex(interfaceMethod.getReference(), MethodType.INTERFACE);
-                graph.addEdge(interfaceNodeVertex, declaredNodeVertex, new GraphEdge.ImplementsEdge());
+                Method interfaceMethodNode = graph.addMethod(interfaceMethod.getReference(), MethodType.INTERFACE);
+
+                graph.addEdge(interfaceMethodNode, declaredMethodNode, new GraphEdge.ClassHierarchyEdge.ImplementsEdge());
             }
         }
 
@@ -92,8 +94,8 @@ public class ClassHierarchyInserter {
 
             IMethod abstractSuperClassInterfaceMethod = abstractSuperClassInterfaceMethods.get(declaredMethod.getSelector());
             if (abstractSuperClassInterfaceMethod != null) {
-                AnnotatedVertex abstractSuperClassInterfaceMethodVertex = graph.addTypedVertex(abstractSuperClassInterfaceMethod.getReference(), MethodType.INTERFACE);
-                graph.addEdge(abstractSuperClassInterfaceMethodVertex, declaredNodeVertex, new GraphEdge.ImplementsEdge());
+                Method abstractSuperClassInterfaceMethodNode = graph.addMethod(abstractSuperClassInterfaceMethod.getReference(), MethodType.INTERFACE);
+                graph.addEdge(abstractSuperClassInterfaceMethodNode, declaredMethodNode, new GraphEdge.ClassHierarchyEdge.ImplementsEdge());
             }
         }
     }

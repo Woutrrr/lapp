@@ -12,6 +12,7 @@ import org.jgrapht.io.DefaultAttribute;
 
 import nl.wvdzwan.lapp.callgraph.ArtifactRecord;
 
+@Deprecated
 public class AnnotatedVertex {
 
     private final static String separator = "::";

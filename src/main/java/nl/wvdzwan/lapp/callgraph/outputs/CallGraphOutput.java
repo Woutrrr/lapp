@@ -1,8 +1,10 @@
 package nl.wvdzwan.lapp.callgraph.outputs;
 
-import nl.wvdzwan.lapp.callgraph.IRGraph;
+import org.jgrapht.Graph;
+
+import nl.wvdzwan.lapp.Method.Method;
 
 public interface CallGraphOutput {
 
-    boolean export(IRGraph graph);
+    boolean export(Graph<Method, GraphEdge> graph);
 }
