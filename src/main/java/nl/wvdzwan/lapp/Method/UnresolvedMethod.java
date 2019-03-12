@@ -1,13 +1,10 @@
 package nl.wvdzwan.lapp.Method;
 
-import java.util.HashMap;
-import java.util.Objects;
-
 public class UnresolvedMethod extends Method {
-    final private static HashMap<String, UnresolvedMethod> dictionary = new HashMap<>();
+    public static final UnresolvedMethodContext DEFAULT_CONTEXT = new DefaultUnresolvedMethodContext();
 
 
-    private UnresolvedMethod(String namespace, String symbol) {
+    UnresolvedMethod(String namespace, String symbol) {
         super(namespace, symbol);
     }
 
@@ -22,19 +19,6 @@ public class UnresolvedMethod extends Method {
 
 
     public static synchronized UnresolvedMethod findOrCreate(String namespace, String symbol) {
-
-        Objects.requireNonNull(namespace);
-        Objects.requireNonNull(symbol);
-
-        String key = toID(namespace, symbol);
-
-        UnresolvedMethod val = dictionary.get(key);
-        if (val != null) {
-            return val;
-        }
-
-        val = new UnresolvedMethod(namespace, symbol);
-        dictionary.put(key, val);
-        return val;
+        return DEFAULT_CONTEXT.make(namespace, symbol);
     }
 }

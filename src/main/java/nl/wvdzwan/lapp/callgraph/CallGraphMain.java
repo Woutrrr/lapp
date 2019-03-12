@@ -116,7 +116,7 @@ public class CallGraphMain implements Callable<Void> {
         WalaAnalysisResult analysisResult = analysis.run();
 
         // Build IR graph
-        ClassToArtifactResolver artifactResolver = new ClassToArtifactResolver(analysis.getExtendedCha(), new DollarSeparatedLayout());
+        ClassToArtifactResolver artifactResolver = new ClassToArtifactResolver(analysisResult.extendedCha, new DollarSeparatedLayout());
         WalaGraphTransformer builder = new WalaGraphTransformer(analysisResult.cg, analysisResult.extendedCha, artifactResolver);
         Graph<Method, Edge> graph = builder.build();
 

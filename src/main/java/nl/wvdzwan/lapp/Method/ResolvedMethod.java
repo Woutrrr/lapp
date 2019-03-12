@@ -1,15 +1,16 @@
 package nl.wvdzwan.lapp.Method;
 
 import java.util.HashMap;
-import java.util.Objects;
 
 public class ResolvedMethod extends Method {
+
+    public static final ResolvedMethodContext DEFAULT_CONTEXT = new DefaultResolvedMethodContext();
 
     final private static HashMap<String, ResolvedMethod> dictionary = new HashMap<>();
 
     public final String artifact;
 
-    private ResolvedMethod(String namespace, String symbol, String artifact) {
+    ResolvedMethod(String namespace, String symbol, String artifact) {
         super(namespace, symbol);
 
         this.artifact = artifact;
@@ -24,20 +25,7 @@ public class ResolvedMethod extends Method {
     }
 
 
-    public static synchronized ResolvedMethod findOrCreate(String namespace, String symbol, String artifact) {
-        Objects.requireNonNull(artifact);
-        Objects.requireNonNull(namespace);
-        Objects.requireNonNull(symbol);
-
-        String key = toID(namespace, symbol, artifact);
-
-        ResolvedMethod val = dictionary.get(key);
-        if (val != null) {
-            return val;
-        }
-
-        val = new ResolvedMethod(namespace, symbol, artifact);
-        dictionary.put(key, val);
-        return val;
+    public static ResolvedMethod findOrCreate(String namespace, String symbol, String artifact) {
+        return DEFAULT_CONTEXT.make(namespace, symbol, artifact);
     }
 }

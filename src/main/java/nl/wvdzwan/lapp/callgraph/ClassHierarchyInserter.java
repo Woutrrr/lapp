@@ -64,7 +64,7 @@ public class ClassHierarchyInserter {
         }
         IClass superKlass = klass.getSuperclass();
 
-        Method declaredMethodNode = graph.addMethod(declaredMethod, getMethodType(klass, declaredMethod));
+        Method declaredMethodNode = graph.addMethod(declaredMethod.getReference(), getMethodType(klass, declaredMethod));
 
         if (!(declaredMethodNode instanceof ResolvedMethod)) {
             return;
@@ -89,7 +89,7 @@ public class ClassHierarchyInserter {
         }
 
 
-        // An abstract class doesn't have to define abstract functions for interface methods
+        // An abstract class doesn't have to define abstract method for interface methods
         // So if this method doesn't have a super method or an interface method look for them in the interfaces of the abstract superclass
         if (superKlass.isAbstract() && superMethod == null && methodInterfaces == null) {
 

@@ -1,6 +1,5 @@
 package nl.wvdzwan.lapp.callgraph;
 
-import com.ibm.wala.classLoader.IMethod;
 import com.ibm.wala.types.ClassLoaderReference;
 import com.ibm.wala.types.MethodReference;
 import org.apache.logging.log4j.LogManager;
@@ -8,6 +7,7 @@ import org.apache.logging.log4j.Logger;
 import org.jgrapht.Graph;
 import org.jgrapht.graph.DefaultDirectedGraph;
 
+import nl.wvdzwan.lapp.LappPackage;
 import nl.wvdzwan.lapp.Method.Method;
 import nl.wvdzwan.lapp.Method.ResolvedMethod;
 import nl.wvdzwan.lapp.Method.UnresolvedMethod;
@@ -18,6 +18,7 @@ import nl.wvdzwan.lapp.call.Edge;
 public class IRGraphBuilder {
 
     private static final Logger logger = LogManager.getLogger();
+    private final LappPackage lappPackage;
 
     private Graph<Method, Edge> graph = new DefaultDirectedGraph<>(Edge.class);
 
@@ -31,6 +32,7 @@ public class IRGraphBuilder {
 
     public IRGraphBuilder(ClassArtifactResolver artifactResolver) {
         this.artifactResolver = artifactResolver;
+        this.lappPackage = new LappPackage("stub", "version");
     }
 
 
@@ -39,11 +41,6 @@ public class IRGraphBuilder {
         method.metadata.put("type", type.toString());
 
         return method;
-    }
-
-
-    public Method addMethod(IMethod method, MethodType type) {
-        return addMethod(method.getReference(), type);
     }
 
 
@@ -57,28 +54,38 @@ public class IRGraphBuilder {
         if (inApplicationScope(reference)) {
             ArtifactRecord record = artifactResolver.artifactRecordFromMethodReference(reference);
 
-            method = ResolvedMethod.findOrCreate(namespace, symbol, record.getIdentifier());
+            ResolvedMethod resolvedMethod = ResolvedMethod.findOrCreate(namespace, symbol, record.getIdentifier());
+
+            // lappPackage
+            lappPackage.addResolvedMethod(resolvedMethod);
+            // lappPackage
+            method = resolvedMethod;
+
         } else {
             method = UnresolvedMethod.findOrCreate(namespace, symbol);
         }
 
         graph.addVertex(method);
 
+
         return method;
     }
 
     public boolean addCall(Method source, Method target, Call.CallType type) {
+        // lappPackage
+        lappPackage.addCall(source, target, type);
+        // lappPackage
+
         Call call = new Call(source, target, type);
-        if (graph.containsEdge(call)) {
-            System.out.println("Contains " + source.toID() + " -> " + target.toID());
-        } else {
-            System.out.println("New");
-        }
+
         return graph.addEdge(source, target, call);
 
     }
 
     public boolean addChaEdge(Method related, ResolvedMethod subject, ChaEdge.ChaEdgeType type) {
+        // lappPackage
+        lappPackage.addChaEdge(related, subject, type);
+        // lappPackage
 
         return graph.addEdge(related, subject, new ChaEdge(related, subject, type));
 
