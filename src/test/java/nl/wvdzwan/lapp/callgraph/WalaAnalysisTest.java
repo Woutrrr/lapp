@@ -13,6 +13,7 @@ import org.jgrapht.Graph;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
+import nl.wvdzwan.lapp.LappPackageTransformer;
 import nl.wvdzwan.lapp.Method.Method;
 import nl.wvdzwan.lapp.call.Edge;
 import nl.wvdzwan.lapp.callgraph.outputs.calls.ResolvedCallOutput;
@@ -43,7 +44,7 @@ class WalaAnalysisTest {
         analysisResult = analysis.run();
 
         WalaGraphTransformer graphBuilder = new WalaGraphTransformer(analysisResult.cg, analysisResult.extendedCha, StubClassResolver.build());
-        graph = graphBuilder.build();
+        graph = LappPackageTransformer.toGraph(graphBuilder.build());
 
     }
 

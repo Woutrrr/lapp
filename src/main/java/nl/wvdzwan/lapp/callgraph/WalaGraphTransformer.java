@@ -4,10 +4,8 @@ import com.ibm.wala.ipa.callgraph.CallGraph;
 import com.ibm.wala.ipa.cha.IClassHierarchy;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.jgrapht.Graph;
 
-import nl.wvdzwan.lapp.Method.Method;
-import nl.wvdzwan.lapp.call.Edge;
+import nl.wvdzwan.lapp.LappPackage;
 
 public class WalaGraphTransformer {
 
@@ -29,7 +27,7 @@ public class WalaGraphTransformer {
     }
 
 
-    public Graph<Method, Edge> build() {
+    public LappPackage build() {
         this.graphBuilder = new IRGraphBuilder(artifactResolver);
 
         ClassHierarchyInserter chaInserter = new ClassHierarchyInserter(cha, graphBuilder);
@@ -38,7 +36,7 @@ public class WalaGraphTransformer {
         CallGraphInserter cgInserter = new CallGraphInserter(callGraph, cha, graphBuilder);
         cgInserter.insertCallGraph();
 
-        return graphBuilder.getInnerGraph();
+        return graphBuilder.getLappPackage();
     }
 
 

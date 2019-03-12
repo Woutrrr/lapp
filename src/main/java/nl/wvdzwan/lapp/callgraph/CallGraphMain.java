@@ -14,6 +14,8 @@ import org.apache.logging.log4j.Logger;
 import org.jgrapht.Graph;
 import picocli.CommandLine;
 
+import nl.wvdzwan.lapp.LappPackage;
+import nl.wvdzwan.lapp.LappPackageTransformer;
 import nl.wvdzwan.lapp.Method.Method;
 import nl.wvdzwan.lapp.call.Edge;
 import nl.wvdzwan.lapp.callgraph.FolderLayout.DollarSeparatedLayout;
@@ -118,7 +120,9 @@ public class CallGraphMain implements Callable<Void> {
         // Build IR graph
         ClassToArtifactResolver artifactResolver = new ClassToArtifactResolver(analysisResult.extendedCha, new DollarSeparatedLayout());
         WalaGraphTransformer builder = new WalaGraphTransformer(analysisResult.cg, analysisResult.extendedCha, artifactResolver);
-        Graph<Method, Edge> graph = builder.build();
+        LappPackage lappPackage = builder.build();
+
+        Graph<Method, Edge> graph = LappPackageTransformer.toGraph(lappPackage);
 
         // Output
         GraphVizOutput dotOutput = new UnifiedCallGraphExport(graph);

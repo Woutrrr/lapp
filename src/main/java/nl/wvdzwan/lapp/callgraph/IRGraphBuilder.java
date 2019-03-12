@@ -4,8 +4,6 @@ import com.ibm.wala.types.ClassLoaderReference;
 import com.ibm.wala.types.MethodReference;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.jgrapht.Graph;
-import org.jgrapht.graph.DefaultDirectedGraph;
 
 import nl.wvdzwan.lapp.LappPackage;
 import nl.wvdzwan.lapp.Method.Method;
@@ -13,14 +11,11 @@ import nl.wvdzwan.lapp.Method.ResolvedMethod;
 import nl.wvdzwan.lapp.Method.UnresolvedMethod;
 import nl.wvdzwan.lapp.call.Call;
 import nl.wvdzwan.lapp.call.ChaEdge;
-import nl.wvdzwan.lapp.call.Edge;
 
 public class IRGraphBuilder {
 
     private static final Logger logger = LogManager.getLogger();
     private final LappPackage lappPackage;
-
-    private Graph<Method, Edge> graph = new DefaultDirectedGraph<>(Edge.class);
 
     private ClassArtifactResolver artifactResolver;
 
@@ -32,7 +27,7 @@ public class IRGraphBuilder {
 
     public IRGraphBuilder(ClassArtifactResolver artifactResolver) {
         this.artifactResolver = artifactResolver;
-        this.lappPackage = new LappPackage("stub", "version");
+        this.lappPackage = new LappPackage("stub", "version"); // TODO fix package name/version
     }
 
 
@@ -49,50 +44,36 @@ public class IRGraphBuilder {
         String namespace = reference.getDeclaringClass().getName().toString().substring(1).replace('/', '.');
         String symbol = reference.getSelector().toString();
 
-        Method method;
 
         if (inApplicationScope(reference)) {
             ArtifactRecord record = artifactResolver.artifactRecordFromMethodReference(reference);
 
             ResolvedMethod resolvedMethod = ResolvedMethod.findOrCreate(namespace, symbol, record.getIdentifier());
 
-            // lappPackage
             lappPackage.addResolvedMethod(resolvedMethod);
-            // lappPackage
-            method = resolvedMethod;
+
+            return resolvedMethod;
 
         } else {
-            method = UnresolvedMethod.findOrCreate(namespace, symbol);
+            UnresolvedMethod unresolvedMethod = UnresolvedMethod.findOrCreate(namespace, symbol);
+            return unresolvedMethod;
         }
-
-        graph.addVertex(method);
-
-
-        return method;
     }
 
     public boolean addCall(Method source, Method target, Call.CallType type) {
-        // lappPackage
-        lappPackage.addCall(source, target, type);
-        // lappPackage
 
-        Call call = new Call(source, target, type);
-
-        return graph.addEdge(source, target, call);
+        return lappPackage.addCall(source, target, type);
 
     }
 
     public boolean addChaEdge(Method related, ResolvedMethod subject, ChaEdge.ChaEdgeType type) {
-        // lappPackage
-        lappPackage.addChaEdge(related, subject, type);
-        // lappPackage
 
-        return graph.addEdge(related, subject, new ChaEdge(related, subject, type));
+        return lappPackage.addChaEdge(related, subject, type);
 
     }
 
-    public Graph<Method, Edge> getInnerGraph() {
-        return this.graph;
+    public LappPackage getLappPackage() {
+        return this.lappPackage;
     }
 
     private boolean inApplicationScope(MethodReference reference) {
