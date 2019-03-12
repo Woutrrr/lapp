@@ -8,8 +8,8 @@ import org.eclipse.aether.artifact.Artifact;
 
 public class ArtifactRecord {
 
-    private String groupId;
-    private String artifactId;
+    public final String groupId;
+    public final String artifactId;
     private String version;
 
     public ArtifactRecord(String groupId, String artifactId, String version) {
@@ -36,24 +36,8 @@ public class ArtifactRecord {
         }
     }
 
-    public void setVersion(String version) {
-        this.version = version;
-    }
-
-    public String getGroupId() {
-        return groupId;
-    }
-
-    public String getArtifactId() {
-        return artifactId;
-    }
-
     public String getVersion() {
-        return version;
-    }
-
-    public String getJarName() {
-        return artifactId + "-" + version + ".jar";
+        return this.version;
     }
 
     public String getUnversionedIdentifier() {
