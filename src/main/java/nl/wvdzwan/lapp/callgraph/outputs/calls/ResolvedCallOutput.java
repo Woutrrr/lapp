@@ -2,17 +2,12 @@ package nl.wvdzwan.lapp.callgraph.outputs.calls;
 
 import java.io.IOException;
 import java.io.Writer;
-import java.util.List;
-import java.util.stream.Collectors;
 
-import org.jgrapht.Graph;
-
-import nl.wvdzwan.lapp.Method.Method;
-import nl.wvdzwan.lapp.call.Call;
+import nl.wvdzwan.lapp.LappPackage;
 import nl.wvdzwan.lapp.call.Edge;
-import nl.wvdzwan.lapp.callgraph.outputs.CallGraphOutput;
+import nl.wvdzwan.lapp.callgraph.outputs.LappPackageOutput;
 
-public class ResolvedCallOutput implements CallGraphOutput {
+public class ResolvedCallOutput implements LappPackageOutput {
 
     private final Writer output;
 
@@ -21,18 +16,10 @@ public class ResolvedCallOutput implements CallGraphOutput {
     }
 
     @Override
-    public boolean export(Graph<Method, Edge> graph) {
-
-
-        List<Edge> edges = graph.edgeSet().stream()
-                .filter(edge -> {
-                    return edge instanceof Call
-                            && ((Call) edge).isResolved();
-                })
-                .collect(Collectors.toList());
+    public boolean export(LappPackage lappPackage) {
 
         try {
-            for (Edge edge : edges) {
+            for (Edge edge : lappPackage.resolvedCalls) {
                 output.write(edge.source.toID() + " -> " + edge.target.toID() + " :" + edge.getLabel());
                 output.write("\n");
             }

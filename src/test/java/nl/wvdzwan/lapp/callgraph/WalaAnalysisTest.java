@@ -13,6 +13,7 @@ import org.jgrapht.Graph;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
+import nl.wvdzwan.lapp.LappPackage;
 import nl.wvdzwan.lapp.LappPackageTransformer;
 import nl.wvdzwan.lapp.Method.Method;
 import nl.wvdzwan.lapp.call.Edge;
@@ -30,6 +31,7 @@ class WalaAnalysisTest {
 
     protected static WalaAnalysisResult analysisResult;
     protected static Graph<Method, Edge> graph;
+    protected static LappPackage lappPackage;
 
     @BeforeAll
     static void run() throws IOException, ClassHierarchyException {
@@ -44,7 +46,9 @@ class WalaAnalysisTest {
         analysisResult = analysis.run();
 
         WalaGraphTransformer graphBuilder = new WalaGraphTransformer(analysisResult.cg, analysisResult.extendedCha, StubClassResolver.build());
-        graph = LappPackageTransformer.toGraph(graphBuilder.build());
+
+        lappPackage = graphBuilder.build();
+        graph = LappPackageTransformer.toGraph(lappPackage);
 
     }
 
@@ -82,7 +86,7 @@ class WalaAnalysisTest {
         StringWriter writer = new StringWriter();
 
         ResolvedCallOutput resolvedCallOutput = new ResolvedCallOutput(writer);
-        resolvedCallOutput.export(graph);
+        resolvedCallOutput.export(lappPackage);
 
         String result = writer.toString();
         String[] lines = result.split("\\n");
@@ -99,7 +103,7 @@ class WalaAnalysisTest {
         StringWriter writer = new StringWriter();
 
         UnresolvedCallOutput unresolvedCallOutput = new UnresolvedCallOutput(writer);
-        unresolvedCallOutput.export(graph);
+        unresolvedCallOutput.export(lappPackage);
 
         String result = writer.toString();
         String[] lines = result.split("\\n");
