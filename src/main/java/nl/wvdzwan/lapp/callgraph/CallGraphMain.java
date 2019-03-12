@@ -15,11 +15,12 @@ import org.jgrapht.Graph;
 import picocli.CommandLine;
 
 import nl.wvdzwan.lapp.Method.Method;
+import nl.wvdzwan.lapp.call.Edge;
 import nl.wvdzwan.lapp.callgraph.FolderLayout.DollarSeparatedLayout;
-import nl.wvdzwan.lapp.callgraph.outputs.GraphEdge;
 import nl.wvdzwan.lapp.callgraph.outputs.GraphVizOutput;
 import nl.wvdzwan.lapp.callgraph.outputs.HumanReadableDotGraph;
 import nl.wvdzwan.lapp.callgraph.outputs.UnifiedCallGraphExport;
+import nl.wvdzwan.lapp.callgraph.outputs.resolved_methods.ResolvedMethodOutput;
 
 @CommandLine.Command(
         name = "callgraph",
@@ -117,7 +118,7 @@ public class CallGraphMain implements Callable<Void> {
         // Build IR graph
         ClassToArtifactResolver artifactResolver = new ClassToArtifactResolver(analysis.getExtendedCha(), new DollarSeparatedLayout());
         WalaGraphTransformer builder = new WalaGraphTransformer(analysisResult.cg, analysisResult.extendedCha, artifactResolver);
-        Graph<Method, GraphEdge> graph = builder.build();
+        Graph<Method, Edge> graph = builder.build();
 
         // Output
         GraphVizOutput dotOutput = new UnifiedCallGraphExport(graph);
@@ -127,6 +128,9 @@ public class CallGraphMain implements Callable<Void> {
         GraphVizOutput humanOutput = new HumanReadableDotGraph(graph);
         FileWriter writerHuman = new FileWriter(new File(outputDirectory, "app_human.dot"));
         humanOutput.export(writerHuman);
+
+        ResolvedMethodOutput resolvedMethodOutput = new ResolvedMethodOutput(new FileWriter(new File(outputDirectory, "resolved_methods.txt")));
+        resolvedMethodOutput.export(graph);
 
         return null;
     }

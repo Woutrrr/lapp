@@ -1,19 +1,23 @@
 package nl.wvdzwan.lapp.callgraph;
 
 import java.io.IOException;
+import java.io.StringWriter;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.Collection;
+import java.util.Arrays;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import com.ibm.wala.ipa.callgraph.CallGraph;
 import com.ibm.wala.ipa.cha.ClassHierarchyException;
 import org.jgrapht.Graph;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
-import nl.wvdzwan.lapp.IRDotMerger.AnnotatedVertex;
 import nl.wvdzwan.lapp.Method.Method;
-import nl.wvdzwan.lapp.callgraph.outputs.GraphEdge;
+import nl.wvdzwan.lapp.call.Edge;
+import nl.wvdzwan.lapp.callgraph.outputs.resolved_calls.ResolvedCallOutput;
+import nl.wvdzwan.lapp.callgraph.outputs.resolved_calls.UnresolvedCallOutput;
+import nl.wvdzwan.lapp.callgraph.outputs.resolved_methods.ResolvedMethodOutput;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -23,68 +27,88 @@ class WalaAnalysisTest {
     static String resourceSubFolder = "example_jars";
     static String expectationsFolder = "WalaAnalysisTest";
 
+    protected static WalaAnalysisResult analysisResult;
+    protected static Graph<Method, Edge> graph;
 
-    void run() throws IOException, ClassHierarchyException {
+    @BeforeAll
+    static void run() throws IOException, ClassHierarchyException {
 
         String mainJar = getResourcePath("com.company$app$3.2.jar");
         String classpath = Stream.of("com.company$core$1.1.jar", "com.company$extension-a$1.0.jar")
-                .map(this::getResourcePath)
+                .map(WalaAnalysisTest::getResourcePath)
                 .collect(Collectors.joining(":"));
 
 
         WalaAnalysis analysis = new WalaAnalysis(mainJar, classpath, "Java60RegressionExclusions.txt");
-        WalaAnalysisResult analysisResult = analysis.run();
+        analysisResult = analysis.run();
 
         WalaGraphTransformer graphBuilder = new WalaGraphTransformer(analysisResult.cg, analysisResult.extendedCha, StubClassResolver.build());
-        Graph<Method, GraphEdge> graph = graphBuilder.build();
+        graph = graphBuilder.build();
 
-
-        DoAnalysisAssertions(analysis, analysisResult.cg);
-        DoGraphBuilderAssertions(graph);
     }
 
-    private void DoAnalysisAssertions(WalaAnalysis analysis, CallGraph cg) {
-        assertTrue(analysis.getExtendedCha().getNumberOfClasses() > 0);
-        assertTrue(cg.getClassHierarchy().getNumberOfClasses() > 0);
+    @Test
+    void DoAnalysisAssertions() {
+        assertTrue(analysisResult.extendedCha.getNumberOfClasses() > 0);
+        assertTrue(analysisResult.cg.getClassHierarchy().getNumberOfClasses() > 0);
 
-        assertTrue(analysis.getExtendedCha().getNumberOfClasses() > cg.getClassHierarchy().getNumberOfClasses());
+        assertTrue(analysisResult.extendedCha.getNumberOfClasses() > analysisResult.cg.getClassHierarchy().getNumberOfClasses());
     }
 
-    private void DoGraphBuilderAssertions(Graph<Method, GraphEdge> graph) throws IOException {
-//        MakeDynamicNodeAssertions(graph.getExternalNodes());
 
-//        MakeDynamicEdgesAssertions(graph.getDynamicEdges());
+    @Test
+    void verifyResolvedMethodOutput() throws IOException {
 
-//        MakeGraphAssertions(graph.getInnerGraph());
+        StringWriter writer = new StringWriter();
+
+        ResolvedMethodOutput resolvedMethodOutput = new ResolvedMethodOutput(writer);
+        resolvedMethodOutput.export(graph);
+
+        String result = writer.toString();
+
+        String[] lines = result.split("\\n");
+        Arrays.sort(lines);
+
+        String sortedResult = String.join("\n", lines);
+
+        String expectedNodes = getExpectationFileAsString("resolved_methods.txt");
+        assertEquals(expectedNodes, sortedResult);
     }
 
-    private void MakeDynamicNodeAssertions(Collection<AnnotatedVertex> externalNodes) throws IOException {
-        String externalNodeList = externalNodes.stream()
-                .map(annotatedVertex -> {
-                    return annotatedVertex.getNamespace() + "." + annotatedVertex.getSymbol();
-                })
-                .sorted()
-                .collect(Collectors.joining("\n"));
+    @Test
+    void verifyResolvedCallOutput() throws IOException {
 
+        StringWriter writer = new StringWriter();
 
-        String expectedNodes = getExpectationFileAsString("dynamic_nodes.txt");
-        assertEquals(expectedNodes, externalNodeList);
+        ResolvedCallOutput resolvedCallOutput = new ResolvedCallOutput(writer);
+        resolvedCallOutput.export(graph);
+
+        String result = writer.toString();
+        String[] lines = result.split("\\n");
+        Arrays.sort(lines);
+        String sortedResult = String.join("\n", lines);
+
+        String expectedNodes = getExpectationFileAsString("resolved_calls.txt");
+        assertEquals(expectedNodes, sortedResult);
     }
 
-    private void MakeDynamicEdgesAssertions(Collection<DynamicEdge> dynamicEdges) throws IOException {
-        String externalEdgeList = dynamicEdges.stream()
-                .map(edge -> {
-                    return String.format("%-16s", edge.getEdgeType().getLabel()) +
-                            " : " + edge.getSrc().getNamespace() + "." + edge.getSrc().getSymbol() +
-                            "  ->  " + edge.getDst().getNamespace() + "." + edge.getDst().getSymbol();
-                })
-                .sorted()
-                .collect(Collectors.joining("\n"));
+    @Test
+    void verifyUnresolvedCallOutput() throws IOException {
 
+        StringWriter writer = new StringWriter();
 
-        String expectedEdges = getExpectationFileAsString("dynamic_edges.txt");
-        assertEquals(expectedEdges, externalEdgeList);
+        UnresolvedCallOutput unresolvedCallOutput = new UnresolvedCallOutput(writer);
+        unresolvedCallOutput.export(graph);
+
+        String result = writer.toString();
+        String[] lines = result.split("\\n");
+        Arrays.sort(lines);
+        String sortedResult = String.join("\n", lines);
+
+        String expectedNodes = getExpectationFileAsString("unresolved_calls.txt");
+        assertEquals(expectedNodes, sortedResult);
     }
+
 
     private String getExpectationFileAsString(String file) throws IOException {
         return new String(
@@ -93,36 +117,10 @@ class WalaAnalysisTest {
                                 getResourcePath(expectationsFolder, file))));
     }
 
-    private void MakeGraphAssertions(Graph<AnnotatedVertex, GraphEdge> graph) throws IOException {
 
-        String nodes = graph.vertexSet().stream()
-                .map(annotatedVertex -> {
-                    return annotatedVertex.getNamespace() + "." + annotatedVertex.getSymbol();
-                })
-                .sorted()
-                .collect(Collectors.joining("\n"));
-
-        String edges = graph.edgeSet().stream()
-                .map(edge -> {
-                    AnnotatedVertex src = graph.getEdgeSource(edge);
-                    AnnotatedVertex dst = graph.getEdgeTarget(edge);
-                    return String.format("%-16s", edge.getLabel()) +
-                            " : " + src.getNamespace() + "." + src.getSymbol() +
-                            "  ->  " + dst.getNamespace() + "." + dst.getSymbol();
-                })
-                .sorted()
-                .collect(Collectors.joining("\n"));
-
-        String expectedNodes = getExpectationFileAsString("graph_nodes.txt");
-        String expectedEdges = getExpectationFileAsString("graph_edges.txt");
-
-        assertEquals(expectedNodes, nodes);
-        assertEquals(expectedEdges, edges);
-    }
-
-    private String getResourcePath(String... file) {
+    private static String getResourcePath(String... file) {
         String path = Paths.get(resourceSubFolder, file).toString();
-        return getClass().getResource("/" + path).getFile();
+        return WalaAnalysisTest.class.getResource("/" + path).getFile();
 
     }
 }

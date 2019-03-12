@@ -14,8 +14,9 @@ import com.ibm.wala.types.ClassLoaderReference;
 import com.ibm.wala.types.Selector;
 
 import nl.wvdzwan.lapp.Method.Method;
+import nl.wvdzwan.lapp.Method.ResolvedMethod;
+import nl.wvdzwan.lapp.call.ChaEdge;
 import nl.wvdzwan.lapp.callgraph.IRGraphBuilder.MethodType;
-import nl.wvdzwan.lapp.callgraph.outputs.GraphEdge;
 
 public class ClassHierarchyInserter {
 
@@ -38,7 +39,7 @@ public class ClassHierarchyInserter {
         }
     }
 
-    public void processClass(IClass klass) {
+    private void processClass(IClass klass) {
 
 
         Map<Selector, List<IMethod>> interfaceMethods = klass.getDirectInterfaces()
@@ -56,7 +57,7 @@ public class ClassHierarchyInserter {
         }
     }
 
-    public void processMethod(IClass klass, IMethod declaredMethod, List<IMethod> methodInterfaces) {
+    private void processMethod(IClass klass, IMethod declaredMethod, List<IMethod> methodInterfaces) {
         if (declaredMethod.isPrivate()) {
             // Private methods cannot be overridden, so no need for them.
             return;
@@ -65,12 +66,17 @@ public class ClassHierarchyInserter {
 
         Method declaredMethodNode = graph.addMethod(declaredMethod, getMethodType(klass, declaredMethod));
 
+        if (!(declaredMethodNode instanceof ResolvedMethod)) {
+            return;
+        }
+        ResolvedMethod resolvedMethod = (ResolvedMethod) declaredMethodNode;
+
 
         IMethod superMethod = superKlass.getMethod(declaredMethod.getSelector());
         if (superMethod != null) {
             Method superMethodNode = graph.addMethod(superMethod.getReference());
 
-            graph.addEdge(superMethodNode, declaredMethodNode, new GraphEdge.ClassHierarchyEdge.OverridesEdge());
+            graph.addChaEdge(superMethodNode, resolvedMethod, ChaEdge.ChaEdgeType.OVERRIDE);
         }
 
 
@@ -78,7 +84,7 @@ public class ClassHierarchyInserter {
             for (IMethod interfaceMethod : methodInterfaces) {
                 Method interfaceMethodNode = graph.addMethod(interfaceMethod.getReference(), MethodType.INTERFACE);
 
-                graph.addEdge(interfaceMethodNode, declaredMethodNode, new GraphEdge.ClassHierarchyEdge.ImplementsEdge());
+                graph.addChaEdge(interfaceMethodNode, resolvedMethod, ChaEdge.ChaEdgeType.IMPLEMENTS);
             }
         }
 
@@ -95,7 +101,7 @@ public class ClassHierarchyInserter {
             IMethod abstractSuperClassInterfaceMethod = abstractSuperClassInterfaceMethods.get(declaredMethod.getSelector());
             if (abstractSuperClassInterfaceMethod != null) {
                 Method abstractSuperClassInterfaceMethodNode = graph.addMethod(abstractSuperClassInterfaceMethod.getReference(), MethodType.INTERFACE);
-                graph.addEdge(abstractSuperClassInterfaceMethodNode, declaredMethodNode, new GraphEdge.ClassHierarchyEdge.ImplementsEdge());
+                graph.addChaEdge(abstractSuperClassInterfaceMethodNode, resolvedMethod, ChaEdge.ChaEdgeType.IMPLEMENTS);
             }
         }
     }

@@ -13,10 +13,9 @@ import com.ibm.wala.types.ClassLoaderReference;
 import com.ibm.wala.types.MethodReference;
 
 import nl.wvdzwan.lapp.Method.Method;
-import nl.wvdzwan.lapp.callgraph.outputs.GraphEdge;
+import nl.wvdzwan.lapp.call.Call;
 
 public class CallGraphInserter {
-
 
 
     private final CallGraph cg;
@@ -43,10 +42,10 @@ public class CallGraphInserter {
                 CallSiteReference callSite = callSites.next();
 
                 MethodReference targetReference = correctClassLoader(callSite.getDeclaredTarget());
-                GraphEdge.DispatchEdge edge = getInvocationEdge(callSite);
+
 
                 Method targetMethodNode = graph.addMethod(targetReference);
-                graph.addEdge(methodNode, targetMethodNode, edge);
+                graph.addCall(methodNode, targetMethodNode, getInvocationLabel(callSite));
 
             }
 
@@ -61,29 +60,20 @@ public class CallGraphInserter {
                 .equals(ClassLoaderReference.Application);
     };
 
-    private GraphEdge.DispatchEdge getInvocationEdge(CallSiteReference callsite) {
-        GraphEdge.DispatchEdge edge;
+    private Call.CallType getInvocationLabel(CallSiteReference callsite) {
+
         switch ((IInvokeInstruction.Dispatch) callsite.getInvocationCode()) {
             case INTERFACE:
-                edge = new GraphEdge.InterfaceDispatchEdge();
-                break;
-
+                return Call.CallType.INTERFACE;
             case VIRTUAL:
-                edge = new GraphEdge.VirtualDispatchEdge();
-                break;
-
+                return Call.CallType.VIRTUAL;
             case SPECIAL:
-                edge = new GraphEdge.SpecialDispatchEdge();
-                break;
-
+                return Call.CallType.SPECIAL;
             case STATIC:
-                edge = new GraphEdge.StaticDispatchEdge();
-                break;
-            default:
-                assert false : "Unknown IInvokeInstruction!";
-                edge = null;
+                return Call.CallType.STATIC;
         }
-        return edge;
+
+        return Call.CallType.UNKNOWN;
     }
 
     private MethodReference correctClassLoader(MethodReference reference) {

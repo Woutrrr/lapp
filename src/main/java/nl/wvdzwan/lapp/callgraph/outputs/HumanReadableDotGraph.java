@@ -1,23 +1,22 @@
 package nl.wvdzwan.lapp.callgraph.outputs;
 
-import java.util.HashMap;
 import java.util.Map;
 
 import org.jgrapht.Graph;
 import org.jgrapht.io.Attribute;
 import org.jgrapht.io.DOTExporter;
-import org.jgrapht.io.DefaultAttribute;
 
 import nl.wvdzwan.lapp.Method.Method;
+import nl.wvdzwan.lapp.call.Edge;
 
 public class HumanReadableDotGraph extends GraphVizOutput {
 
-    public HumanReadableDotGraph(Graph<Method, GraphEdge> graph) {
+    public HumanReadableDotGraph(Graph<Method, Edge> graph) {
         super(graph);
     }
 
     @Override
-    protected void setGraphAttributes(DOTExporter<Method, GraphEdge> dotExporter) {
+    protected void setGraphAttributes(DOTExporter<Method, Edge> dotExporter) {
         dotExporter.putGraphAttribute("overlap", "false");
         dotExporter.putGraphAttribute("ranksep", "1");
     }
@@ -41,35 +40,6 @@ public class HumanReadableDotGraph extends GraphVizOutput {
     @Override
     protected Map<String, Attribute> vertexAttributeProvider(Method vertex) {
         return mapAsAttributeMap(vertex.metadata);
-    }
-
-    @Override
-    protected String edgeLabelProvider(GraphEdge edge) {
-        return edge.getLabel();
-    }
-
-
-    @Override
-    protected Map<String, Attribute> edgeAttributeProvider(GraphEdge edge) {
-        Map<String, Attribute> attributes = new HashMap<>();
-
-        if (edge instanceof GraphEdge.InterfaceDispatchEdge) {
-            Attribute attribute = DefaultAttribute.createAttribute("bold");
-            attributes.put("style", attribute);
-        } else if (edge instanceof GraphEdge.VirtualDispatchEdge) {
-            Attribute attribute = DefaultAttribute.createAttribute("bold");
-            attributes.put("style", attribute);
-        } else if (edge instanceof GraphEdge.ClassHierarchyEdge.ImplementsEdge) {
-            Attribute attribute = DefaultAttribute.createAttribute("dashed");
-            attributes.put("style", attribute);
-        } else if (edge instanceof GraphEdge.ClassHierarchyEdge.OverridesEdge) {
-            Attribute attribute = DefaultAttribute.createAttribute("dotted");
-            attributes.put("style", attribute);
-        } else {
-            return null;
-        }
-
-        return attributes;
     }
 
 }

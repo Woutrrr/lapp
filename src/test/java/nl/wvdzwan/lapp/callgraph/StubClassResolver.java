@@ -10,11 +10,11 @@ public class StubClassResolver implements ClassArtifactResolver {
 
     @Override
     public ArtifactRecord artifactRecordFromMethodReference(MethodReference n) {
-        return new ArtifactRecord("stub:method:1.0");
+        return new ArtifactRecord("company:testArtifact:1.0");
     }
 
     @Override
     public ArtifactRecord artifactRecordFromClass(IClass klass) {
-        return new ArtifactRecord("stub:class:1.0");
+        return new ArtifactRecord("company:testArtifact:1.0");
     }
 }

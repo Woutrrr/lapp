@@ -1,19 +1,18 @@
 package nl.wvdzwan.lapp.callgraph.outputs;
 
-import java.util.HashMap;
 import java.util.Map;
 
 import org.jgrapht.Graph;
 import org.jgrapht.io.Attribute;
-import org.jgrapht.io.DefaultAttribute;
 
 import nl.wvdzwan.lapp.Method.Method;
 import nl.wvdzwan.lapp.Method.ResolvedMethod;
 import nl.wvdzwan.lapp.Method.UnresolvedMethod;
+import nl.wvdzwan.lapp.call.Edge;
 
 public class UnifiedCallGraphExport extends GraphVizOutput {
 
-    public UnifiedCallGraphExport(Graph<Method, GraphEdge> graph) {
+    public UnifiedCallGraphExport(Graph<Method, Edge> graph) {
         super(graph);
     }
 
@@ -41,32 +40,6 @@ public class UnifiedCallGraphExport extends GraphVizOutput {
 
     public Map<String, Attribute> vertexAttributeProvider(Method vertex) {
         return mapAsAttributeMap(vertex.metadata);
-    }
-
-    public String edgeLabelProvider(GraphEdge edge) {
-        return edge.getLabel();
-    }
-
-    public Map<String, Attribute> edgeAttributeProvider(GraphEdge edge) {
-        Map<String, Attribute> attributes = new HashMap<>();
-
-        Attribute attribute;
-
-        if (edge instanceof GraphEdge.InterfaceDispatchEdge) {
-            attribute = DefaultAttribute.createAttribute("bold");
-        } else if (edge instanceof GraphEdge.VirtualDispatchEdge) {
-            attribute = DefaultAttribute.createAttribute("bold");
-        } else if (edge instanceof GraphEdge.ClassHierarchyEdge.ImplementsEdge) {
-            attribute = DefaultAttribute.createAttribute("dashed");
-        } else if (edge instanceof GraphEdge.ClassHierarchyEdge.OverridesEdge) {
-            attribute = DefaultAttribute.createAttribute("dotted");
-        } else {
-            return null;
-        }
-
-        attributes.put("style", attribute);
-
-        return attributes;
     }
 
     private String resolvedMethodToLabel(ResolvedMethod method) {

@@ -1,32 +1,53 @@
 package nl.wvdzwan.lapp.call;
 
+import java.util.Objects;
+
 import nl.wvdzwan.lapp.Method.Method;
 import nl.wvdzwan.lapp.Method.ResolvedMethod;
-import nl.wvdzwan.lapp.Method.UnresolvedMethod;
 
-public abstract class Call {
+public class Call extends Edge {
 
-    public final Method source;
-    public final Method callee;
-    public final String label;
+    public enum CallType {
+        INTERFACE("invoke_interface"),
+        VIRTUAL("invoke_virtual"),
+        SPECIAL("invoke_special"),
+        STATIC("invoke_static"),
+        UNKNOWN("unknown");
 
+        public final String label;
 
-    protected Call(Method source, Method callee, String label) {
-        this.source = source;
-        this.callee = callee;
-        this.label = label;
+        CallType(String label) {
+            this.label = label;
+        }
+
+    }
+    public final CallType callType;
+
+    public Call(Method source, Method callee, CallType callType) {
+        super(source, callee);
+        this.callType = callType;
     }
 
-    public static ResolvedCall make(ResolvedMethod source, ResolvedMethod target, String label) {
-        return new ResolvedCall(source, target, label);
+    @Override
+    public String getLabel() {
+        return callType.label;
     }
 
-    public static UnresolvedCall make(ResolvedMethod source, UnresolvedMethod target, String label) {
-        return new UnresolvedCall(source, target, label);
+    public boolean isResolved() {
+        return source instanceof ResolvedMethod && target instanceof ResolvedMethod;
     }
 
-    public static ChaCall makeChaCall(Method source, ResolvedMethod target, String label) {
-        return new ChaCall(source, target, label);
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+        Call call = (Call) o;
+        return callType == call.callType;
     }
 
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), callType);
+    }
 }

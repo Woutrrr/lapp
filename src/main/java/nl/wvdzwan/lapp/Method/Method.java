@@ -16,4 +16,6 @@ public abstract class Method {
 
         this.metadata = new HashMap<>();
     }
+
+    public abstract String toID();
 }

@@ -1,0 +1,49 @@
+digraph hierarchy {
+    graph [
+    compound = true     // To clip the head at the cluster border
+        penwidth = 2        // Make the cluster's borders a bit thicker
+
+        ranksep = 2         // Add a bit more space inbetween nodes
+    ]
+    node[shape=record,style=filled,fillcolor=gray95]
+    edge[dir=back, arrowtail=empty]
+
+
+    Function [label= "{Function|
+    + fqn : String \l
+    + resolvedCalls : Set\<ResolvedFunction\> \l
+    + unresolvedCalls : Set\<UnresolvedFunction\>\l
+    + metadata : Map\<String, String\>\l}", style=dashed]
+    Function -> ResolvedFunction [arrowtail=odiamond, constraint=false]
+    Function -> UnresolvedFunction [arrowtail=odiamond, constraint=false]
+
+
+    UnresolvedFunction [label = "{UnresolvedFunction|+ dependency : Dependency\l}"]
+    UnresolvedFunction -> Dependency [arrowtail=diamond, constraint=false]
+
+    ResolvedFunction [label = "{ResolvedFunction|+ pkg : Package\l}"]
+    ResolvedFunction -> Package [arrowtail=diamond, constraint=false]
+
+    Function -> UnresolvedFunction
+    Function -> ResolvedFunction
+
+    Package [label= "{Package|+ repo \l+ artifactName\l}"]
+    PackageVersion [label= "{
+    PackageVersion|
++ pkg : Package \l
++ version : String\l
++ releaseDate : Date\l
++ dependencies : Set\<Dependency\> \l
++ functions : Set\<Function\> \l
+    }"]
+
+
+
+    PackageVersion->Package [arrowtail=odiamond]
+    PackageVersion->Dependency [arrowtail=odiamond]
+    PackageVersion->Function [arrowtail=odiamond]
+
+    Dependency [label= "{Dependency|+ pkg \l+ versionConstraint \l}"]
+    Dependency ->   Package [arrowtail=odiamond]
+
+}

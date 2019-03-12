@@ -1,7 +1,0 @@
-implemented by   : example.app.ShapeOutput.output(Lexample/core/AreaInterface;)V  ->  example.app.Printer.output(Lexample/core/AreaInterface;)V
-invoke_interface : example.app.App.main([Ljava/lang/String;)V  ->  example.app.ShapeOutput.output(Lexample/core/AreaInterface;)V
-invoke_special   : example.app.App.main([Ljava/lang/String;)V  ->  example.app.App$Hexagon.<init>(D)V
-invoke_special   : example.app.App.main([Ljava/lang/String;)V  ->  example.app.Circle.<init>(D)V
-invoke_special   : example.app.App.main([Ljava/lang/String;)V  ->  example.app.Printer.<init>()V
-invoke_static    : example.app.App.main([Ljava/lang/String;)V  ->  example.app.App.privateCall(Ljava/lang/Object;)V
-invoke_static    : example.app.App.privateCall(Ljava/lang/Object;)V  ->  example.app.App.tryReflection(Ljava/lang/Object;)V

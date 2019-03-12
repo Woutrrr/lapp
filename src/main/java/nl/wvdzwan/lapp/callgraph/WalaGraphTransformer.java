@@ -7,7 +7,7 @@ import org.apache.logging.log4j.Logger;
 import org.jgrapht.Graph;
 
 import nl.wvdzwan.lapp.Method.Method;
-import nl.wvdzwan.lapp.callgraph.outputs.GraphEdge;
+import nl.wvdzwan.lapp.call.Edge;
 
 public class WalaGraphTransformer {
 
@@ -29,7 +29,7 @@ public class WalaGraphTransformer {
     }
 
 
-    public Graph<Method, GraphEdge> build() {
+    public Graph<Method, Edge> build() {
         this.graphBuilder = new IRGraphBuilder(artifactResolver);
 
         ClassHierarchyInserter chaInserter = new ClassHierarchyInserter(cha, graphBuilder);
