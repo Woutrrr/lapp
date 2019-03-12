@@ -16,7 +16,6 @@ import com.ibm.wala.ipa.callgraph.impl.Util;
 import com.ibm.wala.ipa.cha.ClassHierarchy;
 import com.ibm.wala.ipa.cha.ClassHierarchyException;
 import com.ibm.wala.ipa.cha.ClassHierarchyFactory;
-import com.ibm.wala.ipa.cha.IClassHierarchy;
 import com.ibm.wala.types.ClassLoaderReference;
 import com.ibm.wala.util.config.AnalysisScopeReader;
 import com.ibm.wala.util.config.SetOfClasses;
@@ -31,10 +30,7 @@ public class WalaAnalysis {
 
     private String mainJar;
     private String classPath;
-
     private String exclusionFile;
-
-    private IClassHierarchy extendedCha;
 
 
     public WalaAnalysis(String mainJar, String classPath, String exclusionFile) {
@@ -87,7 +83,7 @@ public class WalaAnalysis {
             logger.debug("Building extended class hierarchy with phantom super classes and dependencies...");
             ClassHierarchy extendedCha = ClassHierarchyFactory.makeWithPhantom(extendedScope);
             logger.info("Extended class hierarchy built, {} classes", extendedCha::getNumberOfClasses);
-            this.extendedCha = extendedCha;
+
 
             for(Warning warning : filterExclusionsWarnings(scope.getExclusions())) {
                 logger.warn(warning);
@@ -172,10 +168,5 @@ public class WalaAnalysis {
                 && method.isPublic()
                 && !method.isAbstract();
     }
-
-    public IClassHierarchy getExtendedCha() {
-        return this.extendedCha;
-    }
-
 }
 

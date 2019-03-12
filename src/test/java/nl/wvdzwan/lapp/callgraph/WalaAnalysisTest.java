@@ -15,8 +15,8 @@ import org.junit.jupiter.api.Test;
 
 import nl.wvdzwan.lapp.Method.Method;
 import nl.wvdzwan.lapp.call.Edge;
-import nl.wvdzwan.lapp.callgraph.outputs.resolved_calls.ResolvedCallOutput;
-import nl.wvdzwan.lapp.callgraph.outputs.resolved_calls.UnresolvedCallOutput;
+import nl.wvdzwan.lapp.callgraph.outputs.calls.ResolvedCallOutput;
+import nl.wvdzwan.lapp.callgraph.outputs.calls.UnresolvedCallOutput;
 import nl.wvdzwan.lapp.callgraph.outputs.resolved_methods.ResolvedMethodOutput;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;

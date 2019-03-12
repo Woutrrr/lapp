@@ -1,4 +1,4 @@
-package nl.wvdzwan.lapp.callgraph.outputs.resolved_calls;
+package nl.wvdzwan.lapp.callgraph.outputs.calls;
 
 import java.io.IOException;
 import java.io.Writer;

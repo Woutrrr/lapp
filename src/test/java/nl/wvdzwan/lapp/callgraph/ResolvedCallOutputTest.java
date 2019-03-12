@@ -7,7 +7,7 @@ import org.jgrapht.graph.DefaultDirectedGraph;
 import org.junit.jupiter.api.Test;
 
 import nl.wvdzwan.lapp.call.Edge;
-import nl.wvdzwan.lapp.callgraph.outputs.resolved_calls.ResolvedCallOutput;
+import nl.wvdzwan.lapp.callgraph.outputs.calls.ResolvedCallOutput;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 
