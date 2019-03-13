@@ -45,9 +45,7 @@ class WalaAnalysisTest {
         WalaAnalysis analysis = new WalaAnalysis(mainJar, classpath, "Java60RegressionExclusions.txt");
         analysisResult = analysis.run();
 
-        PackageBuilder graphBuilder = new PackageBuilder(analysisResult, StubClassResolver.build());
-
-        lappPackage = graphBuilder.build();
+        lappPackage = WalaAnalysisTransformer.toPackage(analysisResult, StubClassResolver.build());
         graph = LappPackageTransformer.toGraph(lappPackage);
 
     }

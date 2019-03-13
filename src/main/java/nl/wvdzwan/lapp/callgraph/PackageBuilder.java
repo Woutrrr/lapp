@@ -1,55 +1,82 @@
 package nl.wvdzwan.lapp.callgraph;
 
-import com.ibm.wala.ipa.callgraph.CallGraph;
-import com.ibm.wala.ipa.cha.IClassHierarchy;
+import com.ibm.wala.types.ClassLoaderReference;
+import com.ibm.wala.types.MethodReference;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import nl.wvdzwan.lapp.LappPackage;
+import nl.wvdzwan.lapp.Method.Method;
+import nl.wvdzwan.lapp.Method.ResolvedMethod;
+import nl.wvdzwan.lapp.Method.UnresolvedMethod;
+import nl.wvdzwan.lapp.call.Call;
+import nl.wvdzwan.lapp.call.ChaEdge;
 
 public class PackageBuilder {
 
     private static final Logger logger = LogManager.getLogger();
+    private final LappPackage lappPackage;
 
-
-    private final CallGraph callGraph;
-    private final IClassHierarchy cha;
     private ClassArtifactResolver artifactResolver;
 
 
-    private IRGraphBuilder graphBuilder;
+    enum MethodType {
+        INTERFACE, ABSTRACT, IMPLEMENTATION
+    }
 
 
-    public PackageBuilder(WalaAnalysisResult analysisResult, ClassArtifactResolver artifactResolver) {
-        this.callGraph = analysisResult.cg;
-        this.cha = analysisResult.extendedCha;
+    public PackageBuilder(ClassArtifactResolver artifactResolver) {
         this.artifactResolver = artifactResolver;
+        this.lappPackage = new LappPackage("stub", "version"); // TODO fix package name/version
     }
 
 
-    public LappPackage build() {
-        this.graphBuilder = new IRGraphBuilder(artifactResolver);
+    public Method addMethod(MethodReference nodeReference, MethodType type) {
+        Method method = addMethod(nodeReference);
+        method.metadata.put("type", type.toString());
 
-        ClassHierarchyInserter chaInserter = new ClassHierarchyInserter(cha, graphBuilder);
-        chaInserter.insertCHA();
-
-        CallGraphInserter cgInserter = new CallGraphInserter(callGraph, cha, graphBuilder);
-        cgInserter.insertCallGraph();
-
-        return graphBuilder.getLappPackage();
-    }
-
-    public static LappPackage build(WalaAnalysisResult analysisResult, ClassArtifactResolver artifactResolver) {
-        IRGraphBuilder graphBuilder = new IRGraphBuilder(artifactResolver);
-
-        ClassHierarchyInserter chaInserter = new ClassHierarchyInserter(analysisResult.extendedCha, graphBuilder);
-        chaInserter.insertCHA();
-
-        CallGraphInserter cgInserter = new CallGraphInserter(analysisResult.cg, analysisResult.extendedCha, graphBuilder);
-        cgInserter.insertCallGraph();
-
-        return graphBuilder.getLappPackage();
+        return method;
     }
 
 
+    public Method addMethod(MethodReference reference) {
+
+        String namespace = reference.getDeclaringClass().getName().toString().substring(1).replace('/', '.');
+        String symbol = reference.getSelector().toString();
+
+
+        if (inApplicationScope(reference)) {
+            ArtifactRecord record = artifactResolver.artifactRecordFromMethodReference(reference);
+
+            ResolvedMethod resolvedMethod = ResolvedMethod.findOrCreate(namespace, symbol, record.getIdentifier());
+
+            lappPackage.addResolvedMethod(resolvedMethod);
+
+            return resolvedMethod;
+
+        } else {
+            UnresolvedMethod unresolvedMethod = UnresolvedMethod.findOrCreate(namespace, symbol);
+            return unresolvedMethod;
+        }
+    }
+
+    public boolean addCall(Method source, Method target, Call.CallType type) {
+
+        return lappPackage.addCall(source, target, type);
+
+    }
+
+    public boolean addChaEdge(Method related, ResolvedMethod subject, ChaEdge.ChaEdgeType type) {
+
+        return lappPackage.addChaEdge(related, subject, type);
+
+    }
+
+    public LappPackage getLappPackage() {
+        return this.lappPackage;
+    }
+
+    private boolean inApplicationScope(MethodReference reference) {
+        return reference.getDeclaringClass().getClassLoader().equals(ClassLoaderReference.Application);
+    }
 }

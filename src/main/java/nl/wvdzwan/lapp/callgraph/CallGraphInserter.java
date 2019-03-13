@@ -20,9 +20,9 @@ public class CallGraphInserter {
 
     private final CallGraph cg;
     private final IClassHierarchy cha;
-    private final IRGraphBuilder graph;
+    private final PackageBuilder graph;
 
-    public CallGraphInserter(CallGraph cg, IClassHierarchy cha, IRGraphBuilder graph) {
+    public CallGraphInserter(CallGraph cg, IClassHierarchy cha, PackageBuilder graph) {
         this.cg = cg;
         this.cha = cha;
         this.graph = graph;
@@ -36,7 +36,7 @@ public class CallGraphInserter {
             if (nodeFilter.test(node)) {
                 continue;
             }
-            Method methodNode = graph.addMethod(nodeReference, IRGraphBuilder.MethodType.IMPLEMENTATION);
+            Method methodNode = graph.addMethod(nodeReference, PackageBuilder.MethodType.IMPLEMENTATION);
 
             for (Iterator<CallSiteReference> callSites = node.iterateCallSites(); callSites.hasNext(); ) {
                 CallSiteReference callSite = callSites.next();

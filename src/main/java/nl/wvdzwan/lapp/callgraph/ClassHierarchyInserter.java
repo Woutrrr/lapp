@@ -16,15 +16,15 @@ import com.ibm.wala.types.Selector;
 import nl.wvdzwan.lapp.Method.Method;
 import nl.wvdzwan.lapp.Method.ResolvedMethod;
 import nl.wvdzwan.lapp.call.ChaEdge;
-import nl.wvdzwan.lapp.callgraph.IRGraphBuilder.MethodType;
+import nl.wvdzwan.lapp.callgraph.PackageBuilder.MethodType;
 
 public class ClassHierarchyInserter {
 
 
     private final IClassHierarchy cha;
-    private final IRGraphBuilder graph;
+    private final PackageBuilder graph;
 
-    public ClassHierarchyInserter(IClassHierarchy cha, IRGraphBuilder graph) {
+    public ClassHierarchyInserter(IClassHierarchy cha, PackageBuilder graph) {
         this.cha = cha;
         this.graph = graph;
     }
