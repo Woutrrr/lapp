@@ -7,7 +7,7 @@ import org.apache.logging.log4j.Logger;
 
 import nl.wvdzwan.lapp.LappPackage;
 
-public class WalaGraphTransformer {
+public class PackageBuilder {
 
     private static final Logger logger = LogManager.getLogger();
 
@@ -20,9 +20,9 @@ public class WalaGraphTransformer {
     private IRGraphBuilder graphBuilder;
 
 
-    public WalaGraphTransformer(CallGraph cg, IClassHierarchy cha, ClassArtifactResolver artifactResolver) {
-        this.callGraph = cg;
-        this.cha = cha;
+    public PackageBuilder(WalaAnalysisResult analysisResult, ClassArtifactResolver artifactResolver) {
+        this.callGraph = analysisResult.cg;
+        this.cha = analysisResult.extendedCha;
         this.artifactResolver = artifactResolver;
     }
 
@@ -34,6 +34,18 @@ public class WalaGraphTransformer {
         chaInserter.insertCHA();
 
         CallGraphInserter cgInserter = new CallGraphInserter(callGraph, cha, graphBuilder);
+        cgInserter.insertCallGraph();
+
+        return graphBuilder.getLappPackage();
+    }
+
+    public static LappPackage build(WalaAnalysisResult analysisResult, ClassArtifactResolver artifactResolver) {
+        IRGraphBuilder graphBuilder = new IRGraphBuilder(artifactResolver);
+
+        ClassHierarchyInserter chaInserter = new ClassHierarchyInserter(analysisResult.extendedCha, graphBuilder);
+        chaInserter.insertCHA();
+
+        CallGraphInserter cgInserter = new CallGraphInserter(analysisResult.cg, analysisResult.extendedCha, graphBuilder);
         cgInserter.insertCallGraph();
 
         return graphBuilder.getLappPackage();

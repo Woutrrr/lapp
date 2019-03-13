@@ -1,12 +1,8 @@
 package nl.wvdzwan.lapp.Method;
 
-import java.util.HashMap;
-
 public class ResolvedMethod extends Method {
 
-    public static final ResolvedMethodContext DEFAULT_CONTEXT = new DefaultResolvedMethodContext();
-
-    final private static HashMap<String, ResolvedMethod> dictionary = new HashMap<>();
+    public static final AnalysisContext DEFAULT_CONTEXT = new DefaultAnalysisContext();
 
     public final String artifact;
 
@@ -24,8 +20,7 @@ public class ResolvedMethod extends Method {
         return artifact + "::" + namespace + "." + symbol;
     }
 
-
     public static ResolvedMethod findOrCreate(String namespace, String symbol, String artifact) {
-        return DEFAULT_CONTEXT.make(namespace, symbol, artifact);
+        return DEFAULT_CONTEXT.makeResolved(namespace, symbol, artifact);
     }
 }

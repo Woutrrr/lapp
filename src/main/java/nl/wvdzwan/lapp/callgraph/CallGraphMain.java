@@ -119,8 +119,7 @@ public class CallGraphMain implements Callable<Void> {
 
         // Build IR graph
         ClassToArtifactResolver artifactResolver = new ClassToArtifactResolver(analysisResult.extendedCha, new DollarSeparatedLayout());
-        WalaGraphTransformer builder = new WalaGraphTransformer(analysisResult.cg, analysisResult.extendedCha, artifactResolver);
-        LappPackage lappPackage = builder.build();
+        LappPackage lappPackage = PackageBuilder.build(analysisResult, artifactResolver);
 
         Graph<Method, Edge> graph = LappPackageTransformer.toGraph(lappPackage);
 

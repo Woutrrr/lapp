@@ -1,13 +1,12 @@
 package nl.wvdzwan.lapp.Method;
 
 public class UnresolvedMethod extends Method {
-    public static final UnresolvedMethodContext DEFAULT_CONTEXT = new DefaultUnresolvedMethodContext();
 
+    public static final AnalysisContext DEFAULT_CONTEXT = new DefaultAnalysisContext();
 
     UnresolvedMethod(String namespace, String symbol) {
         super(namespace, symbol);
     }
-
 
     public String toID() {
         return toID(namespace, symbol);
@@ -17,8 +16,7 @@ public class UnresolvedMethod extends Method {
         return "__::" + namespace + "." + symbol;
     }
 
-
     public static synchronized UnresolvedMethod findOrCreate(String namespace, String symbol) {
-        return DEFAULT_CONTEXT.make(namespace, symbol);
+        return DEFAULT_CONTEXT.makeUnresolved(namespace, symbol);
     }
 }
