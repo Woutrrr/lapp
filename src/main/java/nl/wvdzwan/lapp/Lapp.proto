@@ -1,0 +1,51 @@
+syntax = "proto3";
+
+package lapp;
+
+option java_package = "nl.wvdzwan.lapp.protos";
+option java_outer_classname = "LappProtos";
+
+message Method {
+    string namespace = 1;
+    string symbol = 2;
+    string artifact = 3;
+
+    map<string, string> metadata = 4;
+}
+
+message Call {
+    Method source = 1;
+    Method target = 2;
+
+    enum CallType {
+        INTERFACE = 0;
+        VIRTUAL = 1;
+        SPECIAL = 2;
+        STATIC = 3;
+        UNKNOWN = 4;
+    }
+    CallType callType = 3;
+}
+
+message ChaRelation {
+    Method subject = 1;
+    Method related = 2;
+
+    enum RelationType {
+        OVERRIDE = 0;
+        IMPLEMENTS = 1;
+    }
+
+    RelationType type = 3;
+}
+
+message Package {
+    string name = 1;
+    string version = 2;
+
+    repeated Method methods = 3;
+    repeated Call resolvedCalls = 4;
+    repeated Call unresolvedCalls = 5;
+    repeated ChaRelation cha = 6;
+    map<string, string> metadata = 7;
+}

@@ -2,6 +2,7 @@ package nl.wvdzwan.lapp.callgraph;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -21,6 +22,8 @@ import nl.wvdzwan.lapp.call.Edge;
 import nl.wvdzwan.lapp.callgraph.FolderLayout.DollarSeparatedLayout;
 import nl.wvdzwan.lapp.callgraph.outputs.GraphVizOutput;
 import nl.wvdzwan.lapp.callgraph.outputs.HumanReadableDotGraph;
+import nl.wvdzwan.lapp.callgraph.outputs.JsonOutput;
+import nl.wvdzwan.lapp.callgraph.outputs.ProtobufOutput;
 import nl.wvdzwan.lapp.callgraph.outputs.UnifiedCallGraphExport;
 import nl.wvdzwan.lapp.callgraph.outputs.resolved_methods.ResolvedMethodOutput;
 
@@ -134,6 +137,12 @@ public class CallGraphMain implements Callable<Void> {
 
         ResolvedMethodOutput resolvedMethodOutput = new ResolvedMethodOutput(new FileWriter(new File(outputDirectory, "resolved_methods.txt")));
         resolvedMethodOutput.export(graph);
+
+        ProtobufOutput protobufOutput = new ProtobufOutput(new FileOutputStream(new File(outputDirectory, "app.buf")));
+        protobufOutput.export(lappPackage);
+
+        JsonOutput jsonOutput = new JsonOutput(new FileOutputStream(new File(outputDirectory, "app.json")));
+        jsonOutput.export(lappPackage);
 
         return null;
     }
