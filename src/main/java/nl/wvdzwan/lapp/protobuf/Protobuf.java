@@ -1,17 +1,17 @@
-package nl.wvdzwan.lapp;
+package nl.wvdzwan.lapp.protobuf;
 
 import java.util.stream.Collectors;
 
-import nl.wvdzwan.lapp.Method.Method;
-import nl.wvdzwan.lapp.Method.ResolvedMethod;
+import nl.wvdzwan.lapp.core.LappPackage;
+import nl.wvdzwan.lapp.core.Method;
+import nl.wvdzwan.lapp.core.ResolvedMethod;
 import nl.wvdzwan.lapp.call.Call;
 import nl.wvdzwan.lapp.call.ChaEdge;
-import nl.wvdzwan.lapp.protos.LappProtos;
 
 public class Protobuf {
 
-    public static LappProtos.Package of(LappPackage p) {
-        return LappProtos.Package.newBuilder()
+    public static Lapp.Package of(LappPackage p) {
+        return Lapp.Package.newBuilder()
                 .setName(p.pkg)
                 .setVersion(p.version)
                 .addAllMethods(p.methods.stream().map(Protobuf::of).collect(Collectors.toList()))
@@ -21,8 +21,8 @@ public class Protobuf {
                 .build();
     }
 
-    public static LappProtos.Method of(Method m) {
-        LappProtos.Method.Builder builder = LappProtos.Method.newBuilder()
+    public static Lapp.Method of(Method m) {
+        Lapp.Method.Builder builder = Lapp.Method.newBuilder()
                 .setNamespace(m.namespace)
                 .setSymbol(m.symbol);
 
@@ -34,8 +34,8 @@ public class Protobuf {
 
     }
 
-    public static LappProtos.Call of(Call c) {
-        return LappProtos.Call.newBuilder()
+    public static Lapp.Call of(Call c) {
+        return Lapp.Call.newBuilder()
                 .setSource(of(c.source))
                 .setTarget(of(c.target))
                 .setCallType(of(c.callType))
@@ -43,39 +43,39 @@ public class Protobuf {
 
     }
 
-    public static LappProtos.Call.CallType of(Call.CallType c) {
+    public static Lapp.Call.CallType of(Call.CallType c) {
         switch (c) {
             case INTERFACE:
-                return LappProtos.Call.CallType.INTERFACE;
+                return Lapp.Call.CallType.INTERFACE;
             case VIRTUAL:
-                return LappProtos.Call.CallType.VIRTUAL;
+                return Lapp.Call.CallType.VIRTUAL;
             case SPECIAL:
-                return LappProtos.Call.CallType.SPECIAL;
+                return Lapp.Call.CallType.SPECIAL;
             case STATIC:
-                return LappProtos.Call.CallType.STATIC;
+                return Lapp.Call.CallType.STATIC;
             case UNKNOWN:
-                return LappProtos.Call.CallType.UNKNOWN;
+                return Lapp.Call.CallType.UNKNOWN;
             default:
-                return LappProtos.Call.CallType.UNRECOGNIZED;
+                return Lapp.Call.CallType.UNRECOGNIZED;
         }
     }
 
-    public static LappProtos.ChaRelation of(ChaEdge c) {
-        return LappProtos.ChaRelation.newBuilder()
+    public static Lapp.ChaRelation of(ChaEdge c) {
+        return Lapp.ChaRelation.newBuilder()
                 .setRelated(of(c.source))
                 .setSubject(of(c.target))
                 .setType(of(c.type))
                 .build();
     }
 
-    public static LappProtos.ChaRelation.RelationType of(ChaEdge.ChaEdgeType t) {
+    public static Lapp.ChaRelation.RelationType of(ChaEdge.ChaEdgeType t) {
         switch (t) {
             case OVERRIDE:
-                return LappProtos.ChaRelation.RelationType.OVERRIDE;
+                return Lapp.ChaRelation.RelationType.OVERRIDE;
             case IMPLEMENTS:
-                return LappProtos.ChaRelation.RelationType.IMPLEMENTS;
+                return Lapp.ChaRelation.RelationType.IMPLEMENTS;
             default:
-                return LappProtos.ChaRelation.RelationType.UNRECOGNIZED;
+                return Lapp.ChaRelation.RelationType.UNRECOGNIZED;
         }
     }
 }

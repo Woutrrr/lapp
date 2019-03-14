@@ -2,7 +2,7 @@ package nl.wvdzwan.lapp;
 
 import org.junit.jupiter.api.Test;
 
-import nl.wvdzwan.lapp.Method.ResolvedMethod;
+import nl.wvdzwan.lapp.core.ResolvedMethod;
 import nl.wvdzwan.lapp.call.Call;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;

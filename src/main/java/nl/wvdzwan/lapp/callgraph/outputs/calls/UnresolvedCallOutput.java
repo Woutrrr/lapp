@@ -3,7 +3,7 @@ package nl.wvdzwan.lapp.callgraph.outputs.calls;
 import java.io.IOException;
 import java.io.Writer;
 
-import nl.wvdzwan.lapp.LappPackage;
+import nl.wvdzwan.lapp.core.LappPackage;
 import nl.wvdzwan.lapp.call.Edge;
 import nl.wvdzwan.lapp.callgraph.outputs.LappPackageOutput;
 

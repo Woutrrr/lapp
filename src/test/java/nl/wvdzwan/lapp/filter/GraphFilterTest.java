@@ -2,7 +2,7 @@ package nl.wvdzwan.lapp.filter;
 
 import org.junit.jupiter.api.Test;
 
-import nl.wvdzwan.lapp.Method.Method;
+import nl.wvdzwan.lapp.core.Method;
 
 class GraphFilterTest {
 

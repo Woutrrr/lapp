@@ -1,4 +1,7 @@
-package nl.wvdzwan.lapp.Method;
+package nl.wvdzwan.lapp.core;
+
+import nl.wvdzwan.lapp.core.ResolvedMethod;
+import nl.wvdzwan.lapp.core.UnresolvedMethod;
 
 public interface AnalysisContext {
 

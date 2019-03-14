@@ -11,7 +11,7 @@ import org.jgrapht.io.Attribute;
 import org.jgrapht.io.DOTExporter;
 import org.jgrapht.io.DefaultAttribute;
 
-import nl.wvdzwan.lapp.Method.Method;
+import nl.wvdzwan.lapp.core.Method;
 import nl.wvdzwan.lapp.call.Call;
 import nl.wvdzwan.lapp.call.ChaEdge;
 import nl.wvdzwan.lapp.call.Edge;

@@ -1,7 +1,7 @@
 package nl.wvdzwan.lapp.call;
 
-import nl.wvdzwan.lapp.Method.Method;
-import nl.wvdzwan.lapp.Method.ResolvedMethod;
+import nl.wvdzwan.lapp.core.Method;
+import nl.wvdzwan.lapp.core.ResolvedMethod;
 
 public class ChaEdge extends Edge {
 

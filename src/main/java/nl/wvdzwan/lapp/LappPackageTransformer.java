@@ -2,7 +2,8 @@ package nl.wvdzwan.lapp;
 
 import org.jgrapht.graph.DefaultDirectedGraph;
 
-import nl.wvdzwan.lapp.Method.Method;
+import nl.wvdzwan.lapp.core.LappPackage;
+import nl.wvdzwan.lapp.core.Method;
 import nl.wvdzwan.lapp.call.Call;
 import nl.wvdzwan.lapp.call.ChaEdge;
 import nl.wvdzwan.lapp.call.Edge;

@@ -2,7 +2,7 @@ package nl.wvdzwan.lapp.call;
 
 import java.util.Objects;
 
-import nl.wvdzwan.lapp.Method.Method;
+import nl.wvdzwan.lapp.core.Method;
 
 public abstract class Edge {
 

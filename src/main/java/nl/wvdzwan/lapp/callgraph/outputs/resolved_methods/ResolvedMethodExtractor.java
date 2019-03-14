@@ -5,8 +5,8 @@ import java.util.stream.Collectors;
 
 import org.jgrapht.Graph;
 
-import nl.wvdzwan.lapp.Method.Method;
-import nl.wvdzwan.lapp.Method.ResolvedMethod;
+import nl.wvdzwan.lapp.core.Method;
+import nl.wvdzwan.lapp.core.ResolvedMethod;
 import nl.wvdzwan.lapp.call.Edge;
 
 public class ResolvedMethodExtractor {

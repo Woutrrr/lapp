@@ -1,4 +1,4 @@
-package nl.wvdzwan.lapp.callgraph;
+package nl.wvdzwan.lapp.callgraph.wala;
 
 import java.util.Iterator;
 import java.util.List;
@@ -13,18 +13,18 @@ import com.ibm.wala.ipa.cha.IClassHierarchy;
 import com.ibm.wala.types.ClassLoaderReference;
 import com.ibm.wala.types.Selector;
 
-import nl.wvdzwan.lapp.Method.Method;
-import nl.wvdzwan.lapp.Method.ResolvedMethod;
+import nl.wvdzwan.lapp.core.Method;
+import nl.wvdzwan.lapp.core.ResolvedMethod;
 import nl.wvdzwan.lapp.call.ChaEdge;
-import nl.wvdzwan.lapp.callgraph.PackageBuilder.MethodType;
+import nl.wvdzwan.lapp.callgraph.wala.LappPackageBuilder.MethodType;
 
 public class ClassHierarchyInserter {
 
 
     private final IClassHierarchy cha;
-    private final PackageBuilder graph;
+    private final LappPackageBuilder graph;
 
-    public ClassHierarchyInserter(IClassHierarchy cha, PackageBuilder graph) {
+    public ClassHierarchyInserter(IClassHierarchy cha, LappPackageBuilder graph) {
         this.cha = cha;
         this.graph = graph;
     }

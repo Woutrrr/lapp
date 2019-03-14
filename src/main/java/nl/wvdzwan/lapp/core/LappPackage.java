@@ -1,12 +1,10 @@
-package nl.wvdzwan.lapp;
+package nl.wvdzwan.lapp.core;
 
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import nl.wvdzwan.lapp.Method.Method;
-import nl.wvdzwan.lapp.Method.ResolvedMethod;
 import nl.wvdzwan.lapp.call.Call;
 import nl.wvdzwan.lapp.call.ChaEdge;
 

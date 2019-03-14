@@ -3,9 +3,9 @@ package nl.wvdzwan.lapp.callgraph.outputs;
 import java.io.IOException;
 import java.io.OutputStream;
 
-import nl.wvdzwan.lapp.LappPackage;
-import nl.wvdzwan.lapp.Protobuf;
-import nl.wvdzwan.lapp.protos.LappProtos;
+import nl.wvdzwan.lapp.core.LappPackage;
+import nl.wvdzwan.lapp.protobuf.Lapp;
+import nl.wvdzwan.lapp.protobuf.Protobuf;
 
 public class ProtobufOutput implements LappPackageOutput {
 
@@ -19,7 +19,7 @@ public class ProtobufOutput implements LappPackageOutput {
     @Override
     public boolean export(LappPackage lappPackage) {
 
-        LappProtos.Package protobuf = Protobuf.of(lappPackage);
+        Lapp.Package protobuf = Protobuf.of(lappPackage);
 
         try {
             protobuf.writeTo(output);

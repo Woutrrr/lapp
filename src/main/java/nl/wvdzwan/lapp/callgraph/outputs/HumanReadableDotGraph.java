@@ -6,7 +6,7 @@ import org.jgrapht.Graph;
 import org.jgrapht.io.Attribute;
 import org.jgrapht.io.DOTExporter;
 
-import nl.wvdzwan.lapp.Method.Method;
+import nl.wvdzwan.lapp.core.Method;
 import nl.wvdzwan.lapp.call.Edge;
 
 public class HumanReadableDotGraph extends GraphVizOutput {

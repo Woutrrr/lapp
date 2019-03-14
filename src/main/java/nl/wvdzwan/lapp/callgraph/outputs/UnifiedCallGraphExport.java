@@ -5,9 +5,9 @@ import java.util.Map;
 import org.jgrapht.Graph;
 import org.jgrapht.io.Attribute;
 
-import nl.wvdzwan.lapp.Method.Method;
-import nl.wvdzwan.lapp.Method.ResolvedMethod;
-import nl.wvdzwan.lapp.Method.UnresolvedMethod;
+import nl.wvdzwan.lapp.core.Method;
+import nl.wvdzwan.lapp.core.ResolvedMethod;
+import nl.wvdzwan.lapp.core.UnresolvedMethod;
 import nl.wvdzwan.lapp.call.Edge;
 
 public class UnifiedCallGraphExport extends GraphVizOutput {

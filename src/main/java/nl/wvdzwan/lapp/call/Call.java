@@ -2,8 +2,8 @@ package nl.wvdzwan.lapp.call;
 
 import java.util.Objects;
 
-import nl.wvdzwan.lapp.Method.Method;
-import nl.wvdzwan.lapp.Method.ResolvedMethod;
+import nl.wvdzwan.lapp.core.Method;
+import nl.wvdzwan.lapp.core.ResolvedMethod;
 
 public class Call extends Edge {
 

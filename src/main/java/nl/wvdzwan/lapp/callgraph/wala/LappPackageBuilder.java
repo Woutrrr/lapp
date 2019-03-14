@@ -1,18 +1,20 @@
-package nl.wvdzwan.lapp.callgraph;
+package nl.wvdzwan.lapp.callgraph.wala;
 
 import com.ibm.wala.types.ClassLoaderReference;
 import com.ibm.wala.types.MethodReference;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import nl.wvdzwan.lapp.LappPackage;
-import nl.wvdzwan.lapp.Method.Method;
-import nl.wvdzwan.lapp.Method.ResolvedMethod;
-import nl.wvdzwan.lapp.Method.UnresolvedMethod;
+import nl.wvdzwan.lapp.callgraph.ArtifactRecord;
+import nl.wvdzwan.lapp.callgraph.ClassArtifactResolver;
+import nl.wvdzwan.lapp.core.LappPackage;
+import nl.wvdzwan.lapp.core.Method;
+import nl.wvdzwan.lapp.core.ResolvedMethod;
+import nl.wvdzwan.lapp.core.UnresolvedMethod;
 import nl.wvdzwan.lapp.call.Call;
 import nl.wvdzwan.lapp.call.ChaEdge;
 
-public class PackageBuilder {
+public class LappPackageBuilder {
 
     private static final Logger logger = LogManager.getLogger();
     private final LappPackage lappPackage;
@@ -25,7 +27,7 @@ public class PackageBuilder {
     }
 
 
-    public PackageBuilder(ClassArtifactResolver artifactResolver) {
+    public LappPackageBuilder(ClassArtifactResolver artifactResolver) {
         this.artifactResolver = artifactResolver;
         this.lappPackage = new LappPackage("stub", "version"); // TODO fix package name/version
     }

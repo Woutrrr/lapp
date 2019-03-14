@@ -25,6 +25,8 @@ import com.ibm.wala.util.warnings.Warnings;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import nl.wvdzwan.lapp.callgraph.wala.WalaAnalysisResult;
+
 public class WalaAnalysis {
     private static Logger logger = LogManager.getLogger();
 

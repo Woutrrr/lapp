@@ -1,4 +1,4 @@
-package nl.wvdzwan.lapp.Method;
+package nl.wvdzwan.lapp.core;
 
 import java.util.HashMap;
 import java.util.Map;

@@ -5,7 +5,7 @@ import java.io.Writer;
 
 import org.junit.jupiter.api.Test;
 
-import nl.wvdzwan.lapp.LappPackage;
+import nl.wvdzwan.lapp.core.LappPackage;
 import nl.wvdzwan.lapp.callgraph.outputs.calls.ResolvedCallOutput;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;

@@ -13,9 +13,11 @@ import org.jgrapht.Graph;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
-import nl.wvdzwan.lapp.LappPackage;
+import nl.wvdzwan.lapp.callgraph.wala.WalaAnalysisResult;
+import nl.wvdzwan.lapp.callgraph.wala.WalaAnalysisTransformer;
+import nl.wvdzwan.lapp.core.LappPackage;
 import nl.wvdzwan.lapp.LappPackageTransformer;
-import nl.wvdzwan.lapp.Method.Method;
+import nl.wvdzwan.lapp.core.Method;
 import nl.wvdzwan.lapp.call.Edge;
 import nl.wvdzwan.lapp.callgraph.outputs.calls.ResolvedCallOutput;
 import nl.wvdzwan.lapp.callgraph.outputs.calls.UnresolvedCallOutput;

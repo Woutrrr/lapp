@@ -6,8 +6,8 @@ import java.util.Set;
 
 import org.jgrapht.Graph;
 
-import nl.wvdzwan.lapp.Method.Method;
-import nl.wvdzwan.lapp.Method.ResolvedMethod;
+import nl.wvdzwan.lapp.core.Method;
+import nl.wvdzwan.lapp.core.ResolvedMethod;
 import nl.wvdzwan.lapp.call.Edge;
 import nl.wvdzwan.lapp.callgraph.outputs.CallGraphOutput;
 

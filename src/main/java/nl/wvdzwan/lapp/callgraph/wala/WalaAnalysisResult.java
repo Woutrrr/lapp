@@ -1,4 +1,4 @@
-package nl.wvdzwan.lapp.callgraph;
+package nl.wvdzwan.lapp.callgraph.wala;
 
 import com.ibm.wala.ipa.callgraph.CallGraph;
 import com.ibm.wala.ipa.cha.IClassHierarchy;

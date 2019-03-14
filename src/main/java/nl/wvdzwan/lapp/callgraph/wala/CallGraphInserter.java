@@ -1,4 +1,4 @@
-package nl.wvdzwan.lapp.callgraph;
+package nl.wvdzwan.lapp.callgraph.wala;
 
 import java.util.Iterator;
 import java.util.function.Predicate;
@@ -12,7 +12,7 @@ import com.ibm.wala.shrikeBT.IInvokeInstruction;
 import com.ibm.wala.types.ClassLoaderReference;
 import com.ibm.wala.types.MethodReference;
 
-import nl.wvdzwan.lapp.Method.Method;
+import nl.wvdzwan.lapp.core.Method;
 import nl.wvdzwan.lapp.call.Call;
 
 public class CallGraphInserter {
@@ -20,9 +20,9 @@ public class CallGraphInserter {
 
     private final CallGraph cg;
     private final IClassHierarchy cha;
-    private final PackageBuilder graph;
+    private final LappPackageBuilder graph;
 
-    public CallGraphInserter(CallGraph cg, IClassHierarchy cha, PackageBuilder graph) {
+    public CallGraphInserter(CallGraph cg, IClassHierarchy cha, LappPackageBuilder graph) {
         this.cg = cg;
         this.cha = cha;
         this.graph = graph;
@@ -36,7 +36,7 @@ public class CallGraphInserter {
             if (nodeFilter.test(node)) {
                 continue;
             }
-            Method methodNode = graph.addMethod(nodeReference, PackageBuilder.MethodType.IMPLEMENTATION);
+            Method methodNode = graph.addMethod(nodeReference, LappPackageBuilder.MethodType.IMPLEMENTATION);
 
             for (Iterator<CallSiteReference> callSites = node.iterateCallSites(); callSites.hasNext(); ) {
                 CallSiteReference callSite = callSites.next();

@@ -2,8 +2,8 @@ syntax = "proto3";
 
 package lapp;
 
-option java_package = "nl.wvdzwan.lapp.protos";
-option java_outer_classname = "LappProtos";
+option java_package = "nl.wvdzwan.lapp.protobuf";
+option java_outer_classname = "Lapp";
 
 message Method {
     string namespace = 1;

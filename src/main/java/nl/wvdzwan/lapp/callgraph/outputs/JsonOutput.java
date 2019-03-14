@@ -6,9 +6,9 @@ import java.io.PrintWriter;
 import com.google.protobuf.InvalidProtocolBufferException;
 import com.google.protobuf.util.JsonFormat;
 
-import nl.wvdzwan.lapp.LappPackage;
-import nl.wvdzwan.lapp.Protobuf;
-import nl.wvdzwan.lapp.protos.LappProtos;
+import nl.wvdzwan.lapp.core.LappPackage;
+import nl.wvdzwan.lapp.protobuf.Lapp;
+import nl.wvdzwan.lapp.protobuf.Protobuf;
 
 public class JsonOutput implements LappPackageOutput {
 
@@ -22,7 +22,7 @@ public class JsonOutput implements LappPackageOutput {
     @Override
     public boolean export(LappPackage lappPackage) {
 
-        LappProtos.Package protobuf = Protobuf.of(lappPackage);
+        Lapp.Package protobuf = Protobuf.of(lappPackage);
 
         try {
             String json = JsonFormat.printer().print(protobuf);
