@@ -1,10 +1,9 @@
 package nl.wvdzwan.lapp.callgraph;
 
 import java.io.IOException;
-import java.io.StringWriter;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.Arrays;
+import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -13,15 +12,14 @@ import org.jgrapht.Graph;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
+import nl.wvdzwan.lapp.LappPackageTransformer;
+import nl.wvdzwan.lapp.call.Call;
+import nl.wvdzwan.lapp.call.Edge;
 import nl.wvdzwan.lapp.callgraph.wala.WalaAnalysisResult;
 import nl.wvdzwan.lapp.callgraph.wala.WalaAnalysisTransformer;
 import nl.wvdzwan.lapp.core.LappPackage;
-import nl.wvdzwan.lapp.LappPackageTransformer;
 import nl.wvdzwan.lapp.core.Method;
-import nl.wvdzwan.lapp.call.Edge;
-import nl.wvdzwan.lapp.callgraph.outputs.calls.ResolvedCallOutput;
-import nl.wvdzwan.lapp.callgraph.outputs.calls.UnresolvedCallOutput;
-import nl.wvdzwan.lapp.callgraph.outputs.resolved_methods.ResolvedMethodOutput;
+import nl.wvdzwan.lapp.core.ResolvedMethod;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -60,60 +58,45 @@ class WalaAnalysisTest {
         assertTrue(analysisResult.extendedCha.getNumberOfClasses() > analysisResult.cg.getClassHierarchy().getNumberOfClasses());
     }
 
-
     @Test
-    void verifyResolvedMethodOutput() throws IOException {
+    void verifyResolvedmethods() throws IOException {
+        Set<ResolvedMethod> methods = lappPackage.methods;
 
-        StringWriter writer = new StringWriter();
-
-        ResolvedMethodOutput resolvedMethodOutput = new ResolvedMethodOutput(writer);
-        resolvedMethodOutput.export(graph);
-
-        String result = writer.toString();
-
-        String[] lines = result.split("\\n");
-        Arrays.sort(lines);
-
-        String sortedResult = String.join("\n", lines);
+        String actual = methods.stream()
+                .map(ResolvedMethod::toID)
+                .sorted()
+                .collect(Collectors.joining("\n"));
 
         String expectedNodes = getExpectationFileAsString("resolved_methods.txt");
-        assertEquals(expectedNodes, sortedResult);
+        assertEquals(expectedNodes, actual);
+
     }
 
     @Test
-    void verifyResolvedCallOutput() throws IOException {
+    void verifyResolvedCalls() throws IOException {
+        Set<Call> calls = lappPackage.resolvedCalls;
 
-        StringWriter writer = new StringWriter();
-
-        ResolvedCallOutput resolvedCallOutput = new ResolvedCallOutput(writer);
-        resolvedCallOutput.export(lappPackage);
-
-        String result = writer.toString();
-        String[] lines = result.split("\\n");
-        Arrays.sort(lines);
-        String sortedResult = String.join("\n", lines);
+        String actual = calls.stream()
+                .map(edge -> edge.source.toID() + " -> " + edge.target.toID() + " :" + edge.getLabel())
+                .sorted()
+                .collect(Collectors.joining("\n"));
 
         String expectedNodes = getExpectationFileAsString("resolved_calls.txt");
-        assertEquals(expectedNodes, sortedResult);
+        assertEquals(expectedNodes, actual);
     }
 
     @Test
-    void verifyUnresolvedCallOutput() throws IOException {
+    void verifyUnresolvedCalls() throws IOException {
+        Set<Call> calls = lappPackage.unresolvedCalls;
 
-        StringWriter writer = new StringWriter();
-
-        UnresolvedCallOutput unresolvedCallOutput = new UnresolvedCallOutput(writer);
-        unresolvedCallOutput.export(lappPackage);
-
-        String result = writer.toString();
-        String[] lines = result.split("\\n");
-        Arrays.sort(lines);
-        String sortedResult = String.join("\n", lines);
+        String actual = calls.stream()
+                .map(edge -> edge.source.toID() + " -> " + edge.target.toID() + " :" + edge.getLabel())
+                .sorted()
+                .collect(Collectors.joining("\n"));
 
         String expectedNodes = getExpectationFileAsString("unresolved_calls.txt");
-        assertEquals(expectedNodes, sortedResult);
+        assertEquals(expectedNodes, actual);
     }
-
 
     private String getExpectationFileAsString(String file) throws IOException {
         return new String(
