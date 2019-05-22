@@ -3,7 +3,6 @@ package nl.wvdzwan.lapp.callgraph.wala;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import com.ibm.wala.classLoader.IClass;
@@ -13,10 +12,10 @@ import com.ibm.wala.ipa.cha.IClassHierarchy;
 import com.ibm.wala.types.ClassLoaderReference;
 import com.ibm.wala.types.Selector;
 
-import nl.wvdzwan.lapp.core.Method;
-import nl.wvdzwan.lapp.core.ResolvedMethod;
 import nl.wvdzwan.lapp.call.ChaEdge;
 import nl.wvdzwan.lapp.callgraph.wala.LappPackageBuilder.MethodType;
+import nl.wvdzwan.lapp.core.Method;
+import nl.wvdzwan.lapp.core.ResolvedMethod;
 
 public class ClassHierarchyInserter {
 
@@ -93,15 +92,17 @@ public class ClassHierarchyInserter {
         // So if this method doesn't have a super method or an interface method look for them in the interfaces of the abstract superclass
         if (superKlass.isAbstract() && superMethod == null && methodInterfaces == null) {
 
-            Map<Selector, IMethod> abstractSuperClassInterfaceMethods = superKlass.getDirectInterfaces()
+            Map<Selector, List<IMethod>> abstractSuperClassInterfacesByMethod = superKlass.getDirectInterfaces()
                     .stream()
                     .flatMap(o -> o.getDeclaredMethods().stream())
-                    .collect(Collectors.toMap(IMethod::getSelector, Function.identity()));
+                    .collect(Collectors.groupingBy(IMethod::getSelector));
 
-            IMethod abstractSuperClassInterfaceMethod = abstractSuperClassInterfaceMethods.get(declaredMethod.getSelector());
-            if (abstractSuperClassInterfaceMethod != null) {
-                Method abstractSuperClassInterfaceMethodNode = graph.addMethod(abstractSuperClassInterfaceMethod.getReference(), MethodType.INTERFACE);
-                graph.addChaEdge(abstractSuperClassInterfaceMethodNode, resolvedMethod, ChaEdge.ChaEdgeType.IMPLEMENTS);
+            List<IMethod> abstractSuperClassInterfaceMethods = abstractSuperClassInterfacesByMethod.get(declaredMethod.getSelector());
+            if (abstractSuperClassInterfaceMethods != null && abstractSuperClassInterfaceMethods.size() > 0) {
+                for (IMethod abstractSuperClassInterfaceMethod : abstractSuperClassInterfaceMethods) {
+                    Method abstractSuperClassInterfaceMethodNode = graph.addMethod(abstractSuperClassInterfaceMethod.getReference(), MethodType.INTERFACE);
+                    graph.addChaEdge(abstractSuperClassInterfaceMethodNode, resolvedMethod, ChaEdge.ChaEdgeType.IMPLEMENTS);
+                }
             }
         }
     }
