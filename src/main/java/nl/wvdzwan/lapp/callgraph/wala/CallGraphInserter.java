@@ -12,20 +12,20 @@ import com.ibm.wala.shrikeBT.IInvokeInstruction;
 import com.ibm.wala.types.ClassLoaderReference;
 import com.ibm.wala.types.MethodReference;
 
-import nl.wvdzwan.lapp.core.Method;
 import nl.wvdzwan.lapp.call.Call;
+import nl.wvdzwan.lapp.core.Method;
 
 public class CallGraphInserter {
 
 
     private final CallGraph cg;
     private final IClassHierarchy cha;
-    private final LappPackageBuilder graph;
+    private final LappPackageBuilder lappPackageBuilder;
 
-    public CallGraphInserter(CallGraph cg, IClassHierarchy cha, LappPackageBuilder graph) {
+    public CallGraphInserter(CallGraph cg, IClassHierarchy cha, LappPackageBuilder lappPackageBuilder) {
         this.cg = cg;
         this.cha = cha;
-        this.graph = graph;
+        this.lappPackageBuilder = lappPackageBuilder;
     }
 
 
@@ -33,26 +33,28 @@ public class CallGraphInserter {
         for (CGNode node : this.cg) {
             MethodReference nodeReference = node.getMethod().getReference();
 
-            if (nodeFilter.test(node)) {
+            if (applicationClassLoaderFilter.test(node)) {
+                // Ignore everything not in the application classloader
                 continue;
             }
-            Method methodNode = graph.addMethod(nodeReference, LappPackageBuilder.MethodType.IMPLEMENTATION);
+            Method methodNode = lappPackageBuilder.addMethod(nodeReference, LappPackageBuilder.MethodType.IMPLEMENTATION);
 
             for (Iterator<CallSiteReference> callSites = node.iterateCallSites(); callSites.hasNext(); ) {
                 CallSiteReference callSite = callSites.next();
 
-                MethodReference targetReference = correctClassLoader(callSite.getDeclaredTarget());
+                /* If the target is unknown, is gets the Application loader by default. We would like this to be the
+                   Extension loader, that way it is easy to filter them out later.
+                   */
+                MethodReference targetWithCorrectClassLoader = correctClassLoader(callSite.getDeclaredTarget());
 
-
-                Method targetMethodNode = graph.addMethod(targetReference);
-                graph.addCall(methodNode, targetMethodNode, getInvocationLabel(callSite));
-
+                Method targetMethodNode = lappPackageBuilder.addMethod(targetWithCorrectClassLoader);
+                lappPackageBuilder.addCall(methodNode, targetMethodNode, getInvocationLabel(callSite));
             }
 
         }
     }
 
-    private Predicate<CGNode> nodeFilter = node -> {
+    private Predicate<CGNode> applicationClassLoaderFilter = node -> {
         return !node.getMethod()
                 .getDeclaringClass()
                 .getClassLoader()

@@ -18,7 +18,7 @@ public class ResolvedCallOutputTest {
 
         ResolvedCallOutput output = new ResolvedCallOutput(new IOExceptionOnFlushWriter());
 
-        boolean result = output.export(new LappPackage("test", "Test"));
+        boolean result = output.export(new LappPackage());
 
         assertFalse(result);
 

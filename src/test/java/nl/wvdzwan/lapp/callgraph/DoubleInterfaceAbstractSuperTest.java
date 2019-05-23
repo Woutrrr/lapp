@@ -15,6 +15,7 @@ import org.junit.jupiter.api.Test;
 import nl.wvdzwan.lapp.LappPackageTransformer;
 import nl.wvdzwan.lapp.call.Call;
 import nl.wvdzwan.lapp.call.Edge;
+import nl.wvdzwan.lapp.callgraph.FolderLayout.DollarSeparatedLayout;
 import nl.wvdzwan.lapp.callgraph.wala.WalaAnalysisResult;
 import nl.wvdzwan.lapp.callgraph.wala.WalaAnalysisTransformer;
 import nl.wvdzwan.lapp.core.LappPackage;
@@ -45,7 +46,7 @@ class DoubleInterfaceAbstractSuperTest {
         WalaAnalysis analysis = new WalaAnalysis(mainJar, classpath, "Java60RegressionExclusions.txt");
         analysisResult = analysis.run();
 
-        lappPackage = WalaAnalysisTransformer.toPackage(analysisResult, StubClassResolver.build());
+        lappPackage = WalaAnalysisTransformer.toPackage(analysisResult, new DollarSeparatedLayout());
         graph = LappPackageTransformer.toGraph(lappPackage);
 
     }

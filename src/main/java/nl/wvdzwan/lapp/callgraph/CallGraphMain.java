@@ -12,10 +12,11 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import picocli.CommandLine;
 
+import nl.wvdzwan.lapp.callgraph.FolderLayout.ArtifactFolderLayout;
+import nl.wvdzwan.lapp.callgraph.FolderLayout.DollarSeparatedLayout;
 import nl.wvdzwan.lapp.callgraph.wala.WalaAnalysisResult;
 import nl.wvdzwan.lapp.callgraph.wala.WalaAnalysisTransformer;
 import nl.wvdzwan.lapp.core.LappPackage;
-import nl.wvdzwan.lapp.callgraph.FolderLayout.DollarSeparatedLayout;
 
 @CommandLine.Command(
         name = "callgraph",
@@ -75,7 +76,8 @@ public class CallGraphMain implements Callable<Void> {
 
 
         if (inPlace) {
-            outputDirectory = Paths.get(jar).getParent().toFile();
+            String firstJar = jar.split(":")[0];
+            outputDirectory = Paths.get(firstJar).getParent().toFile();
         }
 
         // Setup
@@ -110,9 +112,11 @@ public class CallGraphMain implements Callable<Void> {
         WalaAnalysis analysis = new WalaAnalysis(jar, dependencyClassPath, exclusionFile);
         WalaAnalysisResult analysisResult = analysis.run();
 
-        // Build IR graph
-        ClassToArtifactResolver artifactResolver = new ClassToArtifactResolver(analysisResult.extendedCha, new DollarSeparatedLayout());
-        LappPackage lappPackage = WalaAnalysisTransformer.toPackage(analysisResult, artifactResolver);
+        // Build Lapp Package
+        logger.info("Build LappPackage for {}", jar);
+        ArtifactFolderLayout layoutTransformer = new DollarSeparatedLayout();
+
+        LappPackage lappPackage = WalaAnalysisTransformer.toPackage(analysisResult, layoutTransformer);
 
 
         // Output

@@ -48,6 +48,9 @@ public class WalaAnalysis {
             AnalysisScope scope = AnalysisScopeReader.makePrimordialScope(exclusionsFile);
             AnalysisScopeReader.addClassPathToScope(mainJar, scope, scope.getLoader(AnalysisScope.APPLICATION));
 
+            if (!classPath.equals("")) {
+                AnalysisScopeReader.addClassPathToScope(classPath, scope, scope.getLoader(AnalysisScope.EXTENSION));
+            }
             logger.debug("Building class hierarchy...");
             // TODO : This really should use makeWithPhantom however that function is not yet stable and will cause NPE's later in the analysis
             ClassHierarchy cha = ClassHierarchyFactory.makeWithRoot(scope);
@@ -69,32 +72,18 @@ public class WalaAnalysis {
             AnalysisCache cache = new AnalysisCacheImpl();
 
             logger.debug("Preform RTA analysis...");
+            long startTime = System.nanoTime();
             CallGraphBuilder builder = Util.makeRTABuilder(options, cache, cha, scope);
             CallGraph cg = builder.makeCallGraph(options, null);
+            long endTime = System.nanoTime();
+
             logger.info("RTA analysis done!");
             logger.info(() -> CallGraphStats.getStats(cg));
 
 
+            logger.info("Took {}", () -> (endTime - startTime)/1000000);
 
-            AnalysisScope extendedScope = AnalysisScopeReader.makePrimordialScope(exclusionsFile);
-            AnalysisScopeReader.addClassPathToScope(mainJar, extendedScope, extendedScope.getLoader(AnalysisScope.APPLICATION));
-            if (!classPath.equals("")) {
-                AnalysisScopeReader.addClassPathToScope(classPath, extendedScope, extendedScope.getLoader(AnalysisScope.EXTENSION));
-            }
-
-            logger.debug("Building extended class hierarchy with phantom super classes and dependencies...");
-            ClassHierarchy extendedCha = ClassHierarchyFactory.makeWithPhantom(extendedScope);
-            logger.info("Extended class hierarchy built, {} classes", extendedCha::getNumberOfClasses);
-
-
-            for(Warning warning : filterExclusionsWarnings(scope.getExclusions())) {
-                logger.warn(warning);
-            }
-            Warnings.clear();
-
-
-
-            return new WalaAnalysisResult(cg, extendedCha);
+            return new WalaAnalysisResult(cg, cg.getClassHierarchy());
 
         } catch (CallGraphBuilderCancelException e) {
             logger.warn("Graph building cancelled! Continuing with partial graph");

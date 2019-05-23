@@ -1,19 +1,21 @@
 package nl.wvdzwan.lapp.callgraph.wala;
 
-import nl.wvdzwan.lapp.callgraph.ClassArtifactResolver;
+import com.ibm.wala.types.ClassLoaderReference;
+
+import nl.wvdzwan.lapp.callgraph.ClassToArtifactResolver;
+import nl.wvdzwan.lapp.callgraph.FolderLayout.ArtifactFolderLayout;
 import nl.wvdzwan.lapp.core.LappPackage;
 
 public class WalaAnalysisTransformer {
 
-    public static LappPackage toPackage(WalaAnalysisResult analysisResult, ClassArtifactResolver artifactResolver) {
-        LappPackageBuilder builder = new LappPackageBuilder(artifactResolver);
+    public static LappPackage toPackage(WalaAnalysisResult analysisResult,  ArtifactFolderLayout layout) {
+        ClassToArtifactResolver artifactResolver = new ClassToArtifactResolver(analysisResult.cg.getClassHierarchy(), layout);
 
-        ClassHierarchyInserter chaInserter = new ClassHierarchyInserter(analysisResult.extendedCha, builder);
-        chaInserter.insertCHA();
+        LappPackageBuilder builder = new LappPackageBuilder(artifactResolver, layout);
 
-        CallGraphInserter cgInserter = new CallGraphInserter(analysisResult.cg, analysisResult.extendedCha, builder);
-        cgInserter.insertCallGraph();
-
-        return builder.getLappPackage();
+        return builder.setPackages(analysisResult.cg.getClassHierarchy().getScope().getModules(ClassLoaderReference.Application))
+                .insertCha(analysisResult.cg.getClassHierarchy())
+                .insertCallGraph(analysisResult.cg)
+                .build();
     }
 }
