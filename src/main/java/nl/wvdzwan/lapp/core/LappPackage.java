@@ -7,23 +7,19 @@ import java.util.Set;
 
 import nl.wvdzwan.lapp.call.Call;
 import nl.wvdzwan.lapp.call.ChaEdge;
+import nl.wvdzwan.lapp.callgraph.ArtifactRecord;
 
 public class LappPackage {
-    public final String pkg;
-    public final String version;
+    public final Set<ArtifactRecord> artifacts = new HashSet<>();
+
     public final Set<ResolvedMethod> methods = new HashSet<>();
     public final Set<Call> resolvedCalls = new HashSet<>();
     public final Set<Call> unresolvedCalls = new HashSet<>();
 
     public final Set<ChaEdge> cha = new HashSet<>();
+    public final Set<ChaEdge> unresolvedCha = new HashSet<>();
 
     public final Map<String, String> metadata = new HashMap<>();
-
-
-    public LappPackage(String pkg, String version) {
-        this.pkg = pkg;
-        this.version = version;
-    }
 
     public void addResolvedMethod(ResolvedMethod resolvedMethod) {
         methods.add(resolvedMethod);
@@ -40,7 +36,6 @@ public class LappPackage {
     }
 
     private boolean addUnresolvedCall(Method source, Method target, Call.CallType type) {
-
         Call call = new Call(source, target, type);
 
         return unresolvedCalls.add(call);
@@ -53,9 +48,20 @@ public class LappPackage {
     }
 
     public boolean addChaEdge(Method related, ResolvedMethod subject, ChaEdge.ChaEdgeType type) {
+        if (related instanceof ResolvedMethod) {
+            return addResolvedChaEdge((ResolvedMethod) related, (ResolvedMethod) subject, type);
+        }
 
+        return addUnresolvedChaEdge(related, subject, type);
+
+    }
+
+    public boolean addResolvedChaEdge(ResolvedMethod related, ResolvedMethod subject, ChaEdge.ChaEdgeType type) {
         return cha.add(new ChaEdge(related, subject, type));
+    }
 
+    public boolean addUnresolvedChaEdge(Method related, ResolvedMethod subject, ChaEdge.ChaEdgeType type) {
+        return unresolvedCha.add(new ChaEdge(related, subject, type));
     }
 
 }

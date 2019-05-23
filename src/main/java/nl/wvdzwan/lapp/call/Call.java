@@ -8,11 +8,11 @@ import nl.wvdzwan.lapp.core.ResolvedMethod;
 public class Call extends Edge {
 
     public enum CallType {
+        UNKNOWN("unknown"),
         INTERFACE("invoke_interface"),
         VIRTUAL("invoke_virtual"),
         SPECIAL("invoke_special"),
-        STATIC("invoke_static"),
-        UNKNOWN("unknown");
+        STATIC("invoke_static");
 
         public final String label;
 

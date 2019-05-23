@@ -18,11 +18,11 @@ message Call {
     Method target = 2;
 
     enum CallType {
-        INTERFACE = 0;
-        VIRTUAL = 1;
-        SPECIAL = 2;
-        STATIC = 3;
-        UNKNOWN = 4;
+        UNKNOWN = 0;
+        INTERFACE = 1;
+        VIRTUAL = 2;
+        SPECIAL = 3;
+        STATIC = 4;
     }
     CallType callType = 3;
 }
@@ -32,20 +32,30 @@ message ChaRelation {
     Method related = 2;
 
     enum RelationType {
-        OVERRIDE = 0;
-        IMPLEMENTS = 1;
+        UNKNOWN = 0;
+        OVERRIDE = 1;
+        IMPLEMENTS = 2;
     }
 
     RelationType type = 3;
 }
 
+message Artifact {
+    string group = 1;
+    string name = 2;
+    string version = 3;
+}
+
 message Package {
-    string name = 1;
-    string version = 2;
+    repeated Artifact artifacts = 1;
 
     repeated Method methods = 3;
+
     repeated Call resolvedCalls = 4;
     repeated Call unresolvedCalls = 5;
+
     repeated ChaRelation cha = 6;
-    map<string, string> metadata = 7;
+    repeated ChaRelation unresolvedCha = 7;
+
+    map<string, string> metadata = 8;
 }

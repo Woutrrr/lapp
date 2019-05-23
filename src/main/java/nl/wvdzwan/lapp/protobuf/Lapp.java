@@ -1298,48 +1298,48 @@ public final class Lapp {
     public enum CallType
         implements com.google.protobuf.ProtocolMessageEnum {
       /**
-       * <code>INTERFACE = 0;</code>
+       * <code>UNKNOWN = 0;</code>
        */
-      INTERFACE(0),
+      UNKNOWN(0),
       /**
-       * <code>VIRTUAL = 1;</code>
+       * <code>INTERFACE = 1;</code>
        */
-      VIRTUAL(1),
+      INTERFACE(1),
       /**
-       * <code>SPECIAL = 2;</code>
+       * <code>VIRTUAL = 2;</code>
        */
-      SPECIAL(2),
+      VIRTUAL(2),
       /**
-       * <code>STATIC = 3;</code>
+       * <code>SPECIAL = 3;</code>
        */
-      STATIC(3),
+      SPECIAL(3),
       /**
-       * <code>UNKNOWN = 4;</code>
+       * <code>STATIC = 4;</code>
        */
-      UNKNOWN(4),
+      STATIC(4),
       UNRECOGNIZED(-1),
       ;
 
       /**
-       * <code>INTERFACE = 0;</code>
+       * <code>UNKNOWN = 0;</code>
        */
-      public static final int INTERFACE_VALUE = 0;
+      public static final int UNKNOWN_VALUE = 0;
       /**
-       * <code>VIRTUAL = 1;</code>
+       * <code>INTERFACE = 1;</code>
        */
-      public static final int VIRTUAL_VALUE = 1;
+      public static final int INTERFACE_VALUE = 1;
       /**
-       * <code>SPECIAL = 2;</code>
+       * <code>VIRTUAL = 2;</code>
        */
-      public static final int SPECIAL_VALUE = 2;
+      public static final int VIRTUAL_VALUE = 2;
       /**
-       * <code>STATIC = 3;</code>
+       * <code>SPECIAL = 3;</code>
        */
-      public static final int STATIC_VALUE = 3;
+      public static final int SPECIAL_VALUE = 3;
       /**
-       * <code>UNKNOWN = 4;</code>
+       * <code>STATIC = 4;</code>
        */
-      public static final int UNKNOWN_VALUE = 4;
+      public static final int STATIC_VALUE = 4;
 
 
       public final int getNumber() {
@@ -1360,11 +1360,11 @@ public final class Lapp {
 
       public static CallType forNumber(int value) {
         switch (value) {
-          case 0: return INTERFACE;
-          case 1: return VIRTUAL;
-          case 2: return SPECIAL;
-          case 3: return STATIC;
-          case 4: return UNKNOWN;
+          case 0: return UNKNOWN;
+          case 1: return INTERFACE;
+          case 2: return VIRTUAL;
+          case 3: return SPECIAL;
+          case 4: return STATIC;
           default: return null;
         }
       }
@@ -1496,7 +1496,7 @@ public final class Lapp {
       if (target_ != null) {
         output.writeMessage(2, getTarget());
       }
-      if (callType_ != nl.wvdzwan.lapp.protobuf.Lapp.Call.CallType.INTERFACE.getNumber()) {
+      if (callType_ != nl.wvdzwan.lapp.protobuf.Lapp.Call.CallType.UNKNOWN.getNumber()) {
         output.writeEnum(3, callType_);
       }
       unknownFields.writeTo(output);
@@ -1516,7 +1516,7 @@ public final class Lapp {
         size += com.google.protobuf.CodedOutputStream
           .computeMessageSize(2, getTarget());
       }
-      if (callType_ != nl.wvdzwan.lapp.protobuf.Lapp.Call.CallType.INTERFACE.getNumber()) {
+      if (callType_ != nl.wvdzwan.lapp.protobuf.Lapp.Call.CallType.UNKNOWN.getNumber()) {
         size += com.google.protobuf.CodedOutputStream
           .computeEnumSize(3, callType_);
       }
@@ -2317,24 +2317,32 @@ public final class Lapp {
     public enum RelationType
         implements com.google.protobuf.ProtocolMessageEnum {
       /**
-       * <code>OVERRIDE = 0;</code>
+       * <code>UNKNOWN = 0;</code>
        */
-      OVERRIDE(0),
+      UNKNOWN(0),
       /**
-       * <code>IMPLEMENTS = 1;</code>
+       * <code>OVERRIDE = 1;</code>
        */
-      IMPLEMENTS(1),
+      OVERRIDE(1),
+      /**
+       * <code>IMPLEMENTS = 2;</code>
+       */
+      IMPLEMENTS(2),
       UNRECOGNIZED(-1),
       ;
 
       /**
-       * <code>OVERRIDE = 0;</code>
+       * <code>UNKNOWN = 0;</code>
        */
-      public static final int OVERRIDE_VALUE = 0;
+      public static final int UNKNOWN_VALUE = 0;
       /**
-       * <code>IMPLEMENTS = 1;</code>
+       * <code>OVERRIDE = 1;</code>
        */
-      public static final int IMPLEMENTS_VALUE = 1;
+      public static final int OVERRIDE_VALUE = 1;
+      /**
+       * <code>IMPLEMENTS = 2;</code>
+       */
+      public static final int IMPLEMENTS_VALUE = 2;
 
 
       public final int getNumber() {
@@ -2355,8 +2363,9 @@ public final class Lapp {
 
       public static RelationType forNumber(int value) {
         switch (value) {
-          case 0: return OVERRIDE;
-          case 1: return IMPLEMENTS;
+          case 0: return UNKNOWN;
+          case 1: return OVERRIDE;
+          case 2: return IMPLEMENTS;
           default: return null;
         }
       }
@@ -2488,7 +2497,7 @@ public final class Lapp {
       if (related_ != null) {
         output.writeMessage(2, getRelated());
       }
-      if (type_ != nl.wvdzwan.lapp.protobuf.Lapp.ChaRelation.RelationType.OVERRIDE.getNumber()) {
+      if (type_ != nl.wvdzwan.lapp.protobuf.Lapp.ChaRelation.RelationType.UNKNOWN.getNumber()) {
         output.writeEnum(3, type_);
       }
       unknownFields.writeTo(output);
@@ -2508,7 +2517,7 @@ public final class Lapp {
         size += com.google.protobuf.CodedOutputStream
           .computeMessageSize(2, getRelated());
       }
-      if (type_ != nl.wvdzwan.lapp.protobuf.Lapp.ChaRelation.RelationType.OVERRIDE.getNumber()) {
+      if (type_ != nl.wvdzwan.lapp.protobuf.Lapp.ChaRelation.RelationType.UNKNOWN.getNumber()) {
         size += com.google.protobuf.CodedOutputStream
           .computeEnumSize(3, type_);
       }
@@ -3160,29 +3169,856 @@ public final class Lapp {
 
   }
 
-  public interface PackageOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:lapp.Package)
+  public interface ArtifactOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:lapp.Artifact)
       com.google.protobuf.MessageOrBuilder {
 
     /**
-     * <code>string name = 1;</code>
+     * <code>string group = 1;</code>
+     */
+    java.lang.String getGroup();
+    /**
+     * <code>string group = 1;</code>
+     */
+    com.google.protobuf.ByteString
+        getGroupBytes();
+
+    /**
+     * <code>string name = 2;</code>
      */
     java.lang.String getName();
     /**
-     * <code>string name = 1;</code>
+     * <code>string name = 2;</code>
      */
     com.google.protobuf.ByteString
         getNameBytes();
 
     /**
-     * <code>string version = 2;</code>
+     * <code>string version = 3;</code>
      */
     java.lang.String getVersion();
     /**
-     * <code>string version = 2;</code>
+     * <code>string version = 3;</code>
      */
     com.google.protobuf.ByteString
         getVersionBytes();
+  }
+  /**
+   * Protobuf type {@code lapp.Artifact}
+   */
+  public  static final class Artifact extends
+      com.google.protobuf.GeneratedMessageV3 implements
+      // @@protoc_insertion_point(message_implements:lapp.Artifact)
+      ArtifactOrBuilder {
+  private static final long serialVersionUID = 0L;
+    // Use Artifact.newBuilder() to construct.
+    private Artifact(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+      super(builder);
+    }
+    private Artifact() {
+      group_ = "";
+      name_ = "";
+      version_ = "";
+    }
+
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+    getUnknownFields() {
+      return this.unknownFields;
+    }
+    private Artifact(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      this();
+      if (extensionRegistry == null) {
+        throw new java.lang.NullPointerException();
+      }
+      int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            case 10: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              group_ = s;
+              break;
+            }
+            case 18: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              name_ = s;
+              break;
+            }
+            case 26: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              version_ = s;
+              break;
+            }
+            default: {
+              if (!parseUnknownField(
+                  input, unknownFields, extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return nl.wvdzwan.lapp.protobuf.Lapp.internal_static_lapp_Artifact_descriptor;
+    }
+
+    @java.lang.Override
+    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return nl.wvdzwan.lapp.protobuf.Lapp.internal_static_lapp_Artifact_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              nl.wvdzwan.lapp.protobuf.Lapp.Artifact.class, nl.wvdzwan.lapp.protobuf.Lapp.Artifact.Builder.class);
+    }
+
+    public static final int GROUP_FIELD_NUMBER = 1;
+    private volatile java.lang.Object group_;
+    /**
+     * <code>string group = 1;</code>
+     */
+    public java.lang.String getGroup() {
+      java.lang.Object ref = group_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        group_ = s;
+        return s;
+      }
+    }
+    /**
+     * <code>string group = 1;</code>
+     */
+    public com.google.protobuf.ByteString
+        getGroupBytes() {
+      java.lang.Object ref = group_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        group_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int NAME_FIELD_NUMBER = 2;
+    private volatile java.lang.Object name_;
+    /**
+     * <code>string name = 2;</code>
+     */
+    public java.lang.String getName() {
+      java.lang.Object ref = name_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        name_ = s;
+        return s;
+      }
+    }
+    /**
+     * <code>string name = 2;</code>
+     */
+    public com.google.protobuf.ByteString
+        getNameBytes() {
+      java.lang.Object ref = name_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        name_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int VERSION_FIELD_NUMBER = 3;
+    private volatile java.lang.Object version_;
+    /**
+     * <code>string version = 3;</code>
+     */
+    public java.lang.String getVersion() {
+      java.lang.Object ref = version_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        version_ = s;
+        return s;
+      }
+    }
+    /**
+     * <code>string version = 3;</code>
+     */
+    public com.google.protobuf.ByteString
+        getVersionBytes() {
+      java.lang.Object ref = version_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        version_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    private byte memoizedIsInitialized = -1;
+    @java.lang.Override
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    @java.lang.Override
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      if (!getGroupBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 1, group_);
+      }
+      if (!getNameBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 2, name_);
+      }
+      if (!getVersionBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 3, version_);
+      }
+      unknownFields.writeTo(output);
+    }
+
+    @java.lang.Override
+    public int getSerializedSize() {
+      int size = memoizedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (!getGroupBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, group_);
+      }
+      if (!getNameBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, name_);
+      }
+      if (!getVersionBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(3, version_);
+      }
+      size += unknownFields.getSerializedSize();
+      memoizedSize = size;
+      return size;
+    }
+
+    @java.lang.Override
+    public boolean equals(final java.lang.Object obj) {
+      if (obj == this) {
+       return true;
+      }
+      if (!(obj instanceof nl.wvdzwan.lapp.protobuf.Lapp.Artifact)) {
+        return super.equals(obj);
+      }
+      nl.wvdzwan.lapp.protobuf.Lapp.Artifact other = (nl.wvdzwan.lapp.protobuf.Lapp.Artifact) obj;
+
+      if (!getGroup()
+          .equals(other.getGroup())) return false;
+      if (!getName()
+          .equals(other.getName())) return false;
+      if (!getVersion()
+          .equals(other.getVersion())) return false;
+      if (!unknownFields.equals(other.unknownFields)) return false;
+      return true;
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+      if (memoizedHashCode != 0) {
+        return memoizedHashCode;
+      }
+      int hash = 41;
+      hash = (19 * hash) + getDescriptor().hashCode();
+      hash = (37 * hash) + GROUP_FIELD_NUMBER;
+      hash = (53 * hash) + getGroup().hashCode();
+      hash = (37 * hash) + NAME_FIELD_NUMBER;
+      hash = (53 * hash) + getName().hashCode();
+      hash = (37 * hash) + VERSION_FIELD_NUMBER;
+      hash = (53 * hash) + getVersion().hashCode();
+      hash = (29 * hash) + unknownFields.hashCode();
+      memoizedHashCode = hash;
+      return hash;
+    }
+
+    public static nl.wvdzwan.lapp.protobuf.Lapp.Artifact parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static nl.wvdzwan.lapp.protobuf.Lapp.Artifact parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static nl.wvdzwan.lapp.protobuf.Lapp.Artifact parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static nl.wvdzwan.lapp.protobuf.Lapp.Artifact parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static nl.wvdzwan.lapp.protobuf.Lapp.Artifact parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static nl.wvdzwan.lapp.protobuf.Lapp.Artifact parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static nl.wvdzwan.lapp.protobuf.Lapp.Artifact parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static nl.wvdzwan.lapp.protobuf.Lapp.Artifact parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static nl.wvdzwan.lapp.protobuf.Lapp.Artifact parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input);
+    }
+    public static nl.wvdzwan.lapp.protobuf.Lapp.Artifact parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static nl.wvdzwan.lapp.protobuf.Lapp.Artifact parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static nl.wvdzwan.lapp.protobuf.Lapp.Artifact parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    @java.lang.Override
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder() {
+      return DEFAULT_INSTANCE.toBuilder();
+    }
+    public static Builder newBuilder(nl.wvdzwan.lapp.protobuf.Lapp.Artifact prototype) {
+      return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
+    }
+    @java.lang.Override
+    public Builder toBuilder() {
+      return this == DEFAULT_INSTANCE
+          ? new Builder() : new Builder().mergeFrom(this);
+    }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code lapp.Artifact}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:lapp.Artifact)
+        nl.wvdzwan.lapp.protobuf.Lapp.ArtifactOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return nl.wvdzwan.lapp.protobuf.Lapp.internal_static_lapp_Artifact_descriptor;
+      }
+
+      @java.lang.Override
+      protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return nl.wvdzwan.lapp.protobuf.Lapp.internal_static_lapp_Artifact_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                nl.wvdzwan.lapp.protobuf.Lapp.Artifact.class, nl.wvdzwan.lapp.protobuf.Lapp.Artifact.Builder.class);
+      }
+
+      // Construct using nl.wvdzwan.lapp.protobuf.Lapp.Artifact.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessageV3
+                .alwaysUseFieldBuilders) {
+        }
+      }
+      @java.lang.Override
+      public Builder clear() {
+        super.clear();
+        group_ = "";
+
+        name_ = "";
+
+        version_ = "";
+
+        return this;
+      }
+
+      @java.lang.Override
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return nl.wvdzwan.lapp.protobuf.Lapp.internal_static_lapp_Artifact_descriptor;
+      }
+
+      @java.lang.Override
+      public nl.wvdzwan.lapp.protobuf.Lapp.Artifact getDefaultInstanceForType() {
+        return nl.wvdzwan.lapp.protobuf.Lapp.Artifact.getDefaultInstance();
+      }
+
+      @java.lang.Override
+      public nl.wvdzwan.lapp.protobuf.Lapp.Artifact build() {
+        nl.wvdzwan.lapp.protobuf.Lapp.Artifact result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      @java.lang.Override
+      public nl.wvdzwan.lapp.protobuf.Lapp.Artifact buildPartial() {
+        nl.wvdzwan.lapp.protobuf.Lapp.Artifact result = new nl.wvdzwan.lapp.protobuf.Lapp.Artifact(this);
+        result.group_ = group_;
+        result.name_ = name_;
+        result.version_ = version_;
+        onBuilt();
+        return result;
+      }
+
+      @java.lang.Override
+      public Builder clone() {
+        return super.clone();
+      }
+      @java.lang.Override
+      public Builder setField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return super.setField(field, value);
+      }
+      @java.lang.Override
+      public Builder clearField(
+          com.google.protobuf.Descriptors.FieldDescriptor field) {
+        return super.clearField(field);
+      }
+      @java.lang.Override
+      public Builder clearOneof(
+          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
+        return super.clearOneof(oneof);
+      }
+      @java.lang.Override
+      public Builder setRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          int index, java.lang.Object value) {
+        return super.setRepeatedField(field, index, value);
+      }
+      @java.lang.Override
+      public Builder addRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return super.addRepeatedField(field, value);
+      }
+      @java.lang.Override
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof nl.wvdzwan.lapp.protobuf.Lapp.Artifact) {
+          return mergeFrom((nl.wvdzwan.lapp.protobuf.Lapp.Artifact)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(nl.wvdzwan.lapp.protobuf.Lapp.Artifact other) {
+        if (other == nl.wvdzwan.lapp.protobuf.Lapp.Artifact.getDefaultInstance()) return this;
+        if (!other.getGroup().isEmpty()) {
+          group_ = other.group_;
+          onChanged();
+        }
+        if (!other.getName().isEmpty()) {
+          name_ = other.name_;
+          onChanged();
+        }
+        if (!other.getVersion().isEmpty()) {
+          version_ = other.version_;
+          onChanged();
+        }
+        this.mergeUnknownFields(other.unknownFields);
+        onChanged();
+        return this;
+      }
+
+      @java.lang.Override
+      public final boolean isInitialized() {
+        return true;
+      }
+
+      @java.lang.Override
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        nl.wvdzwan.lapp.protobuf.Lapp.Artifact parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (nl.wvdzwan.lapp.protobuf.Lapp.Artifact) e.getUnfinishedMessage();
+          throw e.unwrapIOException();
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+
+      private java.lang.Object group_ = "";
+      /**
+       * <code>string group = 1;</code>
+       */
+      public java.lang.String getGroup() {
+        java.lang.Object ref = group_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          group_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>string group = 1;</code>
+       */
+      public com.google.protobuf.ByteString
+          getGroupBytes() {
+        java.lang.Object ref = group_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          group_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>string group = 1;</code>
+       */
+      public Builder setGroup(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        group_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string group = 1;</code>
+       */
+      public Builder clearGroup() {
+        
+        group_ = getDefaultInstance().getGroup();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string group = 1;</code>
+       */
+      public Builder setGroupBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        group_ = value;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object name_ = "";
+      /**
+       * <code>string name = 2;</code>
+       */
+      public java.lang.String getName() {
+        java.lang.Object ref = name_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          name_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>string name = 2;</code>
+       */
+      public com.google.protobuf.ByteString
+          getNameBytes() {
+        java.lang.Object ref = name_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          name_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>string name = 2;</code>
+       */
+      public Builder setName(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        name_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string name = 2;</code>
+       */
+      public Builder clearName() {
+        
+        name_ = getDefaultInstance().getName();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string name = 2;</code>
+       */
+      public Builder setNameBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        name_ = value;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object version_ = "";
+      /**
+       * <code>string version = 3;</code>
+       */
+      public java.lang.String getVersion() {
+        java.lang.Object ref = version_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          version_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>string version = 3;</code>
+       */
+      public com.google.protobuf.ByteString
+          getVersionBytes() {
+        java.lang.Object ref = version_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          version_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>string version = 3;</code>
+       */
+      public Builder setVersion(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        version_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string version = 3;</code>
+       */
+      public Builder clearVersion() {
+        
+        version_ = getDefaultInstance().getVersion();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string version = 3;</code>
+       */
+      public Builder setVersionBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        version_ = value;
+        onChanged();
+        return this;
+      }
+      @java.lang.Override
+      public final Builder setUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.setUnknownFields(unknownFields);
+      }
+
+      @java.lang.Override
+      public final Builder mergeUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.mergeUnknownFields(unknownFields);
+      }
+
+
+      // @@protoc_insertion_point(builder_scope:lapp.Artifact)
+    }
+
+    // @@protoc_insertion_point(class_scope:lapp.Artifact)
+    private static final nl.wvdzwan.lapp.protobuf.Lapp.Artifact DEFAULT_INSTANCE;
+    static {
+      DEFAULT_INSTANCE = new nl.wvdzwan.lapp.protobuf.Lapp.Artifact();
+    }
+
+    public static nl.wvdzwan.lapp.protobuf.Lapp.Artifact getDefaultInstance() {
+      return DEFAULT_INSTANCE;
+    }
+
+    private static final com.google.protobuf.Parser<Artifact>
+        PARSER = new com.google.protobuf.AbstractParser<Artifact>() {
+      @java.lang.Override
+      public Artifact parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new Artifact(input, extensionRegistry);
+      }
+    };
+
+    public static com.google.protobuf.Parser<Artifact> parser() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<Artifact> getParserForType() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public nl.wvdzwan.lapp.protobuf.Lapp.Artifact getDefaultInstanceForType() {
+      return DEFAULT_INSTANCE;
+    }
+
+  }
+
+  public interface PackageOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:lapp.Package)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>repeated .lapp.Artifact artifacts = 1;</code>
+     */
+    java.util.List<nl.wvdzwan.lapp.protobuf.Lapp.Artifact> 
+        getArtifactsList();
+    /**
+     * <code>repeated .lapp.Artifact artifacts = 1;</code>
+     */
+    nl.wvdzwan.lapp.protobuf.Lapp.Artifact getArtifacts(int index);
+    /**
+     * <code>repeated .lapp.Artifact artifacts = 1;</code>
+     */
+    int getArtifactsCount();
+    /**
+     * <code>repeated .lapp.Artifact artifacts = 1;</code>
+     */
+    java.util.List<? extends nl.wvdzwan.lapp.protobuf.Lapp.ArtifactOrBuilder> 
+        getArtifactsOrBuilderList();
+    /**
+     * <code>repeated .lapp.Artifact artifacts = 1;</code>
+     */
+    nl.wvdzwan.lapp.protobuf.Lapp.ArtifactOrBuilder getArtifactsOrBuilder(
+        int index);
 
     /**
      * <code>repeated .lapp.Method methods = 3;</code>
@@ -3281,11 +4117,35 @@ public final class Lapp {
         int index);
 
     /**
-     * <code>map&lt;string, string&gt; metadata = 7;</code>
+     * <code>repeated .lapp.ChaRelation unresolvedCha = 7;</code>
+     */
+    java.util.List<nl.wvdzwan.lapp.protobuf.Lapp.ChaRelation> 
+        getUnresolvedChaList();
+    /**
+     * <code>repeated .lapp.ChaRelation unresolvedCha = 7;</code>
+     */
+    nl.wvdzwan.lapp.protobuf.Lapp.ChaRelation getUnresolvedCha(int index);
+    /**
+     * <code>repeated .lapp.ChaRelation unresolvedCha = 7;</code>
+     */
+    int getUnresolvedChaCount();
+    /**
+     * <code>repeated .lapp.ChaRelation unresolvedCha = 7;</code>
+     */
+    java.util.List<? extends nl.wvdzwan.lapp.protobuf.Lapp.ChaRelationOrBuilder> 
+        getUnresolvedChaOrBuilderList();
+    /**
+     * <code>repeated .lapp.ChaRelation unresolvedCha = 7;</code>
+     */
+    nl.wvdzwan.lapp.protobuf.Lapp.ChaRelationOrBuilder getUnresolvedChaOrBuilder(
+        int index);
+
+    /**
+     * <code>map&lt;string, string&gt; metadata = 8;</code>
      */
     int getMetadataCount();
     /**
-     * <code>map&lt;string, string&gt; metadata = 7;</code>
+     * <code>map&lt;string, string&gt; metadata = 8;</code>
      */
     boolean containsMetadata(
         java.lang.String key);
@@ -3296,19 +4156,19 @@ public final class Lapp {
     java.util.Map<java.lang.String, java.lang.String>
     getMetadata();
     /**
-     * <code>map&lt;string, string&gt; metadata = 7;</code>
+     * <code>map&lt;string, string&gt; metadata = 8;</code>
      */
     java.util.Map<java.lang.String, java.lang.String>
     getMetadataMap();
     /**
-     * <code>map&lt;string, string&gt; metadata = 7;</code>
+     * <code>map&lt;string, string&gt; metadata = 8;</code>
      */
 
     java.lang.String getMetadataOrDefault(
         java.lang.String key,
         java.lang.String defaultValue);
     /**
-     * <code>map&lt;string, string&gt; metadata = 7;</code>
+     * <code>map&lt;string, string&gt; metadata = 8;</code>
      */
 
     java.lang.String getMetadataOrThrow(
@@ -3327,12 +4187,12 @@ public final class Lapp {
       super(builder);
     }
     private Package() {
-      name_ = "";
-      version_ = "";
+      artifacts_ = java.util.Collections.emptyList();
       methods_ = java.util.Collections.emptyList();
       resolvedCalls_ = java.util.Collections.emptyList();
       unresolvedCalls_ = java.util.Collections.emptyList();
       cha_ = java.util.Collections.emptyList();
+      unresolvedCha_ = java.util.Collections.emptyList();
     }
 
     @java.lang.Override
@@ -3360,54 +4220,60 @@ public final class Lapp {
               done = true;
               break;
             case 10: {
-              java.lang.String s = input.readStringRequireUtf8();
-
-              name_ = s;
-              break;
-            }
-            case 18: {
-              java.lang.String s = input.readStringRequireUtf8();
-
-              version_ = s;
+              if (!((mutable_bitField0_ & 0x00000001) != 0)) {
+                artifacts_ = new java.util.ArrayList<nl.wvdzwan.lapp.protobuf.Lapp.Artifact>();
+                mutable_bitField0_ |= 0x00000001;
+              }
+              artifacts_.add(
+                  input.readMessage(nl.wvdzwan.lapp.protobuf.Lapp.Artifact.parser(), extensionRegistry));
               break;
             }
             case 26: {
-              if (!((mutable_bitField0_ & 0x00000004) != 0)) {
+              if (!((mutable_bitField0_ & 0x00000002) != 0)) {
                 methods_ = new java.util.ArrayList<nl.wvdzwan.lapp.protobuf.Lapp.Method>();
-                mutable_bitField0_ |= 0x00000004;
+                mutable_bitField0_ |= 0x00000002;
               }
               methods_.add(
                   input.readMessage(nl.wvdzwan.lapp.protobuf.Lapp.Method.parser(), extensionRegistry));
               break;
             }
             case 34: {
-              if (!((mutable_bitField0_ & 0x00000008) != 0)) {
+              if (!((mutable_bitField0_ & 0x00000004) != 0)) {
                 resolvedCalls_ = new java.util.ArrayList<nl.wvdzwan.lapp.protobuf.Lapp.Call>();
-                mutable_bitField0_ |= 0x00000008;
+                mutable_bitField0_ |= 0x00000004;
               }
               resolvedCalls_.add(
                   input.readMessage(nl.wvdzwan.lapp.protobuf.Lapp.Call.parser(), extensionRegistry));
               break;
             }
             case 42: {
-              if (!((mutable_bitField0_ & 0x00000010) != 0)) {
+              if (!((mutable_bitField0_ & 0x00000008) != 0)) {
                 unresolvedCalls_ = new java.util.ArrayList<nl.wvdzwan.lapp.protobuf.Lapp.Call>();
-                mutable_bitField0_ |= 0x00000010;
+                mutable_bitField0_ |= 0x00000008;
               }
               unresolvedCalls_.add(
                   input.readMessage(nl.wvdzwan.lapp.protobuf.Lapp.Call.parser(), extensionRegistry));
               break;
             }
             case 50: {
-              if (!((mutable_bitField0_ & 0x00000020) != 0)) {
+              if (!((mutable_bitField0_ & 0x00000010) != 0)) {
                 cha_ = new java.util.ArrayList<nl.wvdzwan.lapp.protobuf.Lapp.ChaRelation>();
-                mutable_bitField0_ |= 0x00000020;
+                mutable_bitField0_ |= 0x00000010;
               }
               cha_.add(
                   input.readMessage(nl.wvdzwan.lapp.protobuf.Lapp.ChaRelation.parser(), extensionRegistry));
               break;
             }
             case 58: {
+              if (!((mutable_bitField0_ & 0x00000020) != 0)) {
+                unresolvedCha_ = new java.util.ArrayList<nl.wvdzwan.lapp.protobuf.Lapp.ChaRelation>();
+                mutable_bitField0_ |= 0x00000020;
+              }
+              unresolvedCha_.add(
+                  input.readMessage(nl.wvdzwan.lapp.protobuf.Lapp.ChaRelation.parser(), extensionRegistry));
+              break;
+            }
+            case 66: {
               if (!((mutable_bitField0_ & 0x00000040) != 0)) {
                 metadata_ = com.google.protobuf.MapField.newMapField(
                     MetadataDefaultEntryHolder.defaultEntry);
@@ -3435,17 +4301,23 @@ public final class Lapp {
         throw new com.google.protobuf.InvalidProtocolBufferException(
             e).setUnfinishedMessage(this);
       } finally {
-        if (((mutable_bitField0_ & 0x00000004) != 0)) {
+        if (((mutable_bitField0_ & 0x00000001) != 0)) {
+          artifacts_ = java.util.Collections.unmodifiableList(artifacts_);
+        }
+        if (((mutable_bitField0_ & 0x00000002) != 0)) {
           methods_ = java.util.Collections.unmodifiableList(methods_);
         }
-        if (((mutable_bitField0_ & 0x00000008) != 0)) {
+        if (((mutable_bitField0_ & 0x00000004) != 0)) {
           resolvedCalls_ = java.util.Collections.unmodifiableList(resolvedCalls_);
         }
-        if (((mutable_bitField0_ & 0x00000010) != 0)) {
+        if (((mutable_bitField0_ & 0x00000008) != 0)) {
           unresolvedCalls_ = java.util.Collections.unmodifiableList(unresolvedCalls_);
         }
-        if (((mutable_bitField0_ & 0x00000020) != 0)) {
+        if (((mutable_bitField0_ & 0x00000010) != 0)) {
           cha_ = java.util.Collections.unmodifiableList(cha_);
+        }
+        if (((mutable_bitField0_ & 0x00000020) != 0)) {
+          unresolvedCha_ = java.util.Collections.unmodifiableList(unresolvedCha_);
         }
         this.unknownFields = unknownFields.build();
         makeExtensionsImmutable();
@@ -3461,7 +4333,7 @@ public final class Lapp {
     protected com.google.protobuf.MapField internalGetMapField(
         int number) {
       switch (number) {
-        case 7:
+        case 8:
           return internalGetMetadata();
         default:
           throw new RuntimeException(
@@ -3476,73 +4348,39 @@ public final class Lapp {
               nl.wvdzwan.lapp.protobuf.Lapp.Package.class, nl.wvdzwan.lapp.protobuf.Lapp.Package.Builder.class);
     }
 
-    private int bitField0_;
-    public static final int NAME_FIELD_NUMBER = 1;
-    private volatile java.lang.Object name_;
+    public static final int ARTIFACTS_FIELD_NUMBER = 1;
+    private java.util.List<nl.wvdzwan.lapp.protobuf.Lapp.Artifact> artifacts_;
     /**
-     * <code>string name = 1;</code>
+     * <code>repeated .lapp.Artifact artifacts = 1;</code>
      */
-    public java.lang.String getName() {
-      java.lang.Object ref = name_;
-      if (ref instanceof java.lang.String) {
-        return (java.lang.String) ref;
-      } else {
-        com.google.protobuf.ByteString bs = 
-            (com.google.protobuf.ByteString) ref;
-        java.lang.String s = bs.toStringUtf8();
-        name_ = s;
-        return s;
-      }
+    public java.util.List<nl.wvdzwan.lapp.protobuf.Lapp.Artifact> getArtifactsList() {
+      return artifacts_;
     }
     /**
-     * <code>string name = 1;</code>
+     * <code>repeated .lapp.Artifact artifacts = 1;</code>
      */
-    public com.google.protobuf.ByteString
-        getNameBytes() {
-      java.lang.Object ref = name_;
-      if (ref instanceof java.lang.String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
-        name_ = b;
-        return b;
-      } else {
-        return (com.google.protobuf.ByteString) ref;
-      }
-    }
-
-    public static final int VERSION_FIELD_NUMBER = 2;
-    private volatile java.lang.Object version_;
-    /**
-     * <code>string version = 2;</code>
-     */
-    public java.lang.String getVersion() {
-      java.lang.Object ref = version_;
-      if (ref instanceof java.lang.String) {
-        return (java.lang.String) ref;
-      } else {
-        com.google.protobuf.ByteString bs = 
-            (com.google.protobuf.ByteString) ref;
-        java.lang.String s = bs.toStringUtf8();
-        version_ = s;
-        return s;
-      }
+    public java.util.List<? extends nl.wvdzwan.lapp.protobuf.Lapp.ArtifactOrBuilder> 
+        getArtifactsOrBuilderList() {
+      return artifacts_;
     }
     /**
-     * <code>string version = 2;</code>
+     * <code>repeated .lapp.Artifact artifacts = 1;</code>
      */
-    public com.google.protobuf.ByteString
-        getVersionBytes() {
-      java.lang.Object ref = version_;
-      if (ref instanceof java.lang.String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
-        version_ = b;
-        return b;
-      } else {
-        return (com.google.protobuf.ByteString) ref;
-      }
+    public int getArtifactsCount() {
+      return artifacts_.size();
+    }
+    /**
+     * <code>repeated .lapp.Artifact artifacts = 1;</code>
+     */
+    public nl.wvdzwan.lapp.protobuf.Lapp.Artifact getArtifacts(int index) {
+      return artifacts_.get(index);
+    }
+    /**
+     * <code>repeated .lapp.Artifact artifacts = 1;</code>
+     */
+    public nl.wvdzwan.lapp.protobuf.Lapp.ArtifactOrBuilder getArtifactsOrBuilder(
+        int index) {
+      return artifacts_.get(index);
     }
 
     public static final int METHODS_FIELD_NUMBER = 3;
@@ -3685,7 +4523,42 @@ public final class Lapp {
       return cha_.get(index);
     }
 
-    public static final int METADATA_FIELD_NUMBER = 7;
+    public static final int UNRESOLVEDCHA_FIELD_NUMBER = 7;
+    private java.util.List<nl.wvdzwan.lapp.protobuf.Lapp.ChaRelation> unresolvedCha_;
+    /**
+     * <code>repeated .lapp.ChaRelation unresolvedCha = 7;</code>
+     */
+    public java.util.List<nl.wvdzwan.lapp.protobuf.Lapp.ChaRelation> getUnresolvedChaList() {
+      return unresolvedCha_;
+    }
+    /**
+     * <code>repeated .lapp.ChaRelation unresolvedCha = 7;</code>
+     */
+    public java.util.List<? extends nl.wvdzwan.lapp.protobuf.Lapp.ChaRelationOrBuilder> 
+        getUnresolvedChaOrBuilderList() {
+      return unresolvedCha_;
+    }
+    /**
+     * <code>repeated .lapp.ChaRelation unresolvedCha = 7;</code>
+     */
+    public int getUnresolvedChaCount() {
+      return unresolvedCha_.size();
+    }
+    /**
+     * <code>repeated .lapp.ChaRelation unresolvedCha = 7;</code>
+     */
+    public nl.wvdzwan.lapp.protobuf.Lapp.ChaRelation getUnresolvedCha(int index) {
+      return unresolvedCha_.get(index);
+    }
+    /**
+     * <code>repeated .lapp.ChaRelation unresolvedCha = 7;</code>
+     */
+    public nl.wvdzwan.lapp.protobuf.Lapp.ChaRelationOrBuilder getUnresolvedChaOrBuilder(
+        int index) {
+      return unresolvedCha_.get(index);
+    }
+
+    public static final int METADATA_FIELD_NUMBER = 8;
     private static final class MetadataDefaultEntryHolder {
       static final com.google.protobuf.MapEntry<
           java.lang.String, java.lang.String> defaultEntry =
@@ -3712,7 +4585,7 @@ public final class Lapp {
       return internalGetMetadata().getMap().size();
     }
     /**
-     * <code>map&lt;string, string&gt; metadata = 7;</code>
+     * <code>map&lt;string, string&gt; metadata = 8;</code>
      */
 
     public boolean containsMetadata(
@@ -3728,14 +4601,14 @@ public final class Lapp {
       return getMetadataMap();
     }
     /**
-     * <code>map&lt;string, string&gt; metadata = 7;</code>
+     * <code>map&lt;string, string&gt; metadata = 8;</code>
      */
 
     public java.util.Map<java.lang.String, java.lang.String> getMetadataMap() {
       return internalGetMetadata().getMap();
     }
     /**
-     * <code>map&lt;string, string&gt; metadata = 7;</code>
+     * <code>map&lt;string, string&gt; metadata = 8;</code>
      */
 
     public java.lang.String getMetadataOrDefault(
@@ -3747,7 +4620,7 @@ public final class Lapp {
       return map.containsKey(key) ? map.get(key) : defaultValue;
     }
     /**
-     * <code>map&lt;string, string&gt; metadata = 7;</code>
+     * <code>map&lt;string, string&gt; metadata = 8;</code>
      */
 
     public java.lang.String getMetadataOrThrow(
@@ -3775,11 +4648,8 @@ public final class Lapp {
     @java.lang.Override
     public void writeTo(com.google.protobuf.CodedOutputStream output)
                         throws java.io.IOException {
-      if (!getNameBytes().isEmpty()) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 1, name_);
-      }
-      if (!getVersionBytes().isEmpty()) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 2, version_);
+      for (int i = 0; i < artifacts_.size(); i++) {
+        output.writeMessage(1, artifacts_.get(i));
       }
       for (int i = 0; i < methods_.size(); i++) {
         output.writeMessage(3, methods_.get(i));
@@ -3793,12 +4663,15 @@ public final class Lapp {
       for (int i = 0; i < cha_.size(); i++) {
         output.writeMessage(6, cha_.get(i));
       }
+      for (int i = 0; i < unresolvedCha_.size(); i++) {
+        output.writeMessage(7, unresolvedCha_.get(i));
+      }
       com.google.protobuf.GeneratedMessageV3
         .serializeStringMapTo(
           output,
           internalGetMetadata(),
           MetadataDefaultEntryHolder.defaultEntry,
-          7);
+          8);
       unknownFields.writeTo(output);
     }
 
@@ -3808,11 +4681,9 @@ public final class Lapp {
       if (size != -1) return size;
 
       size = 0;
-      if (!getNameBytes().isEmpty()) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, name_);
-      }
-      if (!getVersionBytes().isEmpty()) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, version_);
+      for (int i = 0; i < artifacts_.size(); i++) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(1, artifacts_.get(i));
       }
       for (int i = 0; i < methods_.size(); i++) {
         size += com.google.protobuf.CodedOutputStream
@@ -3830,6 +4701,10 @@ public final class Lapp {
         size += com.google.protobuf.CodedOutputStream
           .computeMessageSize(6, cha_.get(i));
       }
+      for (int i = 0; i < unresolvedCha_.size(); i++) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(7, unresolvedCha_.get(i));
+      }
       for (java.util.Map.Entry<java.lang.String, java.lang.String> entry
            : internalGetMetadata().getMap().entrySet()) {
         com.google.protobuf.MapEntry<java.lang.String, java.lang.String>
@@ -3838,7 +4713,7 @@ public final class Lapp {
             .setValue(entry.getValue())
             .build();
         size += com.google.protobuf.CodedOutputStream
-            .computeMessageSize(7, metadata__);
+            .computeMessageSize(8, metadata__);
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -3855,10 +4730,8 @@ public final class Lapp {
       }
       nl.wvdzwan.lapp.protobuf.Lapp.Package other = (nl.wvdzwan.lapp.protobuf.Lapp.Package) obj;
 
-      if (!getName()
-          .equals(other.getName())) return false;
-      if (!getVersion()
-          .equals(other.getVersion())) return false;
+      if (!getArtifactsList()
+          .equals(other.getArtifactsList())) return false;
       if (!getMethodsList()
           .equals(other.getMethodsList())) return false;
       if (!getResolvedCallsList()
@@ -3867,6 +4740,8 @@ public final class Lapp {
           .equals(other.getUnresolvedCallsList())) return false;
       if (!getChaList()
           .equals(other.getChaList())) return false;
+      if (!getUnresolvedChaList()
+          .equals(other.getUnresolvedChaList())) return false;
       if (!internalGetMetadata().equals(
           other.internalGetMetadata())) return false;
       if (!unknownFields.equals(other.unknownFields)) return false;
@@ -3880,10 +4755,10 @@ public final class Lapp {
       }
       int hash = 41;
       hash = (19 * hash) + getDescriptor().hashCode();
-      hash = (37 * hash) + NAME_FIELD_NUMBER;
-      hash = (53 * hash) + getName().hashCode();
-      hash = (37 * hash) + VERSION_FIELD_NUMBER;
-      hash = (53 * hash) + getVersion().hashCode();
+      if (getArtifactsCount() > 0) {
+        hash = (37 * hash) + ARTIFACTS_FIELD_NUMBER;
+        hash = (53 * hash) + getArtifactsList().hashCode();
+      }
       if (getMethodsCount() > 0) {
         hash = (37 * hash) + METHODS_FIELD_NUMBER;
         hash = (53 * hash) + getMethodsList().hashCode();
@@ -3899,6 +4774,10 @@ public final class Lapp {
       if (getChaCount() > 0) {
         hash = (37 * hash) + CHA_FIELD_NUMBER;
         hash = (53 * hash) + getChaList().hashCode();
+      }
+      if (getUnresolvedChaCount() > 0) {
+        hash = (37 * hash) + UNRESOLVEDCHA_FIELD_NUMBER;
+        hash = (53 * hash) + getUnresolvedChaList().hashCode();
       }
       if (!internalGetMetadata().getMap().isEmpty()) {
         hash = (37 * hash) + METADATA_FIELD_NUMBER;
@@ -4015,7 +4894,7 @@ public final class Lapp {
       protected com.google.protobuf.MapField internalGetMapField(
           int number) {
         switch (number) {
-          case 7:
+          case 8:
             return internalGetMetadata();
           default:
             throw new RuntimeException(
@@ -4026,7 +4905,7 @@ public final class Lapp {
       protected com.google.protobuf.MapField internalGetMutableMapField(
           int number) {
         switch (number) {
-          case 7:
+          case 8:
             return internalGetMutableMetadata();
           default:
             throw new RuntimeException(
@@ -4054,42 +4933,52 @@ public final class Lapp {
       private void maybeForceBuilderInitialization() {
         if (com.google.protobuf.GeneratedMessageV3
                 .alwaysUseFieldBuilders) {
+          getArtifactsFieldBuilder();
           getMethodsFieldBuilder();
           getResolvedCallsFieldBuilder();
           getUnresolvedCallsFieldBuilder();
           getChaFieldBuilder();
+          getUnresolvedChaFieldBuilder();
         }
       }
       @java.lang.Override
       public Builder clear() {
         super.clear();
-        name_ = "";
-
-        version_ = "";
-
+        if (artifactsBuilder_ == null) {
+          artifacts_ = java.util.Collections.emptyList();
+          bitField0_ = (bitField0_ & ~0x00000001);
+        } else {
+          artifactsBuilder_.clear();
+        }
         if (methodsBuilder_ == null) {
           methods_ = java.util.Collections.emptyList();
-          bitField0_ = (bitField0_ & ~0x00000004);
+          bitField0_ = (bitField0_ & ~0x00000002);
         } else {
           methodsBuilder_.clear();
         }
         if (resolvedCallsBuilder_ == null) {
           resolvedCalls_ = java.util.Collections.emptyList();
-          bitField0_ = (bitField0_ & ~0x00000008);
+          bitField0_ = (bitField0_ & ~0x00000004);
         } else {
           resolvedCallsBuilder_.clear();
         }
         if (unresolvedCallsBuilder_ == null) {
           unresolvedCalls_ = java.util.Collections.emptyList();
-          bitField0_ = (bitField0_ & ~0x00000010);
+          bitField0_ = (bitField0_ & ~0x00000008);
         } else {
           unresolvedCallsBuilder_.clear();
         }
         if (chaBuilder_ == null) {
           cha_ = java.util.Collections.emptyList();
-          bitField0_ = (bitField0_ & ~0x00000020);
+          bitField0_ = (bitField0_ & ~0x00000010);
         } else {
           chaBuilder_.clear();
+        }
+        if (unresolvedChaBuilder_ == null) {
+          unresolvedCha_ = java.util.Collections.emptyList();
+          bitField0_ = (bitField0_ & ~0x00000020);
+        } else {
+          unresolvedChaBuilder_.clear();
         }
         internalGetMutableMetadata().clear();
         return this;
@@ -4119,48 +5008,62 @@ public final class Lapp {
       public nl.wvdzwan.lapp.protobuf.Lapp.Package buildPartial() {
         nl.wvdzwan.lapp.protobuf.Lapp.Package result = new nl.wvdzwan.lapp.protobuf.Lapp.Package(this);
         int from_bitField0_ = bitField0_;
-        int to_bitField0_ = 0;
-        result.name_ = name_;
-        result.version_ = version_;
+        if (artifactsBuilder_ == null) {
+          if (((bitField0_ & 0x00000001) != 0)) {
+            artifacts_ = java.util.Collections.unmodifiableList(artifacts_);
+            bitField0_ = (bitField0_ & ~0x00000001);
+          }
+          result.artifacts_ = artifacts_;
+        } else {
+          result.artifacts_ = artifactsBuilder_.build();
+        }
         if (methodsBuilder_ == null) {
-          if (((bitField0_ & 0x00000004) != 0)) {
+          if (((bitField0_ & 0x00000002) != 0)) {
             methods_ = java.util.Collections.unmodifiableList(methods_);
-            bitField0_ = (bitField0_ & ~0x00000004);
+            bitField0_ = (bitField0_ & ~0x00000002);
           }
           result.methods_ = methods_;
         } else {
           result.methods_ = methodsBuilder_.build();
         }
         if (resolvedCallsBuilder_ == null) {
-          if (((bitField0_ & 0x00000008) != 0)) {
+          if (((bitField0_ & 0x00000004) != 0)) {
             resolvedCalls_ = java.util.Collections.unmodifiableList(resolvedCalls_);
-            bitField0_ = (bitField0_ & ~0x00000008);
+            bitField0_ = (bitField0_ & ~0x00000004);
           }
           result.resolvedCalls_ = resolvedCalls_;
         } else {
           result.resolvedCalls_ = resolvedCallsBuilder_.build();
         }
         if (unresolvedCallsBuilder_ == null) {
-          if (((bitField0_ & 0x00000010) != 0)) {
+          if (((bitField0_ & 0x00000008) != 0)) {
             unresolvedCalls_ = java.util.Collections.unmodifiableList(unresolvedCalls_);
-            bitField0_ = (bitField0_ & ~0x00000010);
+            bitField0_ = (bitField0_ & ~0x00000008);
           }
           result.unresolvedCalls_ = unresolvedCalls_;
         } else {
           result.unresolvedCalls_ = unresolvedCallsBuilder_.build();
         }
         if (chaBuilder_ == null) {
-          if (((bitField0_ & 0x00000020) != 0)) {
+          if (((bitField0_ & 0x00000010) != 0)) {
             cha_ = java.util.Collections.unmodifiableList(cha_);
-            bitField0_ = (bitField0_ & ~0x00000020);
+            bitField0_ = (bitField0_ & ~0x00000010);
           }
           result.cha_ = cha_;
         } else {
           result.cha_ = chaBuilder_.build();
         }
+        if (unresolvedChaBuilder_ == null) {
+          if (((bitField0_ & 0x00000020) != 0)) {
+            unresolvedCha_ = java.util.Collections.unmodifiableList(unresolvedCha_);
+            bitField0_ = (bitField0_ & ~0x00000020);
+          }
+          result.unresolvedCha_ = unresolvedCha_;
+        } else {
+          result.unresolvedCha_ = unresolvedChaBuilder_.build();
+        }
         result.metadata_ = internalGetMetadata();
         result.metadata_.makeImmutable();
-        result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
       }
@@ -4209,19 +5112,37 @@ public final class Lapp {
 
       public Builder mergeFrom(nl.wvdzwan.lapp.protobuf.Lapp.Package other) {
         if (other == nl.wvdzwan.lapp.protobuf.Lapp.Package.getDefaultInstance()) return this;
-        if (!other.getName().isEmpty()) {
-          name_ = other.name_;
-          onChanged();
-        }
-        if (!other.getVersion().isEmpty()) {
-          version_ = other.version_;
-          onChanged();
+        if (artifactsBuilder_ == null) {
+          if (!other.artifacts_.isEmpty()) {
+            if (artifacts_.isEmpty()) {
+              artifacts_ = other.artifacts_;
+              bitField0_ = (bitField0_ & ~0x00000001);
+            } else {
+              ensureArtifactsIsMutable();
+              artifacts_.addAll(other.artifacts_);
+            }
+            onChanged();
+          }
+        } else {
+          if (!other.artifacts_.isEmpty()) {
+            if (artifactsBuilder_.isEmpty()) {
+              artifactsBuilder_.dispose();
+              artifactsBuilder_ = null;
+              artifacts_ = other.artifacts_;
+              bitField0_ = (bitField0_ & ~0x00000001);
+              artifactsBuilder_ = 
+                com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders ?
+                   getArtifactsFieldBuilder() : null;
+            } else {
+              artifactsBuilder_.addAllMessages(other.artifacts_);
+            }
+          }
         }
         if (methodsBuilder_ == null) {
           if (!other.methods_.isEmpty()) {
             if (methods_.isEmpty()) {
               methods_ = other.methods_;
-              bitField0_ = (bitField0_ & ~0x00000004);
+              bitField0_ = (bitField0_ & ~0x00000002);
             } else {
               ensureMethodsIsMutable();
               methods_.addAll(other.methods_);
@@ -4234,7 +5155,7 @@ public final class Lapp {
               methodsBuilder_.dispose();
               methodsBuilder_ = null;
               methods_ = other.methods_;
-              bitField0_ = (bitField0_ & ~0x00000004);
+              bitField0_ = (bitField0_ & ~0x00000002);
               methodsBuilder_ = 
                 com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders ?
                    getMethodsFieldBuilder() : null;
@@ -4247,7 +5168,7 @@ public final class Lapp {
           if (!other.resolvedCalls_.isEmpty()) {
             if (resolvedCalls_.isEmpty()) {
               resolvedCalls_ = other.resolvedCalls_;
-              bitField0_ = (bitField0_ & ~0x00000008);
+              bitField0_ = (bitField0_ & ~0x00000004);
             } else {
               ensureResolvedCallsIsMutable();
               resolvedCalls_.addAll(other.resolvedCalls_);
@@ -4260,7 +5181,7 @@ public final class Lapp {
               resolvedCallsBuilder_.dispose();
               resolvedCallsBuilder_ = null;
               resolvedCalls_ = other.resolvedCalls_;
-              bitField0_ = (bitField0_ & ~0x00000008);
+              bitField0_ = (bitField0_ & ~0x00000004);
               resolvedCallsBuilder_ = 
                 com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders ?
                    getResolvedCallsFieldBuilder() : null;
@@ -4273,7 +5194,7 @@ public final class Lapp {
           if (!other.unresolvedCalls_.isEmpty()) {
             if (unresolvedCalls_.isEmpty()) {
               unresolvedCalls_ = other.unresolvedCalls_;
-              bitField0_ = (bitField0_ & ~0x00000010);
+              bitField0_ = (bitField0_ & ~0x00000008);
             } else {
               ensureUnresolvedCallsIsMutable();
               unresolvedCalls_.addAll(other.unresolvedCalls_);
@@ -4286,7 +5207,7 @@ public final class Lapp {
               unresolvedCallsBuilder_.dispose();
               unresolvedCallsBuilder_ = null;
               unresolvedCalls_ = other.unresolvedCalls_;
-              bitField0_ = (bitField0_ & ~0x00000010);
+              bitField0_ = (bitField0_ & ~0x00000008);
               unresolvedCallsBuilder_ = 
                 com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders ?
                    getUnresolvedCallsFieldBuilder() : null;
@@ -4299,7 +5220,7 @@ public final class Lapp {
           if (!other.cha_.isEmpty()) {
             if (cha_.isEmpty()) {
               cha_ = other.cha_;
-              bitField0_ = (bitField0_ & ~0x00000020);
+              bitField0_ = (bitField0_ & ~0x00000010);
             } else {
               ensureChaIsMutable();
               cha_.addAll(other.cha_);
@@ -4312,12 +5233,38 @@ public final class Lapp {
               chaBuilder_.dispose();
               chaBuilder_ = null;
               cha_ = other.cha_;
-              bitField0_ = (bitField0_ & ~0x00000020);
+              bitField0_ = (bitField0_ & ~0x00000010);
               chaBuilder_ = 
                 com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders ?
                    getChaFieldBuilder() : null;
             } else {
               chaBuilder_.addAllMessages(other.cha_);
+            }
+          }
+        }
+        if (unresolvedChaBuilder_ == null) {
+          if (!other.unresolvedCha_.isEmpty()) {
+            if (unresolvedCha_.isEmpty()) {
+              unresolvedCha_ = other.unresolvedCha_;
+              bitField0_ = (bitField0_ & ~0x00000020);
+            } else {
+              ensureUnresolvedChaIsMutable();
+              unresolvedCha_.addAll(other.unresolvedCha_);
+            }
+            onChanged();
+          }
+        } else {
+          if (!other.unresolvedCha_.isEmpty()) {
+            if (unresolvedChaBuilder_.isEmpty()) {
+              unresolvedChaBuilder_.dispose();
+              unresolvedChaBuilder_ = null;
+              unresolvedCha_ = other.unresolvedCha_;
+              bitField0_ = (bitField0_ & ~0x00000020);
+              unresolvedChaBuilder_ = 
+                com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders ?
+                   getUnresolvedChaFieldBuilder() : null;
+            } else {
+              unresolvedChaBuilder_.addAllMessages(other.unresolvedCha_);
             }
           }
         }
@@ -4353,150 +5300,252 @@ public final class Lapp {
       }
       private int bitField0_;
 
-      private java.lang.Object name_ = "";
-      /**
-       * <code>string name = 1;</code>
-       */
-      public java.lang.String getName() {
-        java.lang.Object ref = name_;
-        if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          name_ = s;
-          return s;
-        } else {
-          return (java.lang.String) ref;
-        }
-      }
-      /**
-       * <code>string name = 1;</code>
-       */
-      public com.google.protobuf.ByteString
-          getNameBytes() {
-        java.lang.Object ref = name_;
-        if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
-              com.google.protobuf.ByteString.copyFromUtf8(
-                  (java.lang.String) ref);
-          name_ = b;
-          return b;
-        } else {
-          return (com.google.protobuf.ByteString) ref;
-        }
-      }
-      /**
-       * <code>string name = 1;</code>
-       */
-      public Builder setName(
-          java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  
-        name_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>string name = 1;</code>
-       */
-      public Builder clearName() {
-        
-        name_ = getDefaultInstance().getName();
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>string name = 1;</code>
-       */
-      public Builder setNameBytes(
-          com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  checkByteStringIsUtf8(value);
-        
-        name_ = value;
-        onChanged();
-        return this;
+      private java.util.List<nl.wvdzwan.lapp.protobuf.Lapp.Artifact> artifacts_ =
+        java.util.Collections.emptyList();
+      private void ensureArtifactsIsMutable() {
+        if (!((bitField0_ & 0x00000001) != 0)) {
+          artifacts_ = new java.util.ArrayList<nl.wvdzwan.lapp.protobuf.Lapp.Artifact>(artifacts_);
+          bitField0_ |= 0x00000001;
+         }
       }
 
-      private java.lang.Object version_ = "";
+      private com.google.protobuf.RepeatedFieldBuilderV3<
+          nl.wvdzwan.lapp.protobuf.Lapp.Artifact, nl.wvdzwan.lapp.protobuf.Lapp.Artifact.Builder, nl.wvdzwan.lapp.protobuf.Lapp.ArtifactOrBuilder> artifactsBuilder_;
+
       /**
-       * <code>string version = 2;</code>
+       * <code>repeated .lapp.Artifact artifacts = 1;</code>
        */
-      public java.lang.String getVersion() {
-        java.lang.Object ref = version_;
-        if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          version_ = s;
-          return s;
+      public java.util.List<nl.wvdzwan.lapp.protobuf.Lapp.Artifact> getArtifactsList() {
+        if (artifactsBuilder_ == null) {
+          return java.util.Collections.unmodifiableList(artifacts_);
         } else {
-          return (java.lang.String) ref;
+          return artifactsBuilder_.getMessageList();
         }
       }
       /**
-       * <code>string version = 2;</code>
+       * <code>repeated .lapp.Artifact artifacts = 1;</code>
        */
-      public com.google.protobuf.ByteString
-          getVersionBytes() {
-        java.lang.Object ref = version_;
-        if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
-              com.google.protobuf.ByteString.copyFromUtf8(
-                  (java.lang.String) ref);
-          version_ = b;
-          return b;
+      public int getArtifactsCount() {
+        if (artifactsBuilder_ == null) {
+          return artifacts_.size();
         } else {
-          return (com.google.protobuf.ByteString) ref;
+          return artifactsBuilder_.getCount();
         }
       }
       /**
-       * <code>string version = 2;</code>
+       * <code>repeated .lapp.Artifact artifacts = 1;</code>
        */
-      public Builder setVersion(
-          java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  
-        version_ = value;
-        onChanged();
+      public nl.wvdzwan.lapp.protobuf.Lapp.Artifact getArtifacts(int index) {
+        if (artifactsBuilder_ == null) {
+          return artifacts_.get(index);
+        } else {
+          return artifactsBuilder_.getMessage(index);
+        }
+      }
+      /**
+       * <code>repeated .lapp.Artifact artifacts = 1;</code>
+       */
+      public Builder setArtifacts(
+          int index, nl.wvdzwan.lapp.protobuf.Lapp.Artifact value) {
+        if (artifactsBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureArtifactsIsMutable();
+          artifacts_.set(index, value);
+          onChanged();
+        } else {
+          artifactsBuilder_.setMessage(index, value);
+        }
         return this;
       }
       /**
-       * <code>string version = 2;</code>
+       * <code>repeated .lapp.Artifact artifacts = 1;</code>
        */
-      public Builder clearVersion() {
-        
-        version_ = getDefaultInstance().getVersion();
-        onChanged();
+      public Builder setArtifacts(
+          int index, nl.wvdzwan.lapp.protobuf.Lapp.Artifact.Builder builderForValue) {
+        if (artifactsBuilder_ == null) {
+          ensureArtifactsIsMutable();
+          artifacts_.set(index, builderForValue.build());
+          onChanged();
+        } else {
+          artifactsBuilder_.setMessage(index, builderForValue.build());
+        }
         return this;
       }
       /**
-       * <code>string version = 2;</code>
+       * <code>repeated .lapp.Artifact artifacts = 1;</code>
        */
-      public Builder setVersionBytes(
-          com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  checkByteStringIsUtf8(value);
-        
-        version_ = value;
-        onChanged();
+      public Builder addArtifacts(nl.wvdzwan.lapp.protobuf.Lapp.Artifact value) {
+        if (artifactsBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureArtifactsIsMutable();
+          artifacts_.add(value);
+          onChanged();
+        } else {
+          artifactsBuilder_.addMessage(value);
+        }
         return this;
+      }
+      /**
+       * <code>repeated .lapp.Artifact artifacts = 1;</code>
+       */
+      public Builder addArtifacts(
+          int index, nl.wvdzwan.lapp.protobuf.Lapp.Artifact value) {
+        if (artifactsBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureArtifactsIsMutable();
+          artifacts_.add(index, value);
+          onChanged();
+        } else {
+          artifactsBuilder_.addMessage(index, value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .lapp.Artifact artifacts = 1;</code>
+       */
+      public Builder addArtifacts(
+          nl.wvdzwan.lapp.protobuf.Lapp.Artifact.Builder builderForValue) {
+        if (artifactsBuilder_ == null) {
+          ensureArtifactsIsMutable();
+          artifacts_.add(builderForValue.build());
+          onChanged();
+        } else {
+          artifactsBuilder_.addMessage(builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .lapp.Artifact artifacts = 1;</code>
+       */
+      public Builder addArtifacts(
+          int index, nl.wvdzwan.lapp.protobuf.Lapp.Artifact.Builder builderForValue) {
+        if (artifactsBuilder_ == null) {
+          ensureArtifactsIsMutable();
+          artifacts_.add(index, builderForValue.build());
+          onChanged();
+        } else {
+          artifactsBuilder_.addMessage(index, builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .lapp.Artifact artifacts = 1;</code>
+       */
+      public Builder addAllArtifacts(
+          java.lang.Iterable<? extends nl.wvdzwan.lapp.protobuf.Lapp.Artifact> values) {
+        if (artifactsBuilder_ == null) {
+          ensureArtifactsIsMutable();
+          com.google.protobuf.AbstractMessageLite.Builder.addAll(
+              values, artifacts_);
+          onChanged();
+        } else {
+          artifactsBuilder_.addAllMessages(values);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .lapp.Artifact artifacts = 1;</code>
+       */
+      public Builder clearArtifacts() {
+        if (artifactsBuilder_ == null) {
+          artifacts_ = java.util.Collections.emptyList();
+          bitField0_ = (bitField0_ & ~0x00000001);
+          onChanged();
+        } else {
+          artifactsBuilder_.clear();
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .lapp.Artifact artifacts = 1;</code>
+       */
+      public Builder removeArtifacts(int index) {
+        if (artifactsBuilder_ == null) {
+          ensureArtifactsIsMutable();
+          artifacts_.remove(index);
+          onChanged();
+        } else {
+          artifactsBuilder_.remove(index);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .lapp.Artifact artifacts = 1;</code>
+       */
+      public nl.wvdzwan.lapp.protobuf.Lapp.Artifact.Builder getArtifactsBuilder(
+          int index) {
+        return getArtifactsFieldBuilder().getBuilder(index);
+      }
+      /**
+       * <code>repeated .lapp.Artifact artifacts = 1;</code>
+       */
+      public nl.wvdzwan.lapp.protobuf.Lapp.ArtifactOrBuilder getArtifactsOrBuilder(
+          int index) {
+        if (artifactsBuilder_ == null) {
+          return artifacts_.get(index);  } else {
+          return artifactsBuilder_.getMessageOrBuilder(index);
+        }
+      }
+      /**
+       * <code>repeated .lapp.Artifact artifacts = 1;</code>
+       */
+      public java.util.List<? extends nl.wvdzwan.lapp.protobuf.Lapp.ArtifactOrBuilder> 
+           getArtifactsOrBuilderList() {
+        if (artifactsBuilder_ != null) {
+          return artifactsBuilder_.getMessageOrBuilderList();
+        } else {
+          return java.util.Collections.unmodifiableList(artifacts_);
+        }
+      }
+      /**
+       * <code>repeated .lapp.Artifact artifacts = 1;</code>
+       */
+      public nl.wvdzwan.lapp.protobuf.Lapp.Artifact.Builder addArtifactsBuilder() {
+        return getArtifactsFieldBuilder().addBuilder(
+            nl.wvdzwan.lapp.protobuf.Lapp.Artifact.getDefaultInstance());
+      }
+      /**
+       * <code>repeated .lapp.Artifact artifacts = 1;</code>
+       */
+      public nl.wvdzwan.lapp.protobuf.Lapp.Artifact.Builder addArtifactsBuilder(
+          int index) {
+        return getArtifactsFieldBuilder().addBuilder(
+            index, nl.wvdzwan.lapp.protobuf.Lapp.Artifact.getDefaultInstance());
+      }
+      /**
+       * <code>repeated .lapp.Artifact artifacts = 1;</code>
+       */
+      public java.util.List<nl.wvdzwan.lapp.protobuf.Lapp.Artifact.Builder> 
+           getArtifactsBuilderList() {
+        return getArtifactsFieldBuilder().getBuilderList();
+      }
+      private com.google.protobuf.RepeatedFieldBuilderV3<
+          nl.wvdzwan.lapp.protobuf.Lapp.Artifact, nl.wvdzwan.lapp.protobuf.Lapp.Artifact.Builder, nl.wvdzwan.lapp.protobuf.Lapp.ArtifactOrBuilder> 
+          getArtifactsFieldBuilder() {
+        if (artifactsBuilder_ == null) {
+          artifactsBuilder_ = new com.google.protobuf.RepeatedFieldBuilderV3<
+              nl.wvdzwan.lapp.protobuf.Lapp.Artifact, nl.wvdzwan.lapp.protobuf.Lapp.Artifact.Builder, nl.wvdzwan.lapp.protobuf.Lapp.ArtifactOrBuilder>(
+                  artifacts_,
+                  ((bitField0_ & 0x00000001) != 0),
+                  getParentForChildren(),
+                  isClean());
+          artifacts_ = null;
+        }
+        return artifactsBuilder_;
       }
 
       private java.util.List<nl.wvdzwan.lapp.protobuf.Lapp.Method> methods_ =
         java.util.Collections.emptyList();
       private void ensureMethodsIsMutable() {
-        if (!((bitField0_ & 0x00000004) != 0)) {
+        if (!((bitField0_ & 0x00000002) != 0)) {
           methods_ = new java.util.ArrayList<nl.wvdzwan.lapp.protobuf.Lapp.Method>(methods_);
-          bitField0_ |= 0x00000004;
+          bitField0_ |= 0x00000002;
          }
       }
 
@@ -4646,7 +5695,7 @@ public final class Lapp {
       public Builder clearMethods() {
         if (methodsBuilder_ == null) {
           methods_ = java.util.Collections.emptyList();
-          bitField0_ = (bitField0_ & ~0x00000004);
+          bitField0_ = (bitField0_ & ~0x00000002);
           onChanged();
         } else {
           methodsBuilder_.clear();
@@ -4723,7 +5772,7 @@ public final class Lapp {
           methodsBuilder_ = new com.google.protobuf.RepeatedFieldBuilderV3<
               nl.wvdzwan.lapp.protobuf.Lapp.Method, nl.wvdzwan.lapp.protobuf.Lapp.Method.Builder, nl.wvdzwan.lapp.protobuf.Lapp.MethodOrBuilder>(
                   methods_,
-                  ((bitField0_ & 0x00000004) != 0),
+                  ((bitField0_ & 0x00000002) != 0),
                   getParentForChildren(),
                   isClean());
           methods_ = null;
@@ -4734,9 +5783,9 @@ public final class Lapp {
       private java.util.List<nl.wvdzwan.lapp.protobuf.Lapp.Call> resolvedCalls_ =
         java.util.Collections.emptyList();
       private void ensureResolvedCallsIsMutable() {
-        if (!((bitField0_ & 0x00000008) != 0)) {
+        if (!((bitField0_ & 0x00000004) != 0)) {
           resolvedCalls_ = new java.util.ArrayList<nl.wvdzwan.lapp.protobuf.Lapp.Call>(resolvedCalls_);
-          bitField0_ |= 0x00000008;
+          bitField0_ |= 0x00000004;
          }
       }
 
@@ -4886,7 +5935,7 @@ public final class Lapp {
       public Builder clearResolvedCalls() {
         if (resolvedCallsBuilder_ == null) {
           resolvedCalls_ = java.util.Collections.emptyList();
-          bitField0_ = (bitField0_ & ~0x00000008);
+          bitField0_ = (bitField0_ & ~0x00000004);
           onChanged();
         } else {
           resolvedCallsBuilder_.clear();
@@ -4963,7 +6012,7 @@ public final class Lapp {
           resolvedCallsBuilder_ = new com.google.protobuf.RepeatedFieldBuilderV3<
               nl.wvdzwan.lapp.protobuf.Lapp.Call, nl.wvdzwan.lapp.protobuf.Lapp.Call.Builder, nl.wvdzwan.lapp.protobuf.Lapp.CallOrBuilder>(
                   resolvedCalls_,
-                  ((bitField0_ & 0x00000008) != 0),
+                  ((bitField0_ & 0x00000004) != 0),
                   getParentForChildren(),
                   isClean());
           resolvedCalls_ = null;
@@ -4974,9 +6023,9 @@ public final class Lapp {
       private java.util.List<nl.wvdzwan.lapp.protobuf.Lapp.Call> unresolvedCalls_ =
         java.util.Collections.emptyList();
       private void ensureUnresolvedCallsIsMutable() {
-        if (!((bitField0_ & 0x00000010) != 0)) {
+        if (!((bitField0_ & 0x00000008) != 0)) {
           unresolvedCalls_ = new java.util.ArrayList<nl.wvdzwan.lapp.protobuf.Lapp.Call>(unresolvedCalls_);
-          bitField0_ |= 0x00000010;
+          bitField0_ |= 0x00000008;
          }
       }
 
@@ -5126,7 +6175,7 @@ public final class Lapp {
       public Builder clearUnresolvedCalls() {
         if (unresolvedCallsBuilder_ == null) {
           unresolvedCalls_ = java.util.Collections.emptyList();
-          bitField0_ = (bitField0_ & ~0x00000010);
+          bitField0_ = (bitField0_ & ~0x00000008);
           onChanged();
         } else {
           unresolvedCallsBuilder_.clear();
@@ -5203,7 +6252,7 @@ public final class Lapp {
           unresolvedCallsBuilder_ = new com.google.protobuf.RepeatedFieldBuilderV3<
               nl.wvdzwan.lapp.protobuf.Lapp.Call, nl.wvdzwan.lapp.protobuf.Lapp.Call.Builder, nl.wvdzwan.lapp.protobuf.Lapp.CallOrBuilder>(
                   unresolvedCalls_,
-                  ((bitField0_ & 0x00000010) != 0),
+                  ((bitField0_ & 0x00000008) != 0),
                   getParentForChildren(),
                   isClean());
           unresolvedCalls_ = null;
@@ -5214,9 +6263,9 @@ public final class Lapp {
       private java.util.List<nl.wvdzwan.lapp.protobuf.Lapp.ChaRelation> cha_ =
         java.util.Collections.emptyList();
       private void ensureChaIsMutable() {
-        if (!((bitField0_ & 0x00000020) != 0)) {
+        if (!((bitField0_ & 0x00000010) != 0)) {
           cha_ = new java.util.ArrayList<nl.wvdzwan.lapp.protobuf.Lapp.ChaRelation>(cha_);
-          bitField0_ |= 0x00000020;
+          bitField0_ |= 0x00000010;
          }
       }
 
@@ -5366,7 +6415,7 @@ public final class Lapp {
       public Builder clearCha() {
         if (chaBuilder_ == null) {
           cha_ = java.util.Collections.emptyList();
-          bitField0_ = (bitField0_ & ~0x00000020);
+          bitField0_ = (bitField0_ & ~0x00000010);
           onChanged();
         } else {
           chaBuilder_.clear();
@@ -5443,12 +6492,252 @@ public final class Lapp {
           chaBuilder_ = new com.google.protobuf.RepeatedFieldBuilderV3<
               nl.wvdzwan.lapp.protobuf.Lapp.ChaRelation, nl.wvdzwan.lapp.protobuf.Lapp.ChaRelation.Builder, nl.wvdzwan.lapp.protobuf.Lapp.ChaRelationOrBuilder>(
                   cha_,
-                  ((bitField0_ & 0x00000020) != 0),
+                  ((bitField0_ & 0x00000010) != 0),
                   getParentForChildren(),
                   isClean());
           cha_ = null;
         }
         return chaBuilder_;
+      }
+
+      private java.util.List<nl.wvdzwan.lapp.protobuf.Lapp.ChaRelation> unresolvedCha_ =
+        java.util.Collections.emptyList();
+      private void ensureUnresolvedChaIsMutable() {
+        if (!((bitField0_ & 0x00000020) != 0)) {
+          unresolvedCha_ = new java.util.ArrayList<nl.wvdzwan.lapp.protobuf.Lapp.ChaRelation>(unresolvedCha_);
+          bitField0_ |= 0x00000020;
+         }
+      }
+
+      private com.google.protobuf.RepeatedFieldBuilderV3<
+          nl.wvdzwan.lapp.protobuf.Lapp.ChaRelation, nl.wvdzwan.lapp.protobuf.Lapp.ChaRelation.Builder, nl.wvdzwan.lapp.protobuf.Lapp.ChaRelationOrBuilder> unresolvedChaBuilder_;
+
+      /**
+       * <code>repeated .lapp.ChaRelation unresolvedCha = 7;</code>
+       */
+      public java.util.List<nl.wvdzwan.lapp.protobuf.Lapp.ChaRelation> getUnresolvedChaList() {
+        if (unresolvedChaBuilder_ == null) {
+          return java.util.Collections.unmodifiableList(unresolvedCha_);
+        } else {
+          return unresolvedChaBuilder_.getMessageList();
+        }
+      }
+      /**
+       * <code>repeated .lapp.ChaRelation unresolvedCha = 7;</code>
+       */
+      public int getUnresolvedChaCount() {
+        if (unresolvedChaBuilder_ == null) {
+          return unresolvedCha_.size();
+        } else {
+          return unresolvedChaBuilder_.getCount();
+        }
+      }
+      /**
+       * <code>repeated .lapp.ChaRelation unresolvedCha = 7;</code>
+       */
+      public nl.wvdzwan.lapp.protobuf.Lapp.ChaRelation getUnresolvedCha(int index) {
+        if (unresolvedChaBuilder_ == null) {
+          return unresolvedCha_.get(index);
+        } else {
+          return unresolvedChaBuilder_.getMessage(index);
+        }
+      }
+      /**
+       * <code>repeated .lapp.ChaRelation unresolvedCha = 7;</code>
+       */
+      public Builder setUnresolvedCha(
+          int index, nl.wvdzwan.lapp.protobuf.Lapp.ChaRelation value) {
+        if (unresolvedChaBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureUnresolvedChaIsMutable();
+          unresolvedCha_.set(index, value);
+          onChanged();
+        } else {
+          unresolvedChaBuilder_.setMessage(index, value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .lapp.ChaRelation unresolvedCha = 7;</code>
+       */
+      public Builder setUnresolvedCha(
+          int index, nl.wvdzwan.lapp.protobuf.Lapp.ChaRelation.Builder builderForValue) {
+        if (unresolvedChaBuilder_ == null) {
+          ensureUnresolvedChaIsMutable();
+          unresolvedCha_.set(index, builderForValue.build());
+          onChanged();
+        } else {
+          unresolvedChaBuilder_.setMessage(index, builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .lapp.ChaRelation unresolvedCha = 7;</code>
+       */
+      public Builder addUnresolvedCha(nl.wvdzwan.lapp.protobuf.Lapp.ChaRelation value) {
+        if (unresolvedChaBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureUnresolvedChaIsMutable();
+          unresolvedCha_.add(value);
+          onChanged();
+        } else {
+          unresolvedChaBuilder_.addMessage(value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .lapp.ChaRelation unresolvedCha = 7;</code>
+       */
+      public Builder addUnresolvedCha(
+          int index, nl.wvdzwan.lapp.protobuf.Lapp.ChaRelation value) {
+        if (unresolvedChaBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureUnresolvedChaIsMutable();
+          unresolvedCha_.add(index, value);
+          onChanged();
+        } else {
+          unresolvedChaBuilder_.addMessage(index, value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .lapp.ChaRelation unresolvedCha = 7;</code>
+       */
+      public Builder addUnresolvedCha(
+          nl.wvdzwan.lapp.protobuf.Lapp.ChaRelation.Builder builderForValue) {
+        if (unresolvedChaBuilder_ == null) {
+          ensureUnresolvedChaIsMutable();
+          unresolvedCha_.add(builderForValue.build());
+          onChanged();
+        } else {
+          unresolvedChaBuilder_.addMessage(builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .lapp.ChaRelation unresolvedCha = 7;</code>
+       */
+      public Builder addUnresolvedCha(
+          int index, nl.wvdzwan.lapp.protobuf.Lapp.ChaRelation.Builder builderForValue) {
+        if (unresolvedChaBuilder_ == null) {
+          ensureUnresolvedChaIsMutable();
+          unresolvedCha_.add(index, builderForValue.build());
+          onChanged();
+        } else {
+          unresolvedChaBuilder_.addMessage(index, builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .lapp.ChaRelation unresolvedCha = 7;</code>
+       */
+      public Builder addAllUnresolvedCha(
+          java.lang.Iterable<? extends nl.wvdzwan.lapp.protobuf.Lapp.ChaRelation> values) {
+        if (unresolvedChaBuilder_ == null) {
+          ensureUnresolvedChaIsMutable();
+          com.google.protobuf.AbstractMessageLite.Builder.addAll(
+              values, unresolvedCha_);
+          onChanged();
+        } else {
+          unresolvedChaBuilder_.addAllMessages(values);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .lapp.ChaRelation unresolvedCha = 7;</code>
+       */
+      public Builder clearUnresolvedCha() {
+        if (unresolvedChaBuilder_ == null) {
+          unresolvedCha_ = java.util.Collections.emptyList();
+          bitField0_ = (bitField0_ & ~0x00000020);
+          onChanged();
+        } else {
+          unresolvedChaBuilder_.clear();
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .lapp.ChaRelation unresolvedCha = 7;</code>
+       */
+      public Builder removeUnresolvedCha(int index) {
+        if (unresolvedChaBuilder_ == null) {
+          ensureUnresolvedChaIsMutable();
+          unresolvedCha_.remove(index);
+          onChanged();
+        } else {
+          unresolvedChaBuilder_.remove(index);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .lapp.ChaRelation unresolvedCha = 7;</code>
+       */
+      public nl.wvdzwan.lapp.protobuf.Lapp.ChaRelation.Builder getUnresolvedChaBuilder(
+          int index) {
+        return getUnresolvedChaFieldBuilder().getBuilder(index);
+      }
+      /**
+       * <code>repeated .lapp.ChaRelation unresolvedCha = 7;</code>
+       */
+      public nl.wvdzwan.lapp.protobuf.Lapp.ChaRelationOrBuilder getUnresolvedChaOrBuilder(
+          int index) {
+        if (unresolvedChaBuilder_ == null) {
+          return unresolvedCha_.get(index);  } else {
+          return unresolvedChaBuilder_.getMessageOrBuilder(index);
+        }
+      }
+      /**
+       * <code>repeated .lapp.ChaRelation unresolvedCha = 7;</code>
+       */
+      public java.util.List<? extends nl.wvdzwan.lapp.protobuf.Lapp.ChaRelationOrBuilder> 
+           getUnresolvedChaOrBuilderList() {
+        if (unresolvedChaBuilder_ != null) {
+          return unresolvedChaBuilder_.getMessageOrBuilderList();
+        } else {
+          return java.util.Collections.unmodifiableList(unresolvedCha_);
+        }
+      }
+      /**
+       * <code>repeated .lapp.ChaRelation unresolvedCha = 7;</code>
+       */
+      public nl.wvdzwan.lapp.protobuf.Lapp.ChaRelation.Builder addUnresolvedChaBuilder() {
+        return getUnresolvedChaFieldBuilder().addBuilder(
+            nl.wvdzwan.lapp.protobuf.Lapp.ChaRelation.getDefaultInstance());
+      }
+      /**
+       * <code>repeated .lapp.ChaRelation unresolvedCha = 7;</code>
+       */
+      public nl.wvdzwan.lapp.protobuf.Lapp.ChaRelation.Builder addUnresolvedChaBuilder(
+          int index) {
+        return getUnresolvedChaFieldBuilder().addBuilder(
+            index, nl.wvdzwan.lapp.protobuf.Lapp.ChaRelation.getDefaultInstance());
+      }
+      /**
+       * <code>repeated .lapp.ChaRelation unresolvedCha = 7;</code>
+       */
+      public java.util.List<nl.wvdzwan.lapp.protobuf.Lapp.ChaRelation.Builder> 
+           getUnresolvedChaBuilderList() {
+        return getUnresolvedChaFieldBuilder().getBuilderList();
+      }
+      private com.google.protobuf.RepeatedFieldBuilderV3<
+          nl.wvdzwan.lapp.protobuf.Lapp.ChaRelation, nl.wvdzwan.lapp.protobuf.Lapp.ChaRelation.Builder, nl.wvdzwan.lapp.protobuf.Lapp.ChaRelationOrBuilder> 
+          getUnresolvedChaFieldBuilder() {
+        if (unresolvedChaBuilder_ == null) {
+          unresolvedChaBuilder_ = new com.google.protobuf.RepeatedFieldBuilderV3<
+              nl.wvdzwan.lapp.protobuf.Lapp.ChaRelation, nl.wvdzwan.lapp.protobuf.Lapp.ChaRelation.Builder, nl.wvdzwan.lapp.protobuf.Lapp.ChaRelationOrBuilder>(
+                  unresolvedCha_,
+                  ((bitField0_ & 0x00000020) != 0),
+                  getParentForChildren(),
+                  isClean());
+          unresolvedCha_ = null;
+        }
+        return unresolvedChaBuilder_;
       }
 
       private com.google.protobuf.MapField<
@@ -5478,7 +6767,7 @@ public final class Lapp {
         return internalGetMetadata().getMap().size();
       }
       /**
-       * <code>map&lt;string, string&gt; metadata = 7;</code>
+       * <code>map&lt;string, string&gt; metadata = 8;</code>
        */
 
       public boolean containsMetadata(
@@ -5494,14 +6783,14 @@ public final class Lapp {
         return getMetadataMap();
       }
       /**
-       * <code>map&lt;string, string&gt; metadata = 7;</code>
+       * <code>map&lt;string, string&gt; metadata = 8;</code>
        */
 
       public java.util.Map<java.lang.String, java.lang.String> getMetadataMap() {
         return internalGetMetadata().getMap();
       }
       /**
-       * <code>map&lt;string, string&gt; metadata = 7;</code>
+       * <code>map&lt;string, string&gt; metadata = 8;</code>
        */
 
       public java.lang.String getMetadataOrDefault(
@@ -5513,7 +6802,7 @@ public final class Lapp {
         return map.containsKey(key) ? map.get(key) : defaultValue;
       }
       /**
-       * <code>map&lt;string, string&gt; metadata = 7;</code>
+       * <code>map&lt;string, string&gt; metadata = 8;</code>
        */
 
       public java.lang.String getMetadataOrThrow(
@@ -5533,7 +6822,7 @@ public final class Lapp {
         return this;
       }
       /**
-       * <code>map&lt;string, string&gt; metadata = 7;</code>
+       * <code>map&lt;string, string&gt; metadata = 8;</code>
        */
 
       public Builder removeMetadata(
@@ -5552,7 +6841,7 @@ public final class Lapp {
         return internalGetMutableMetadata().getMutableMap();
       }
       /**
-       * <code>map&lt;string, string&gt; metadata = 7;</code>
+       * <code>map&lt;string, string&gt; metadata = 8;</code>
        */
       public Builder putMetadata(
           java.lang.String key,
@@ -5564,7 +6853,7 @@ public final class Lapp {
         return this;
       }
       /**
-       * <code>map&lt;string, string&gt; metadata = 7;</code>
+       * <code>map&lt;string, string&gt; metadata = 8;</code>
        */
 
       public Builder putAllMetadata(
@@ -5647,6 +6936,11 @@ public final class Lapp {
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internal_static_lapp_ChaRelation_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_lapp_Artifact_descriptor;
+  private static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_lapp_Artifact_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_lapp_Package_descriptor;
   private static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
@@ -5673,21 +6967,24 @@ public final class Lapp {
       "\005value\030\002 \001(\t:\0028\001\"\267\001\n\004Call\022\034\n\006source\030\001 \001(" +
       "\0132\014.lapp.Method\022\034\n\006target\030\002 \001(\0132\014.lapp.M" +
       "ethod\022%\n\010callType\030\003 \001(\0162\023.lapp.Call.Call" +
-      "Type\"L\n\010CallType\022\r\n\tINTERFACE\020\000\022\013\n\007VIRTU" +
-      "AL\020\001\022\013\n\007SPECIAL\020\002\022\n\n\006STATIC\020\003\022\013\n\007UNKNOWN" +
-      "\020\004\"\247\001\n\013ChaRelation\022\035\n\007subject\030\001 \001(\0132\014.la" +
+      "Type\"L\n\010CallType\022\013\n\007UNKNOWN\020\000\022\r\n\tINTERFA" +
+      "CE\020\001\022\013\n\007VIRTUAL\020\002\022\013\n\007SPECIAL\020\003\022\n\n\006STATIC" +
+      "\020\004\"\264\001\n\013ChaRelation\022\035\n\007subject\030\001 \001(\0132\014.la" +
       "pp.Method\022\035\n\007related\030\002 \001(\0132\014.lapp.Method" +
       "\022,\n\004type\030\003 \001(\0162\036.lapp.ChaRelation.Relati" +
-      "onType\",\n\014RelationType\022\014\n\010OVERRIDE\020\000\022\016\n\n" +
-      "IMPLEMENTS\020\001\"\217\002\n\007Package\022\014\n\004name\030\001 \001(\t\022\017" +
-      "\n\007version\030\002 \001(\t\022\035\n\007methods\030\003 \003(\0132\014.lapp." +
-      "Method\022!\n\rresolvedCalls\030\004 \003(\0132\n.lapp.Cal" +
-      "l\022#\n\017unresolvedCalls\030\005 \003(\0132\n.lapp.Call\022\036" +
-      "\n\003cha\030\006 \003(\0132\021.lapp.ChaRelation\022-\n\010metada" +
-      "ta\030\007 \003(\0132\033.lapp.Package.MetadataEntry\032/\n" +
-      "\rMetadataEntry\022\013\n\003key\030\001 \001(\t\022\r\n\005value\030\002 \001" +
-      "(\t:\0028\001B \n\030nl.wvdzwan.lapp.protobufB\004Lapp" +
-      "b\006proto3"
+      "onType\"9\n\014RelationType\022\013\n\007UNKNOWN\020\000\022\014\n\010O" +
+      "VERRIDE\020\001\022\016\n\nIMPLEMENTS\020\002\"8\n\010Artifact\022\r\n" +
+      "\005group\030\001 \001(\t\022\014\n\004name\030\002 \001(\t\022\017\n\007version\030\003 " +
+      "\001(\t\"\275\002\n\007Package\022!\n\tartifacts\030\001 \003(\0132\016.lap" +
+      "p.Artifact\022\035\n\007methods\030\003 \003(\0132\014.lapp.Metho" +
+      "d\022!\n\rresolvedCalls\030\004 \003(\0132\n.lapp.Call\022#\n\017" +
+      "unresolvedCalls\030\005 \003(\0132\n.lapp.Call\022\036\n\003cha" +
+      "\030\006 \003(\0132\021.lapp.ChaRelation\022(\n\runresolvedC" +
+      "ha\030\007 \003(\0132\021.lapp.ChaRelation\022-\n\010metadata\030" +
+      "\010 \003(\0132\033.lapp.Package.MetadataEntry\032/\n\rMe" +
+      "tadataEntry\022\013\n\003key\030\001 \001(\t\022\r\n\005value\030\002 \001(\t:" +
+      "\0028\001B \n\030nl.wvdzwan.lapp.protobufB\004Lappb\006p" +
+      "roto3"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -5725,12 +7022,18 @@ public final class Lapp {
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_lapp_ChaRelation_descriptor,
         new java.lang.String[] { "Subject", "Related", "Type", });
-    internal_static_lapp_Package_descriptor =
+    internal_static_lapp_Artifact_descriptor =
       getDescriptor().getMessageTypes().get(3);
+    internal_static_lapp_Artifact_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_lapp_Artifact_descriptor,
+        new java.lang.String[] { "Group", "Name", "Version", });
+    internal_static_lapp_Package_descriptor =
+      getDescriptor().getMessageTypes().get(4);
     internal_static_lapp_Package_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_lapp_Package_descriptor,
-        new java.lang.String[] { "Name", "Version", "Methods", "ResolvedCalls", "UnresolvedCalls", "Cha", "Metadata", });
+        new java.lang.String[] { "Artifacts", "Methods", "ResolvedCalls", "UnresolvedCalls", "Cha", "UnresolvedCha", "Metadata", });
     internal_static_lapp_Package_MetadataEntry_descriptor =
       internal_static_lapp_Package_descriptor.getNestedTypes().get(0);
     internal_static_lapp_Package_MetadataEntry_fieldAccessorTable = new

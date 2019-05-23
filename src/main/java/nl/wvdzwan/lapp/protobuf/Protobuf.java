@@ -2,6 +2,7 @@ package nl.wvdzwan.lapp.protobuf;
 
 import java.util.stream.Collectors;
 
+import nl.wvdzwan.lapp.callgraph.ArtifactRecord;
 import nl.wvdzwan.lapp.core.LappPackage;
 import nl.wvdzwan.lapp.core.Method;
 import nl.wvdzwan.lapp.core.ResolvedMethod;
@@ -12,12 +13,20 @@ public class Protobuf {
 
     public static Lapp.Package of(LappPackage p) {
         return Lapp.Package.newBuilder()
-                .setName(p.pkg)
-                .setVersion(p.version)
+                .addAllArtifacts(p.artifacts.stream().map(Protobuf::of).collect(Collectors.toList()))
                 .addAllMethods(p.methods.stream().map(Protobuf::of).collect(Collectors.toList()))
                 .addAllResolvedCalls(p.resolvedCalls.stream().map(Protobuf::of).collect(Collectors.toList()))
                 .addAllUnresolvedCalls(p.unresolvedCalls.stream().map(Protobuf::of).collect(Collectors.toList()))
                 .addAllCha(p.cha.stream().map(Protobuf::of).collect(Collectors.toList()))
+                .addAllUnresolvedCha(p.unresolvedCha.stream().map(Protobuf::of).collect(Collectors.toList()))
+                .build();
+    }
+
+    public static Lapp.Artifact of(ArtifactRecord artifact) {
+        return Lapp.Artifact.newBuilder()
+                .setGroup(artifact.groupId)
+                .setName(artifact.artifactId)
+                .setVersion(artifact.getVersion())
                 .build();
     }
 
