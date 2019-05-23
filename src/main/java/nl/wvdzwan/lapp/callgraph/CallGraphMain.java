@@ -2,8 +2,6 @@ package nl.wvdzwan.lapp.callgraph;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.FileWriter;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -12,22 +10,12 @@ import java.util.concurrent.Callable;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.jgrapht.Graph;
 import picocli.CommandLine;
 
 import nl.wvdzwan.lapp.callgraph.wala.WalaAnalysisResult;
 import nl.wvdzwan.lapp.callgraph.wala.WalaAnalysisTransformer;
 import nl.wvdzwan.lapp.core.LappPackage;
-import nl.wvdzwan.lapp.LappPackageTransformer;
-import nl.wvdzwan.lapp.core.Method;
-import nl.wvdzwan.lapp.call.Edge;
 import nl.wvdzwan.lapp.callgraph.FolderLayout.DollarSeparatedLayout;
-import nl.wvdzwan.lapp.callgraph.outputs.GraphVizOutput;
-import nl.wvdzwan.lapp.callgraph.outputs.HumanReadableDotGraph;
-import nl.wvdzwan.lapp.callgraph.outputs.JsonOutput;
-import nl.wvdzwan.lapp.callgraph.outputs.ProtobufOutput;
-import nl.wvdzwan.lapp.callgraph.outputs.UnifiedCallGraphExport;
-import nl.wvdzwan.lapp.callgraph.outputs.resolved_methods.ResolvedMethodOutput;
 
 @CommandLine.Command(
         name = "callgraph",
@@ -126,25 +114,10 @@ public class CallGraphMain implements Callable<Void> {
         ClassToArtifactResolver artifactResolver = new ClassToArtifactResolver(analysisResult.extendedCha, new DollarSeparatedLayout());
         LappPackage lappPackage = WalaAnalysisTransformer.toPackage(analysisResult, artifactResolver);
 
-        Graph<Method, Edge> graph = LappPackageTransformer.toGraph(lappPackage);
 
         // Output
-        GraphVizOutput dotOutput = new UnifiedCallGraphExport(graph);
-        FileWriter writer = new FileWriter(new File(outputDirectory, "app.dot"));
-        dotOutput.export(writer);
-
-        GraphVizOutput humanOutput = new HumanReadableDotGraph(graph);
-        FileWriter writerHuman = new FileWriter(new File(outputDirectory, "app_human.dot"));
-        humanOutput.export(writerHuman);
-
-        ResolvedMethodOutput resolvedMethodOutput = new ResolvedMethodOutput(new FileWriter(new File(outputDirectory, "resolved_methods.txt")));
-        resolvedMethodOutput.export(graph);
-
-        ProtobufOutput protobufOutput = new ProtobufOutput(new FileOutputStream(new File(outputDirectory, "app.buf")));
-        protobufOutput.export(lappPackage);
-
-        JsonOutput jsonOutput = new JsonOutput(new FileOutputStream(new File(outputDirectory, "app.json")));
-        jsonOutput.export(lappPackage);
+        logger.info("Generate output");
+        OutputMaker.make(lappPackage, outputDirectory);
 
         return null;
     }
