@@ -3,6 +3,7 @@ package nl.wvdzwan.lapp.callgraph.wala;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import com.ibm.wala.classLoader.IClass;
@@ -11,6 +12,7 @@ import com.ibm.wala.classLoader.IMethod;
 import com.ibm.wala.ipa.cha.IClassHierarchy;
 import com.ibm.wala.types.ClassLoaderReference;
 import com.ibm.wala.types.Selector;
+import com.ibm.wala.types.TypeReference;
 
 import nl.wvdzwan.lapp.call.ChaEdge;
 import nl.wvdzwan.lapp.callgraph.wala.LappPackageBuilder.MethodType;
@@ -31,6 +33,9 @@ public class ClassHierarchyInserter {
     public void insertCHA() {
         IClassLoader classLoader = cha.getLoader(ClassLoaderReference.Application);
 
+        Set<TypeReference> unresolved = cha.getUnresolvedClasses();
+        System.out.println(unresolved.size());
+        cha.
         // Iterate all classes in Application scope
         for (Iterator<IClass> it = classLoader.iterateAllClasses(); it.hasNext(); ) {
             IClass klass = it.next();

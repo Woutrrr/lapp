@@ -56,7 +56,7 @@ class WalaAnalysisTest {
         assertTrue(analysisResult.extendedCha.getNumberOfClasses() > 0);
         assertTrue(analysisResult.cg.getClassHierarchy().getNumberOfClasses() > 0);
 
-        assertTrue(analysisResult.extendedCha.getNumberOfClasses() > analysisResult.cg.getClassHierarchy().getNumberOfClasses());
+        assertTrue(analysisResult.extendedCha.getNumberOfClasses() >= analysisResult.cg.getClassHierarchy().getNumberOfClasses());
     }
 
     @Test

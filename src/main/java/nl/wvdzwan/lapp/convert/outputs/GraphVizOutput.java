@@ -1,6 +1,7 @@
-package nl.wvdzwan.lapp.callgraph.outputs;
+package nl.wvdzwan.lapp.convert.outputs;
 
-import java.io.Writer;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -11,22 +12,19 @@ import org.jgrapht.io.Attribute;
 import org.jgrapht.io.DOTExporter;
 import org.jgrapht.io.DefaultAttribute;
 
-import nl.wvdzwan.lapp.core.Method;
+import nl.wvdzwan.lapp.LappPackageTransformer;
 import nl.wvdzwan.lapp.call.Call;
 import nl.wvdzwan.lapp.call.ChaEdge;
 import nl.wvdzwan.lapp.call.Edge;
+import nl.wvdzwan.lapp.core.Method;
+import nl.wvdzwan.lapp.protobuf.Lapp;
 
-public abstract class GraphVizOutput {
+public abstract class GraphVizOutput implements LappPackageOutput {
     private static Logger logger = LogManager.getLogger();
 
-    protected final Graph<Method, Edge> graph;
+    public boolean export(OutputStream outputStream, Lapp.Package lappProto) {
 
-
-    public GraphVizOutput(Graph<Method, Edge> graph) {
-        this.graph = graph;
-    }
-
-    public boolean export(Writer writer) {
+        Graph<Method, Edge> graph = LappPackageTransformer.toGraph(lappProto);
 
         DOTExporter<Method, Edge> exporter = new DOTExporter<>(
                 this::vertexIdProvider,
@@ -38,6 +36,7 @@ public abstract class GraphVizOutput {
 
         setGraphAttributes(exporter);
 
+        OutputStreamWriter writer = new OutputStreamWriter(outputStream);
         exporter.exportGraph(graph, writer);
 
         return true;

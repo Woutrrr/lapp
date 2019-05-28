@@ -64,6 +64,10 @@ public class LappPackageBuilder {
     }
 
     public LappPackageBuilder insertCallGraph(CallGraph callGraph) {
+        if (callGraph == null) {
+            // Package probably didn't contain entry points
+            return this;
+        }
         CallGraphInserter cgInserter = new CallGraphInserter(callGraph, callGraph.getClassHierarchy(), this);
         cgInserter.insertCallGraph();
 

@@ -9,12 +9,12 @@ import nl.wvdzwan.lapp.core.LappPackage;
 public class WalaAnalysisTransformer {
 
     public static LappPackage toPackage(WalaAnalysisResult analysisResult,  ArtifactFolderLayout layout) {
-        ClassToArtifactResolver artifactResolver = new ClassToArtifactResolver(analysisResult.cg.getClassHierarchy(), layout);
+        ClassToArtifactResolver artifactResolver = new ClassToArtifactResolver(analysisResult.extendedCha, layout);
 
         LappPackageBuilder builder = new LappPackageBuilder(artifactResolver, layout);
 
-        return builder.setPackages(analysisResult.cg.getClassHierarchy().getScope().getModules(ClassLoaderReference.Application))
-                .insertCha(analysisResult.cg.getClassHierarchy())
+        return builder.setPackages(analysisResult.extendedCha.getScope().getModules(ClassLoaderReference.Application))
+                .insertCha(analysisResult.extendedCha)
                 .insertCallGraph(analysisResult.cg)
                 .build();
     }

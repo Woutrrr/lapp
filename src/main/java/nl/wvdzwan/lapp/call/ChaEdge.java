@@ -8,7 +8,8 @@ public class ChaEdge extends Edge {
     public enum ChaEdgeType {
 
         OVERRIDE("overridden by"),
-        IMPLEMENTS("implemented by");
+        IMPLEMENTS("implemented by"),
+        UNKNOWN("unknown");
 
         public final String label;
 

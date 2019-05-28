@@ -1,4 +1,4 @@
-company:testArtifact:1.0::nl.wvdzwan.tudelft.benchmark.double_interface_method.DoubleInterfaceMethod.<init>()V
-company:testArtifact:1.0::nl.wvdzwan.tudelft.benchmark.double_interface_method.DoubleInterfaceMethod.interfaceMethod()Ljava/lang/String;
-company:testArtifact:1.0::nl.wvdzwan.tudelft.benchmark.double_interface_method.DoubleInterfaceMethod.main([Ljava/lang/String;)V
-company:testArtifact:1.0::nl.wvdzwan.tudelft.benchmark.double_interface_method.DoubleInterfaceMethodAbstractSuper.<init>()V
+static:double-interface-method-1.0-SNAPSHOT:?::nl.wvdzwan.tudelft.benchmark.double_interface_method.DoubleInterfaceMethod.<init>()V
+static:double-interface-method-1.0-SNAPSHOT:?::nl.wvdzwan.tudelft.benchmark.double_interface_method.DoubleInterfaceMethod.interfaceMethod()Ljava/lang/String;
+static:double-interface-method-1.0-SNAPSHOT:?::nl.wvdzwan.tudelft.benchmark.double_interface_method.DoubleInterfaceMethod.main([Ljava/lang/String;)V
+static:double-interface-method-1.0-SNAPSHOT:?::nl.wvdzwan.tudelft.benchmark.double_interface_method.DoubleInterfaceMethodAbstractSuper.<init>()V

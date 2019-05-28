@@ -156,7 +156,7 @@ public class Main implements Callable<File> {
         }
 
         if (resolveResult.getRoot().getArtifact().getFile() == null) {
-            logger.warn("Main artifact not resolved, abort ");
+            logger.warn("ConvertMain artifact not resolved, abort ");
             return null;
         }
 

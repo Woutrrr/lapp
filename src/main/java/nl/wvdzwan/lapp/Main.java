@@ -5,6 +5,8 @@ import java.util.concurrent.Callable;
 import picocli.CommandLine;
 
 import nl.wvdzwan.lapp.analyse.AnalyseCommand;
+import nl.wvdzwan.lapp.callgraph.CallGraphMain;
+import nl.wvdzwan.lapp.convert.ConvertMain;
 
 @CommandLine.Command(
         name = "lapp",
@@ -16,8 +18,9 @@ import nl.wvdzwan.lapp.analyse.AnalyseCommand;
         version = "0.1",
         subcommands = {
                 nl.wvdzwan.lapp.resolver.Main.class,
-                nl.wvdzwan.lapp.callgraph.CallGraphMain.class,
-                AnalyseCommand.class
+                CallGraphMain.class,
+                AnalyseCommand.class,
+                ConvertMain.class
         }
 )
 public class Main implements Callable<Void> {

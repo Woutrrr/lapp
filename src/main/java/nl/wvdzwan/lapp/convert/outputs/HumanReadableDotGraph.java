@@ -1,19 +1,14 @@
-package nl.wvdzwan.lapp.callgraph.outputs;
+package nl.wvdzwan.lapp.convert.outputs;
 
 import java.util.Map;
 
-import org.jgrapht.Graph;
 import org.jgrapht.io.Attribute;
 import org.jgrapht.io.DOTExporter;
 
-import nl.wvdzwan.lapp.core.Method;
 import nl.wvdzwan.lapp.call.Edge;
+import nl.wvdzwan.lapp.core.Method;
 
 public class HumanReadableDotGraph extends GraphVizOutput {
-
-    public HumanReadableDotGraph(Graph<Method, Edge> graph) {
-        super(graph);
-    }
 
     @Override
     protected void setGraphAttributes(DOTExporter<Method, Edge> dotExporter) {

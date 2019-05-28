@@ -67,6 +67,10 @@ public class WalaAnalysis {
 
             // Prepare call graph generation
             ArrayList<Entrypoint> entryPoints = getEntrypoints(cha);
+            if (entryPoints.isEmpty()) {
+                logger.warn("No entry points found! So no reason to try and generate a call graph!");
+                return new WalaAnalysisResult(null, cha);
+            }
 
             AnalysisOptions options = new AnalysisOptions(scope, entryPoints);
             AnalysisCache cache = new AnalysisCacheImpl();
