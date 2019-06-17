@@ -6,8 +6,7 @@ import org.junit.jupiter.api.Test;
 
 import nl.wvdzwan.lapp.callgraph.ArtifactRecord;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 
 class ArtifactRecordTest {
 
@@ -37,6 +36,11 @@ class ArtifactRecordTest {
     }
 
     @Test
+    void nullIdentifierIsInvalid() {
+        assertFalse(ArtifactRecord.isValidIdentifier(null));
+    }
+
+    @Test
     void invalidIdentifiersThrowException() {
         String[] invalidIdentifiers = {
                 "",
@@ -56,14 +60,14 @@ class ArtifactRecordTest {
     void getGroupId() {
         ArtifactRecord record = new ArtifactRecord("com.example.company", "myapp", "1.0.0");
 
-        assertEquals("com.example.company", record.getGroupId());
+        assertEquals("com.example.company", record.groupId);
     }
 
     @Test
     void getArtifactId() {
         ArtifactRecord record = new ArtifactRecord("com.example.company", "myapp", "1.0.0");
 
-        assertEquals("myapp", record.getArtifactId());
+        assertEquals("myapp", record.artifactId);
     }
 
     @Test
@@ -71,13 +75,6 @@ class ArtifactRecordTest {
         ArtifactRecord record = new ArtifactRecord("com.example.company", "myapp", "1.0.0");
 
         assertEquals("1.0.0", record.getVersion());
-    }
-
-    @Test
-    void getJarName() {
-        ArtifactRecord record = new ArtifactRecord("com.example.company", "myapp", "1.2.3");
-
-        assertEquals("myapp-1.2.3.jar", record.getJarName());
     }
 
     @Test
@@ -100,4 +97,19 @@ class ArtifactRecordTest {
 
         assertEquals("com.example.company:my-app:3.2.1", ArtifactRecord.getIdentifier(artifact));
     }
+
+    @Test
+    void artifactNotEqualsNull() {
+        ArtifactRecord artifact = new ArtifactRecord("com.example.company", "myapp", "1.2.3");
+
+        assertFalse(artifact.equals(null));
+    }
+
+    @Test
+    void artifactEqualsSelf() {
+        ArtifactRecord artifact = new ArtifactRecord("com.example.company", "myapp", "1.2.3");
+
+        assertEquals(artifact, artifact);
+    }
+
 }

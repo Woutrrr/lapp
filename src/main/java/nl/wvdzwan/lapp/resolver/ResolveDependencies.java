@@ -13,10 +13,7 @@ import org.eclipse.aether.artifact.DefaultArtifact;
 import org.eclipse.aether.collection.CollectRequest;
 import org.eclipse.aether.graph.Dependency;
 import org.eclipse.aether.graph.DependencyFilter;
-import org.eclipse.aether.resolution.DependencyRequest;
-import org.eclipse.aether.resolution.DependencyResolutionException;
-import org.eclipse.aether.resolution.DependencyResult;
-import org.eclipse.aether.resolution.VersionRangeResolutionException;
+import org.eclipse.aether.resolution.*;
 import org.eclipse.aether.util.artifact.JavaScopes;
 import org.eclipse.aether.util.filter.ScopeDependencyFilter;
 import org.eclipse.aether.version.Version;
@@ -71,21 +68,43 @@ public class ResolveDependencies {
 
         session.setConfigProperty(CustomVersionRangeResolver.CONFIG_LIMIT_DATE, datetimeLimit);
 
-        Artifact artifact = new DefaultArtifact(packageIdentifier + ":" + version);
-        CollectRequest collectRequest = new CollectRequest();
-        collectRequest.setRoot(new Dependency(artifact, ""));
-        collectRequest.setRepositories(Booter.newRepositories());
 
-        HashSet<String> included = new HashSet<>();
-        included.add(JavaScopes.COMPILE);
-        DependencyFilter dependencyFilter = new ScopeDependencyFilter(included, null);
+        try {
+            ArtifactResult artifactResult = resolveArtifact(packageIdentifier, version);
 
-        DependencyRequest dependencyRequest = new DependencyRequest(collectRequest, dependencyFilter);
 
-        DependencyResult dependencyResult = system.resolveDependencies(session, dependencyRequest);
 
-        return dependencyResult;
+            CollectRequest collectRequest = new CollectRequest();
+            collectRequest.setRoot(new Dependency(artifactResult.getArtifact(), ""));
+            collectRequest.setRepositories(Booter.newRepositories());
 
+            HashSet<String> included = new HashSet<>();
+            included.add(JavaScopes.COMPILE);
+            DependencyFilter dependencyFilter = new ScopeDependencyFilter(included, null);
+
+            DependencyRequest dependencyRequest = new DependencyRequest(collectRequest, dependencyFilter);
+
+            DependencyResult dependencyResult = system.resolveDependencies(session, dependencyRequest);
+
+            return dependencyResult;
+
+        } catch (ArtifactResolutionException e) {
+            throw new DependencyResolutionException(null, e);
+        }
+
+    }
+
+    public ArtifactResult resolveArtifact(String identifier, String version) throws ArtifactResolutionException {
+
+        Artifact artifact = new DefaultArtifact( identifier + ":" + version );
+
+        ArtifactRequest artifactRequest = new ArtifactRequest();
+        artifactRequest.setArtifact( artifact );
+        artifactRequest.setRepositories( Booter.newRepositories() );
+
+        ArtifactResult artifactResult = system.resolveArtifact( session, artifactRequest );
+
+        return artifactResult;
     }
 
 }

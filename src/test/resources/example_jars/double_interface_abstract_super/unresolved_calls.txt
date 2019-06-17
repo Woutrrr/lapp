@@ -1,0 +1,2 @@
+static:double-interface-method-1.0-SNAPSHOT:?::nl.wvdzwan.tudelft.benchmark.double_interface_method.DoubleInterfaceMethod.main([Ljava/lang/String;)V -> __::java.io.PrintStream.println(Ljava/lang/String;)V :invoke_virtual
+static:double-interface-method-1.0-SNAPSHOT:?::nl.wvdzwan.tudelft.benchmark.double_interface_method.DoubleInterfaceMethodAbstractSuper.<init>()V -> __::java.lang.Object.<init>()V :invoke_special

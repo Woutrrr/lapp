@@ -12,6 +12,7 @@ import java.nio.file.StandardCopyOption;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -41,10 +42,14 @@ public class DependencyJarFolder implements ResolveOutputTask {
         }
 
 
-        long total = result.getArtifactResults().size();
-        List<Path> copyResults = result.getArtifactResults().stream()
-                .filter(ArtifactResult::isResolved)
-                .map(ArtifactResult::getArtifact)
+        long total = result.getArtifactResults().size() + 1 ; // +1 for main jar
+
+        List<Path> copyResults = Stream.concat(
+                Stream.of(result.getRoot().getArtifact()),
+                result.getArtifactResults().stream()
+                        .filter(ArtifactResult::isResolved)
+                        .map(ArtifactResult::getArtifact)
+        )
                 .map(artifact -> {
                     File file = artifact.getFile();
                     String fileName = ArtifactRecord.getIdentifier(artifact).replace(":", "$") + ".jar";

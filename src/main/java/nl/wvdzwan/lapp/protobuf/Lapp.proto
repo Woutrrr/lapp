@@ -1,0 +1,57 @@
+syntax = "proto3";
+
+package lapp;
+
+option java_package = "nl.wvdzwan.lapp.protobuf";
+option java_outer_classname = "Lapp";
+
+message Method {
+    string namespace = 1;
+    string symbol = 2;
+    string artifact = 3;
+
+    map<string, string> metadata = 4;
+}
+
+message Call {
+    Method source = 1;
+    Method target = 2;
+
+    enum CallType {
+        UNKNOWN = 0;
+        INTERFACE = 1;
+        VIRTUAL = 2;
+        SPECIAL = 3;
+        STATIC = 4;
+    }
+    CallType callType = 3;
+}
+
+message Artifact {
+    string group = 1;
+    string name = 2;
+    string version = 3;
+}
+
+
+message ClassRecord {
+    string name = 1;
+    string package = 2;
+    string superClass = 3;
+    repeated string interfaces = 4;
+    repeated string methods = 5;
+    bool public = 6;
+    bool private = 7;
+    bool interface = 8;
+    bool abstract = 9;
+}
+
+message Package {
+    repeated Artifact artifacts = 1;
+    repeated ClassRecord classRecords = 6;
+
+    repeated Call resolvedCalls = 4;
+    repeated Call unresolvedCalls = 5;
+
+    map<string, string> metadata = 8;
+}

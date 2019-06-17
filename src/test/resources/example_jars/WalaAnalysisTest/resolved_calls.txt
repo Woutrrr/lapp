@@ -1,0 +1,6 @@
+com.company:app:3.2::example.app.App.main([Ljava/lang/String;)V -> com.company:app:3.2::example.app.App$Hexagon.<init>(D)V :invoke_special
+com.company:app:3.2::example.app.App.main([Ljava/lang/String;)V -> com.company:app:3.2::example.app.App.privateCall(Ljava/lang/Object;)V :invoke_static
+com.company:app:3.2::example.app.App.main([Ljava/lang/String;)V -> com.company:app:3.2::example.app.Circle.<init>(D)V :invoke_special
+com.company:app:3.2::example.app.App.main([Ljava/lang/String;)V -> com.company:app:3.2::example.app.Printer.<init>()V :invoke_special
+com.company:app:3.2::example.app.App.main([Ljava/lang/String;)V -> com.company:app:3.2::example.app.ShapeOutput.output(Lexample/core/AreaInterface;)V :invoke_interface
+com.company:app:3.2::example.app.App.privateCall(Ljava/lang/Object;)V -> com.company:app:3.2::example.app.App.tryReflection(Ljava/lang/Object;)V :invoke_static

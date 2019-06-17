@@ -6,9 +6,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.Arrays;
-import java.util.List;
 import java.util.concurrent.Callable;
-import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.logging.log4j.LogManager;
@@ -16,7 +14,6 @@ import org.apache.logging.log4j.Logger;
 import org.eclipse.aether.RepositorySystem;
 import org.eclipse.aether.artifact.Artifact;
 import org.eclipse.aether.impl.DefaultServiceLocator;
-import org.eclipse.aether.resolution.ArtifactResult;
 import org.eclipse.aether.resolution.DependencyResolutionException;
 import org.eclipse.aether.resolution.DependencyResult;
 import picocli.CommandLine;
@@ -158,17 +155,8 @@ public class Main implements Callable<File> {
             // TODO graceful exit
         }
 
-        List<String> jarPaths = resolveResult.getArtifactResults().stream()
-                .filter(ArtifactResult::isResolved)
-                .map(ArtifactResult::getArtifact)
-                .map(Artifact::getFile)
-                .map(File::getAbsolutePath)
-                .collect(Collectors.toList());
-
-        System.out.println(jarPaths);
-
-        if (!resolveResult.getArtifactResults().get(0).isResolved()) {
-            logger.warn("Main artifact not resolved, abort ");
+        if (resolveResult.getRoot().getArtifact().getFile() == null) {
+            logger.warn("ConvertMain artifact not resolved, abort ");
             return null;
         }
 
@@ -191,7 +179,8 @@ public class Main implements Callable<File> {
             return outputDirectory;
         }
 
-        Artifact mainArtifact = resolveResult.getArtifactResults().get(0).getArtifact();
+        Artifact mainArtifact = resolveResult.getRoot().getArtifact();
+
         String artifactFolderName = String.format("%s_%s_%s", mainArtifact.getGroupId(), mainArtifact.getArtifactId(), mainArtifact.getVersion());
 
         return new File("output", artifactFolderName);

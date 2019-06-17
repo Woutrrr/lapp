@@ -18,7 +18,7 @@ import org.apache.logging.log4j.Logger;
 
 import nl.wvdzwan.lapp.callgraph.FolderLayout.ArtifactFolderLayout;
 
-public class ClassToArtifactResolver {
+public class ClassToArtifactResolver implements ClassArtifactResolver {
     protected static final Logger logger = LogManager.getLogger();
 
     private final ArtifactFolderLayout transformer;
@@ -31,6 +31,7 @@ public class ClassToArtifactResolver {
         this.transformer = transformer;
     }
 
+    @Override
     public ArtifactRecord artifactRecordFromMethodReference(MethodReference n) {
         IClass klass = cha.lookupClass(n.getDeclaringClass());
 
@@ -48,6 +49,7 @@ public class ClassToArtifactResolver {
         return artifactRecordFromClass(klass);
     }
 
+    @Override
     public ArtifactRecord artifactRecordFromClass(IClass klass) {
         Objects.requireNonNull(klass);
 

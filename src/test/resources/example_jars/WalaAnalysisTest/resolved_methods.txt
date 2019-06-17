@@ -1,0 +1,16 @@
+com.company:app:3.2::example.app.App$Hexagon.<init>(D)V
+com.company:app:3.2::example.app.App$Hexagon.area()D
+com.company:app:3.2::example.app.App.<init>()V
+com.company:app:3.2::example.app.App.main([Ljava/lang/String;)V
+com.company:app:3.2::example.app.App.privateCall(Ljava/lang/Object;)V
+com.company:app:3.2::example.app.App.tryReflection(Ljava/lang/Object;)V
+com.company:app:3.2::example.app.Circle.<init>(D)V
+com.company:app:3.2::example.app.Circle.area()D
+com.company:app:3.2::example.app.Farm.AnimalFarm.<init>()V
+com.company:app:3.2::example.app.Farm.AnimalFarm.main([Ljava/lang/String;)V
+com.company:app:3.2::example.app.Printer.<init>()V
+com.company:app:3.2::example.app.Printer.output(Lexample/core/AreaInterface;)V
+com.company:app:3.2::example.app.Printer.toString()Ljava/lang/String;
+com.company:app:3.2::example.app.ShapeOutput.output(Lexample/core/AreaInterface;)V
+com.company:app:3.2::example.app.WorkerApp.<init>()V
+com.company:app:3.2::example.app.WorkerApp.main([Ljava/lang/String;)V

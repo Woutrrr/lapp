@@ -2,21 +2,26 @@ package nl.wvdzwan.lapp.callgraph;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileWriter;
+import java.io.FileOutputStream;
+import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.concurrent.Callable;
 
-import com.ibm.wala.ipa.callgraph.CallGraph;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import picocli.CommandLine;
 
+import nl.wvdzwan.lapp.callgraph.FolderLayout.ArtifactFolderLayout;
 import nl.wvdzwan.lapp.callgraph.FolderLayout.DollarSeparatedLayout;
-import nl.wvdzwan.lapp.callgraph.outputs.GraphVizOutput;
-import nl.wvdzwan.lapp.callgraph.outputs.UnifiedCallGraphExport;
+import nl.wvdzwan.lapp.callgraph.wala.WalaAnalysisResult;
+import nl.wvdzwan.lapp.callgraph.wala.WalaAnalysisTransformer;
+import nl.wvdzwan.lapp.convert.outputs.ProtobufOutput;
+import nl.wvdzwan.lapp.core.LappPackage;
+import nl.wvdzwan.lapp.protobuf.Lapp;
+import nl.wvdzwan.lapp.protobuf.Protobuf;
 
 @CommandLine.Command(
         name = "callgraph",
@@ -76,7 +81,8 @@ public class CallGraphMain implements Callable<Void> {
 
 
         if (inPlace) {
-            outputDirectory = Paths.get(jar).getParent().toFile();
+            String firstJar = jar.split(":")[0];
+            outputDirectory = Paths.get(firstJar).getParent().toFile();
         }
 
         // Setup
@@ -109,18 +115,30 @@ public class CallGraphMain implements Callable<Void> {
         // Analysis
         logger.info("Starting analysis for {} with dependencies: {}", jar, dependencyClassPath);
         WalaAnalysis analysis = new WalaAnalysis(jar, dependencyClassPath, exclusionFile);
-        CallGraph cg = analysis.run();
+        WalaAnalysisResult analysisResult = analysis.run();
 
-        // Build IR graph
-        ClassToArtifactResolver artifactResolver = new ClassToArtifactResolver(analysis.getExtendedCha(), new DollarSeparatedLayout());
-        IRGraphBuilder builder = new IRGraphBuilder(cg, analysis.getExtendedCha(), artifactResolver);
-        builder.build();
+        // Build Lapp Package
+        logger.info("Build LappPackage for {}", jar);
+        ArtifactFolderLayout layoutTransformer = new DollarSeparatedLayout();
+
+        LappPackage lappPackage = WalaAnalysisTransformer.toPackage(analysisResult, layoutTransformer);
+
 
         // Output
-        GraphVizOutput dotOutput = new UnifiedCallGraphExport(builder.getGraph());
+        logger.info("Generate output");
+        Lapp.Package proto = Protobuf.of(lappPackage);
+        try {
+            if (!outputDirectory.exists()) {
+                outputDirectory.mkdirs();
+            }
 
-        FileWriter writer = new FileWriter(new File(outputDirectory, "app.dot"));
-        dotOutput.export(writer);
+            OutputStream outputStream = new FileOutputStream(new File(outputDirectory, "lapp.buf"));
+
+            ProtobufOutput protobufOutput = new ProtobufOutput();
+            protobufOutput.export(outputStream, proto);
+        } catch (FileNotFoundException e) {
+            logger.error("File not found: {}", e.getMessage());
+        }
 
         return null;
     }

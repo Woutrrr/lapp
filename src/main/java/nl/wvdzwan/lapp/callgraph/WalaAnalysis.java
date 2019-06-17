@@ -16,7 +16,6 @@ import com.ibm.wala.ipa.callgraph.impl.Util;
 import com.ibm.wala.ipa.cha.ClassHierarchy;
 import com.ibm.wala.ipa.cha.ClassHierarchyException;
 import com.ibm.wala.ipa.cha.ClassHierarchyFactory;
-import com.ibm.wala.ipa.cha.IClassHierarchy;
 import com.ibm.wala.types.ClassLoaderReference;
 import com.ibm.wala.util.config.AnalysisScopeReader;
 import com.ibm.wala.util.config.SetOfClasses;
@@ -26,15 +25,14 @@ import com.ibm.wala.util.warnings.Warnings;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import nl.wvdzwan.lapp.callgraph.wala.WalaAnalysisResult;
+
 public class WalaAnalysis {
     private static Logger logger = LogManager.getLogger();
 
     private String mainJar;
     private String classPath;
-
     private String exclusionFile;
-
-    private IClassHierarchy extendedCha;
 
 
     public WalaAnalysis(String mainJar, String classPath, String exclusionFile) {
@@ -43,13 +41,16 @@ public class WalaAnalysis {
         this.exclusionFile = exclusionFile;
     }
 
-    public CallGraph run() throws IOException, ClassHierarchyException {
+    public WalaAnalysisResult run() throws IOException, ClassHierarchyException {
         try {
 
             File exclusionsFile = (new FileProvider()).getFile(exclusionFile);
             AnalysisScope scope = AnalysisScopeReader.makePrimordialScope(exclusionsFile);
             AnalysisScopeReader.addClassPathToScope(mainJar, scope, scope.getLoader(AnalysisScope.APPLICATION));
 
+            if (!classPath.equals("")) {
+                AnalysisScopeReader.addClassPathToScope(classPath, scope, scope.getLoader(AnalysisScope.EXTENSION));
+            }
             logger.debug("Building class hierarchy...");
             // TODO : This really should use makeWithPhantom however that function is not yet stable and will cause NPE's later in the analysis
             ClassHierarchy cha = ClassHierarchyFactory.makeWithRoot(scope);
@@ -64,42 +65,33 @@ public class WalaAnalysis {
             }
             Warnings.clear();
 
-
-            AnalysisScope extendedScope = AnalysisScopeReader.makePrimordialScope(exclusionsFile);
-            AnalysisScopeReader.addClassPathToScope(mainJar, extendedScope, extendedScope.getLoader(AnalysisScope.APPLICATION));
-            if (!classPath.equals("")) {
-                AnalysisScopeReader.addClassPathToScope(classPath, extendedScope, extendedScope.getLoader(AnalysisScope.EXTENSION));
-            }
-
-            logger.debug("Building extended class hierarchy with dependencies...");
-            // TODO : This really should use makeWithPhantom however that function is not yet stable and will cause NPE's later in the analysis
-            ClassHierarchy extendedCha = ClassHierarchyFactory.makeWithRoot(extendedScope);
-            logger.info("Extended class hierarchy built, {} classes", extendedCha::getNumberOfClasses);
-            this.extendedCha = extendedCha;
-
-            for(Warning warning : filterExclusionsWarnings(scope.getExclusions())) {
-                logger.warn(warning);
-            }
-            Warnings.clear();
-
-
             // Prepare call graph generation
             ArrayList<Entrypoint> entryPoints = getEntrypoints(cha);
+            if (entryPoints.isEmpty()) {
+                logger.warn("No entry points found! So no reason to try and generate a call graph!");
+                return new WalaAnalysisResult(null, cha);
+            }
 
             AnalysisOptions options = new AnalysisOptions(scope, entryPoints);
             AnalysisCache cache = new AnalysisCacheImpl();
 
             logger.debug("Preform RTA analysis...");
+            long startTime = System.nanoTime();
             CallGraphBuilder builder = Util.makeRTABuilder(options, cache, cha, scope);
             CallGraph cg = builder.makeCallGraph(options, null);
+            long endTime = System.nanoTime();
+
             logger.info("RTA analysis done!");
             logger.info(() -> CallGraphStats.getStats(cg));
 
-            return cg;
+
+            logger.info("Took {}", () -> (endTime - startTime) / 1000000);
+
+            return new WalaAnalysisResult(cg, cg.getClassHierarchy());
 
         } catch (CallGraphBuilderCancelException e) {
             logger.warn("Graph building cancelled! Continuing with partial graph");
-            return e.getPartialCallGraph();
+            return new WalaAnalysisResult(e.getPartialCallGraph(), e.getPartialCallGraph().getClassHierarchy());
         }
     }
 
@@ -138,7 +130,6 @@ public class WalaAnalysis {
     }
 
 
-
     public ArrayList<Entrypoint> getEntrypoints(ClassHierarchy cha) {
 
         ArrayList<Entrypoint> entryPoints = new ArrayList<>();
@@ -171,10 +162,5 @@ public class WalaAnalysis {
                 && method.isPublic()
                 && !method.isAbstract();
     }
-
-    public IClassHierarchy getExtendedCha() {
-        return this.extendedCha;
-    }
-
 }
 

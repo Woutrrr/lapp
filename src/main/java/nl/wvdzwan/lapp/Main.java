@@ -4,9 +4,10 @@ import java.util.concurrent.Callable;
 
 import picocli.CommandLine;
 
-import nl.wvdzwan.lapp.IRDotMerger.IRDotMerger;
 import nl.wvdzwan.lapp.analyse.AnalyseCommand;
-import nl.wvdzwan.lapp.filter.FilterMain;
+import nl.wvdzwan.lapp.callgraph.CallGraphMain;
+import nl.wvdzwan.lapp.convert.ConvertMain;
+import nl.wvdzwan.lapp.merge.MergeMain;
 
 @CommandLine.Command(
         name = "lapp",
@@ -18,10 +19,10 @@ import nl.wvdzwan.lapp.filter.FilterMain;
         version = "0.1",
         subcommands = {
                 nl.wvdzwan.lapp.resolver.Main.class,
-                nl.wvdzwan.lapp.callgraph.CallGraphMain.class,
+                CallGraphMain.class,
                 AnalyseCommand.class,
-                IRDotMerger.class,
-                FilterMain.class
+                ConvertMain.class,
+                MergeMain.class,
         }
 )
 public class Main implements Callable<Void> {
