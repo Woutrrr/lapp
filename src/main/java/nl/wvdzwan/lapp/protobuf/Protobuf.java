@@ -2,23 +2,21 @@ package nl.wvdzwan.lapp.protobuf;
 
 import java.util.stream.Collectors;
 
+import nl.wvdzwan.lapp.call.Call;
 import nl.wvdzwan.lapp.callgraph.ArtifactRecord;
+import nl.wvdzwan.lapp.core.ClassRecord;
 import nl.wvdzwan.lapp.core.LappPackage;
 import nl.wvdzwan.lapp.core.Method;
 import nl.wvdzwan.lapp.core.ResolvedMethod;
-import nl.wvdzwan.lapp.call.Call;
-import nl.wvdzwan.lapp.call.ChaEdge;
 
 public class Protobuf {
 
     public static Lapp.Package of(LappPackage p) {
         return Lapp.Package.newBuilder()
                 .addAllArtifacts(p.artifacts.stream().map(Protobuf::of).collect(Collectors.toList()))
-                .addAllMethods(p.methods.stream().map(Protobuf::of).collect(Collectors.toList()))
                 .addAllResolvedCalls(p.resolvedCalls.stream().map(Protobuf::of).collect(Collectors.toList()))
                 .addAllUnresolvedCalls(p.unresolvedCalls.stream().map(Protobuf::of).collect(Collectors.toList()))
-                .addAllCha(p.cha.stream().map(Protobuf::of).collect(Collectors.toList()))
-                .addAllUnresolvedCha(p.unresolvedCha.stream().map(Protobuf::of).collect(Collectors.toList()))
+                .addAllClassRecords(p.classRecords.stream().map(Protobuf::of).collect(Collectors.toList()))
                 .build();
     }
 
@@ -69,22 +67,19 @@ public class Protobuf {
         }
     }
 
-    public static Lapp.ChaRelation of(ChaEdge c) {
-        return Lapp.ChaRelation.newBuilder()
-                .setRelated(of(c.source))
-                .setSubject(of(c.target))
-                .setType(of(c.type))
-                .build();
-    }
+    public static Lapp.ClassRecord of(ClassRecord r) {
+        return Lapp.ClassRecord.newBuilder()
+                .setPackage(r.artifact)
+                .setName(r.name)
+                .setSuperClass(r.superClass)
+                .addAllInterfaces(r.interfaces)
+                .addAllMethods(r.methods)
 
-    public static Lapp.ChaRelation.RelationType of(ChaEdge.ChaEdgeType t) {
-        switch (t) {
-            case OVERRIDE:
-                return Lapp.ChaRelation.RelationType.OVERRIDE;
-            case IMPLEMENTS:
-                return Lapp.ChaRelation.RelationType.IMPLEMENTS;
-            default:
-                return Lapp.ChaRelation.RelationType.UNRECOGNIZED;
-        }
+                .setPublic(r.isPublic)
+                .setPrivate(r.isPrivate)
+                .setInterface(r.isInterface)
+                .setAbstract(r.isAbstract)
+
+                .build();
     }
 }

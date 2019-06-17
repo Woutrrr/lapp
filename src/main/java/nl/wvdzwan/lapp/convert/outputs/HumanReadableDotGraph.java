@@ -5,13 +5,13 @@ import java.util.Map;
 import org.jgrapht.io.Attribute;
 import org.jgrapht.io.DOTExporter;
 
-import nl.wvdzwan.lapp.call.Edge;
+import nl.wvdzwan.lapp.call.Call;
 import nl.wvdzwan.lapp.core.Method;
 
 public class HumanReadableDotGraph extends GraphVizOutput {
 
     @Override
-    protected void setGraphAttributes(DOTExporter<Method, Edge> dotExporter) {
+    protected void setGraphAttributes(DOTExporter<Method, Call> dotExporter) {
         dotExporter.putGraphAttribute("overlap", "false");
         dotExporter.putGraphAttribute("ranksep", "1");
     }

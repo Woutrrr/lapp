@@ -16,11 +16,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import picocli.CommandLine;
 
-import nl.wvdzwan.lapp.convert.outputs.HumanReadableDotGraph;
-import nl.wvdzwan.lapp.convert.outputs.JsonOutput;
-import nl.wvdzwan.lapp.convert.outputs.LappPackageOutput;
-import nl.wvdzwan.lapp.convert.outputs.ProtobufOutput;
-import nl.wvdzwan.lapp.convert.outputs.UnifiedCallGraphExport;
+import nl.wvdzwan.lapp.convert.outputs.*;
 import nl.wvdzwan.lapp.protobuf.Lapp;
 
 
@@ -59,6 +55,8 @@ public class ConvertMain implements Callable<Void> {
         types.put("proto", ProtobufOutput.class);
         types.put("xdot", HumanReadableDotGraph.class);
         types.put("udot", UnifiedCallGraphExport.class);
+        types.put("chadot", ClassHierarchyDotGraph.class);
+        types.put("resolved", ResolvedDispatchCallGraphExport.class);
     }
 
     @Override

@@ -31,13 +31,20 @@ public class LappPackageMerger {
         for (Package p : toMerge) {
             builder
                     .addAllArtifacts(p.getArtifactsList())
-                    .addAllMethods(p.getMethodsList())
                     .addAllResolvedCalls(p.getResolvedCallsList())
-                    .addAllCha(p.getChaList());
+                    .addAllClassRecords(p.getClassRecordsList());
 
             resolvedMethodMap.putAll(
-                    p.getMethodsList()
+                    p.getClassRecordsList()
                             .stream()
+                            .flatMap(classRecord -> classRecord.getMethodsList().stream()
+                                    .map(m -> Method.newBuilder()
+                                                    .setArtifact(classRecord.getPackage())
+                                                .setNamespace(classRecord.getName())
+                                            .setSymbol(m)
+                                            .build()
+                                    )
+                            )
                             .collect(
                                     Collectors.toMap(
                                             LappPackageMerger::methodToMethodKey,
@@ -49,7 +56,6 @@ public class LappPackageMerger {
         // resolve unresolvedCalls/ChaRelations
         for (Package p : toMerge) {
             resolveCalls(p.getUnresolvedCallsList());
-            resolveCha(p.getUnresolvedChaList());
         }
 
         return builder.build();
@@ -66,20 +72,6 @@ public class LappPackageMerger {
                 builder.addResolvedCalls(Lapp.Call.newBuilder(call).setTarget(resolvedMethod));
             } else {
                 builder.addUnresolvedCalls(call);
-            }
-        }
-    }
-
-    public void resolveCha(List<Lapp.ChaRelation> unresolvedChaRelations) {
-        for (Lapp.ChaRelation relation : unresolvedChaRelations) {
-
-            String methodKey = methodToMethodKey(relation.getRelated());
-            Lapp.Method resolvedMethod = resolvedMethodMap.get(methodKey);
-
-            if (resolvedMethod != null) {
-                builder.addCha(Lapp.ChaRelation.newBuilder(relation).setRelated(resolvedMethod));
-            } else {
-                builder.addUnresolvedCha(relation);
             }
         }
     }

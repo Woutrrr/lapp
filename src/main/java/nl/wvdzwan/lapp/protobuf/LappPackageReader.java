@@ -6,8 +6,8 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import nl.wvdzwan.lapp.call.Call;
-import nl.wvdzwan.lapp.call.ChaEdge;
 import nl.wvdzwan.lapp.callgraph.ArtifactRecord;
+import nl.wvdzwan.lapp.core.ClassRecord;
 import nl.wvdzwan.lapp.core.LappPackage;
 import nl.wvdzwan.lapp.core.Method;
 import nl.wvdzwan.lapp.core.ResolvedMethod;
@@ -22,12 +22,9 @@ public class LappPackageReader {
 
         lappPackage.artifacts.addAll(fromArtifacts(proto.getArtifactsList()));
 
-        lappPackage.methods.addAll(fromMethods(proto.getMethodsList()));
-
+        lappPackage.classRecords.addAll(fromClassRecords(proto.getClassRecordsList()));
         lappPackage.resolvedCalls.addAll(fromCalls(proto.getResolvedCallsList()));
         lappPackage.unresolvedCalls.addAll(fromCalls(proto.getUnresolvedCallsList()));
-        lappPackage.cha.addAll(fromCha(proto.getChaList()));
-        lappPackage.unresolvedCha.addAll(fromCha(proto.getUnresolvedChaList()));
 
         lappPackage.metadata.putAll(new HashMap<>(proto.getMetadataMap()));
 
@@ -41,11 +38,6 @@ public class LappPackageReader {
                 .collect(Collectors.toSet());
     }
 
-    public static Set<ResolvedMethod> fromMethods(List<Lapp.Method> proto) {
-        return proto.stream()
-                .map(m -> fromResolvedMethod(m))
-                .collect(Collectors.toSet());
-    }
 
     public static ResolvedMethod fromResolvedMethod(Lapp.Method proto) {
         return ResolvedMethod.findOrCreate(proto.getNamespace(), proto.getSymbol(), proto.getArtifact());
@@ -69,25 +61,24 @@ public class LappPackageReader {
                 .collect(Collectors.toSet());
     }
 
-    public static Set<ChaEdge> fromCha(List<Lapp.ChaRelation> proto) {
+    private static Set<ClassRecord> fromClassRecords(List<Lapp.ClassRecord> proto) {
         return proto.stream()
-                .map(c -> new ChaEdge(fromMethod(c.getRelated()), fromResolvedMethod(c.getSubject()), fromChaType(c.getType())))
+                .map(c -> {
+                    ClassRecord result = new ClassRecord(c.getPackage(), c.getName());
+                    result.setSuperClass(c.getSuperClass());
+                    result.interfaces.addAll(c.getInterfacesList());
+                    result.methods.addAll(c.getMethodsList());
+
+                    result.isPublic = c.getPublic();
+                    result.isPrivate = c.getPrivate();
+                    result.isInterface = c.getInterface();
+                    result.isAbstract = c.getAbstract();
+
+                    return result;
+                })
                 .collect(Collectors.toSet());
     }
 
-
-    public static ChaEdge.ChaEdgeType fromChaType(Lapp.ChaRelation.RelationType proto) {
-        switch (proto) {
-            case IMPLEMENTS:
-                return ChaEdge.ChaEdgeType.IMPLEMENTS;
-            case OVERRIDE:
-                return ChaEdge.ChaEdgeType.OVERRIDE;
-            case UNKNOWN:
-            case UNRECOGNIZED:
-            default:
-                return ChaEdge.ChaEdgeType.UNKNOWN;
-        }
-    }
 
     public static Call.CallType fromCallType(Lapp.Call.CallType proto) {
         switch (proto) {

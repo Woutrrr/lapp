@@ -1,41 +1,35 @@
 package nl.wvdzwan.lapp.callgraph.wala;
 
 import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 import com.ibm.wala.classLoader.IClass;
 import com.ibm.wala.classLoader.IClassLoader;
 import com.ibm.wala.classLoader.IMethod;
+import com.ibm.wala.classLoader.ShrikeClass;
 import com.ibm.wala.ipa.cha.IClassHierarchy;
+import com.ibm.wala.shrikeCT.ClassReader;
+import com.ibm.wala.shrikeCT.InvalidClassFileException;
 import com.ibm.wala.types.ClassLoaderReference;
-import com.ibm.wala.types.Selector;
-import com.ibm.wala.types.TypeReference;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
-import nl.wvdzwan.lapp.call.ChaEdge;
-import nl.wvdzwan.lapp.callgraph.wala.LappPackageBuilder.MethodType;
-import nl.wvdzwan.lapp.core.Method;
-import nl.wvdzwan.lapp.core.ResolvedMethod;
+import nl.wvdzwan.lapp.core.ClassRecord;
 
 public class ClassHierarchyInserter {
+    protected static final Logger logger = LogManager.getLogger();
 
 
     private final IClassHierarchy cha;
-    private final LappPackageBuilder graph;
+    private final LappPackageBuilder lappBuilder;
 
-    public ClassHierarchyInserter(IClassHierarchy cha, LappPackageBuilder graph) {
+    public ClassHierarchyInserter(IClassHierarchy cha, LappPackageBuilder builder) {
         this.cha = cha;
-        this.graph = graph;
+        this.lappBuilder = builder;
     }
 
     public void insertCHA() {
-        IClassLoader classLoader = cha.getLoader(ClassLoaderReference.Application);
+        IClassLoader classLoader = cha.getLoader(ClassLoaderReference.Primordial);
 
-        Set<TypeReference> unresolved = cha.getUnresolvedClasses();
-        System.out.println(unresolved.size());
-        cha.
         // Iterate all classes in Application scope
         for (Iterator<IClass> it = classLoader.iterateAllClasses(); it.hasNext(); ) {
             IClass klass = it.next();
@@ -45,84 +39,36 @@ public class ClassHierarchyInserter {
 
     private void processClass(IClass klass) {
 
+        ClassRecord classRecord = lappBuilder.makeClassRecord(klass);
 
-        Map<Selector, List<IMethod>> interfaceMethods = klass.getDirectInterfaces()
-                .stream()
-                .flatMap(o -> o.getDeclaredMethods().stream())
-                .collect(
-                        Collectors.groupingBy(IMethod::getSelector)
-                );
+        classRecord.isInterface = klass.isInterface();
+        classRecord.isPublic = klass.isPublic();
+        classRecord.isPrivate = klass.isPrivate();
+        classRecord.isAbstract = klass.isAbstract();
 
-        for (IMethod declaredMethod : klass.getDeclaredMethods()) {
-
-            List<IMethod> methodInterfaces = interfaceMethods.get(declaredMethod.getSelector());
-
-            processMethod(klass, declaredMethod, methodInterfaces);
-        }
-    }
-
-    private void processMethod(IClass klass, IMethod declaredMethod, List<IMethod> methodInterfaces) {
-        if (declaredMethod.isPrivate()) {
-            // Private methods cannot be overridden, so no need for them.
-            return;
-        }
-        IClass superKlass = klass.getSuperclass();
-
-        Method declaredMethodNode = graph.addMethod(declaredMethod.getReference(), getMethodType(klass, declaredMethod));
-
-        if (!(declaredMethodNode instanceof ResolvedMethod)) {
-            return;
-        }
-        ResolvedMethod resolvedMethod = (ResolvedMethod) declaredMethodNode;
-
-
-        IMethod superMethod = superKlass.getMethod(declaredMethod.getSelector());
-        if (superMethod != null) {
-            Method superMethodNode = graph.addMethod(superMethod.getReference());
-
-            graph.addChaEdge(superMethodNode, resolvedMethod, ChaEdge.ChaEdgeType.OVERRIDE);
+        for (IMethod method : klass.getDeclaredMethods()){
+            classRecord.addMethod(method.getSelector().toString());
         }
 
+        if (klass instanceof ShrikeClass) {
+            ClassReader cr = ((ShrikeClass)klass).getReader();
+            try {
 
-        if (methodInterfaces != null) {
-            for (IMethod interfaceMethod : methodInterfaces) {
-                Method interfaceMethodNode = graph.addMethod(interfaceMethod.getReference(), MethodType.INTERFACE);
+                classRecord.setSuperClass(cr.getSuperName().replace('/', '.'));
+                for (String directInterface : cr.getInterfaceNames()) {
 
-                graph.addChaEdge(interfaceMethodNode, resolvedMethod, ChaEdge.ChaEdgeType.IMPLEMENTS);
-            }
-        }
-
-
-        // An abstract class doesn't have to define abstract method for interface methods
-        // So if this method doesn't have a super method or an interface method look for them in the interfaces of the abstract superclass
-        if (superKlass.isAbstract() && superMethod == null && methodInterfaces == null) {
-
-            Map<Selector, List<IMethod>> abstractSuperClassInterfacesByMethod = superKlass.getDirectInterfaces()
-                    .stream()
-                    .flatMap(o -> o.getDeclaredMethods().stream())
-                    .collect(Collectors.groupingBy(IMethod::getSelector));
-
-            List<IMethod> abstractSuperClassInterfaceMethods = abstractSuperClassInterfacesByMethod.get(declaredMethod.getSelector());
-            if (abstractSuperClassInterfaceMethods != null && abstractSuperClassInterfaceMethods.size() > 0) {
-                for (IMethod abstractSuperClassInterfaceMethod : abstractSuperClassInterfaceMethods) {
-                    Method abstractSuperClassInterfaceMethodNode = graph.addMethod(abstractSuperClassInterfaceMethod.getReference(), MethodType.INTERFACE);
-                    graph.addChaEdge(abstractSuperClassInterfaceMethodNode, resolvedMethod, ChaEdge.ChaEdgeType.IMPLEMENTS);
+                    classRecord.addInterface(directInterface.replace('/', '.'));
                 }
+
+
+            } catch (InvalidClassFileException e) {
+                logger.error("Invalid class file!", () -> klass.getName().toString());
+                e.printStackTrace();
             }
-        }
-    }
-
-    private MethodType getMethodType(IClass klass, IMethod declaredMethod) {
-        if (declaredMethod.isAbstract()) {
-
-            if (klass.isInterface()) {
-                return MethodType.INTERFACE;
-            } else {
-                return MethodType.ABSTRACT;
-            }
-
         } else {
-            return MethodType.IMPLEMENTATION;
+            logger.error("Unfamiliar class type found", () -> klass.getClass().toString());
         }
+
+
     }
 }

@@ -16,7 +16,6 @@ import com.ibm.wala.ipa.callgraph.impl.Util;
 import com.ibm.wala.ipa.cha.ClassHierarchy;
 import com.ibm.wala.ipa.cha.ClassHierarchyException;
 import com.ibm.wala.ipa.cha.ClassHierarchyFactory;
-import com.ibm.wala.types.ClassLoaderReference;
 import com.ibm.wala.util.config.AnalysisScopeReader;
 import com.ibm.wala.util.config.SetOfClasses;
 import com.ibm.wala.util.io.FileProvider;
@@ -45,7 +44,7 @@ public class WalaAnalysis {
         try {
 
             File exclusionsFile = (new FileProvider()).getFile(exclusionFile);
-            AnalysisScope scope = AnalysisScopeReader.makePrimordialScope(exclusionsFile);
+            AnalysisScope scope = AnalysisScopeReader.makePrimordialScope(null);
             AnalysisScopeReader.addClassPathToScope(mainJar, scope, scope.getLoader(AnalysisScope.APPLICATION));
 
             if (!classPath.equals("")) {
@@ -103,25 +102,25 @@ public class WalaAnalysis {
 
             String msg = warning.getMsg();
 
-            if (msg.startsWith("class com.ibm.wala.ipa.cha.ClassHierarchy$ClassExclusion")) {
-                int index = msg.lastIndexOf("Superclass name");
-
-                String superClass = msg.substring(index + 17);
-
-                if (exclusions.contains(superClass)) {
-                    continue;
-                }
-
-            }
-
-            if (msg.startsWith("class com.ibm.wala.classLoader.BytecodeClass$ClassNotFoundWarning")) {
-                int index = msg.lastIndexOf("ClassNotFoundWarning");
-                String klass = msg.substring(index + 24);
-
-                if (exclusions.contains(klass)) {
-                    continue;
-                }
-            }
+//            if (msg.startsWith("class com.ibm.wala.ipa.cha.ClassHierarchy$ClassExclusion")) {
+//                int index = msg.lastIndexOf("Superclass name");
+//
+//                String superClass = msg.substring(index + 17);
+//
+//                if (exclusions.contains(superClass)) {
+//                    continue;
+//                }
+//
+//            }
+//
+//            if (msg.startsWith("class com.ibm.wala.classLoader.BytecodeClass$ClassNotFoundWarning")) {
+//                int index = msg.lastIndexOf("ClassNotFoundWarning");
+//                String klass = msg.substring(index + 24);
+//
+//                if (exclusions.contains(klass)) {
+//                    continue;
+//                }
+//            }
 
             result.add(warning);
         }
@@ -153,15 +152,15 @@ public class WalaAnalysis {
 
 
     private static boolean acceptClassForEntryPoints(IClass klass) {
-        return klass.getClassLoader().getReference().equals(ClassLoaderReference.Application)
-                && !klass.isInterface()
-                && klass.isPublic();
+
+        return !klass.isInterface();
     }
 
     public static boolean acceptMethodAsEntryPoint(IMethod method) {
-        return method.getDeclaringClass().getClassLoader().getReference().equals(ClassLoaderReference.Application)
-                && method.isPublic()
-                && !method.isAbstract();
+        System.out.println(method.getSignature());
+//        return true;
+        //        return method.getDeclaringClass().getClassLoader().getReference().equals(ClassLoaderReference.Application)
+                return !method.isAbstract() && !method.isAbstract();
     }
 }
 

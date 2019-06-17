@@ -7,6 +7,7 @@ import picocli.CommandLine;
 import nl.wvdzwan.lapp.analyse.AnalyseCommand;
 import nl.wvdzwan.lapp.callgraph.CallGraphMain;
 import nl.wvdzwan.lapp.convert.ConvertMain;
+import nl.wvdzwan.lapp.merge.MergeMain;
 
 @CommandLine.Command(
         name = "lapp",
@@ -20,7 +21,8 @@ import nl.wvdzwan.lapp.convert.ConvertMain;
                 nl.wvdzwan.lapp.resolver.Main.class,
                 CallGraphMain.class,
                 AnalyseCommand.class,
-                ConvertMain.class
+                ConvertMain.class,
+                MergeMain.class,
         }
 )
 public class Main implements Callable<Void> {

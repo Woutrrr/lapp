@@ -14,7 +14,6 @@ import org.jgrapht.io.DefaultAttribute;
 
 import nl.wvdzwan.lapp.LappPackageTransformer;
 import nl.wvdzwan.lapp.call.Call;
-import nl.wvdzwan.lapp.call.ChaEdge;
 import nl.wvdzwan.lapp.call.Edge;
 import nl.wvdzwan.lapp.core.Method;
 import nl.wvdzwan.lapp.protobuf.Lapp;
@@ -24,9 +23,9 @@ public abstract class GraphVizOutput implements LappPackageOutput {
 
     public boolean export(OutputStream outputStream, Lapp.Package lappProto) {
 
-        Graph<Method, Edge> graph = LappPackageTransformer.toGraph(lappProto);
+        Graph<Method, Call> graph = LappPackageTransformer.toGraph(lappProto);
 
-        DOTExporter<Method, Edge> exporter = new DOTExporter<>(
+        DOTExporter<Method, Call> exporter = new DOTExporter<>(
                 this::vertexIdProvider,
                 this::vertexLabelProvider,
                 this::edgeLabelProvider,
@@ -42,7 +41,7 @@ public abstract class GraphVizOutput implements LappPackageOutput {
         return true;
     }
 
-    protected void setGraphAttributes(DOTExporter<Method, Edge> exported) {
+    protected void setGraphAttributes(DOTExporter<Method, Call> exported) {
         // No graph attributes by default
     }
 
@@ -73,13 +72,8 @@ public abstract class GraphVizOutput implements LappPackageOutput {
 
     protected Map<String, Attribute> edgeAttributeProvider(Edge edge) {
 
-        if (edge instanceof Call) {
             return callAttributeProvider((Call) edge);
-        } else if (edge instanceof ChaEdge) {
-            return chaAttributeProvider((ChaEdge) edge);
-        }
 
-        return new HashMap<>();
     }
 
     private Map<String, Attribute> callAttributeProvider(Call call) {
@@ -98,25 +92,13 @@ public abstract class GraphVizOutput implements LappPackageOutput {
                 break;
             case STATIC:
                 break;
+            case RESOLVED_DISPATCH:
+                attributes.put("style", DefaultAttribute.createAttribute("dashed"));
+                break;
             case UNKNOWN:
                 break;
         }
         return attributes;
     }
 
-    private Map<String, Attribute> chaAttributeProvider(ChaEdge edge) {
-        Map<String, Attribute> attributes = new HashMap<>();
-
-        switch (edge.type) {
-            case IMPLEMENTS:
-                attributes.put("style", DefaultAttribute.createAttribute("dashed"));
-                break;
-
-            case OVERRIDE:
-                attributes.put("style", DefaultAttribute.createAttribute("dotted"));
-                break;
-        }
-
-        return attributes;
-    }
 }

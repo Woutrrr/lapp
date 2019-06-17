@@ -1,14 +1,13 @@
 package nl.wvdzwan.lapp.call;
 
-import nl.wvdzwan.lapp.core.Method;
-import nl.wvdzwan.lapp.core.ResolvedMethod;
+import nl.wvdzwan.lapp.core.ClassRecord;
 
-public class ChaEdge extends Edge {
+public class ChaEdge {
 
     public enum ChaEdgeType {
 
-        OVERRIDE("overridden by"),
-        IMPLEMENTS("implemented by"),
+        EXTENDS("extends"),
+        IMPLEMENTS("implements"),
         UNKNOWN("unknown");
 
         public final String label;
@@ -19,13 +18,15 @@ public class ChaEdge extends Edge {
     }
 
     public final ChaEdgeType type;
+    public final ClassRecord src;
+    public final ClassRecord target;
 
-    public ChaEdge(Method related, ResolvedMethod subject, ChaEdgeType type) {
-        super(related, subject);
+    public ChaEdge(ChaEdgeType type, ClassRecord src, ClassRecord target) {
         this.type = type;
+        this.src = src;
+        this.target = target;
     }
 
-    @Override
     public String getLabel() {
         return type.label;
     }

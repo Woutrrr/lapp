@@ -12,7 +12,9 @@ public class Call extends Edge {
         INTERFACE("invoke_interface"),
         VIRTUAL("invoke_virtual"),
         SPECIAL("invoke_special"),
-        STATIC("invoke_static");
+        STATIC("invoke_static"),
+
+        RESOLVED_DISPATCH("resolved_dispatch");
 
         public final String label;
 

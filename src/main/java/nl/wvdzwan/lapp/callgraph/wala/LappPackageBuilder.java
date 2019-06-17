@@ -2,6 +2,7 @@ package nl.wvdzwan.lapp.callgraph.wala;
 
 import java.util.List;
 
+import com.ibm.wala.classLoader.IClass;
 import com.ibm.wala.classLoader.JarFileModule;
 import com.ibm.wala.classLoader.Module;
 import com.ibm.wala.ipa.callgraph.CallGraph;
@@ -12,14 +13,15 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import nl.wvdzwan.lapp.call.Call;
-import nl.wvdzwan.lapp.call.ChaEdge;
 import nl.wvdzwan.lapp.callgraph.ArtifactRecord;
 import nl.wvdzwan.lapp.callgraph.ClassToArtifactResolver;
 import nl.wvdzwan.lapp.callgraph.FolderLayout.ArtifactFolderLayout;
+import nl.wvdzwan.lapp.core.ClassRecord;
 import nl.wvdzwan.lapp.core.LappPackage;
 import nl.wvdzwan.lapp.core.Method;
 import nl.wvdzwan.lapp.core.ResolvedMethod;
 import nl.wvdzwan.lapp.core.UnresolvedMethod;
+import nl.wvdzwan.lapp.core.Util;
 
 public class LappPackageBuilder {
 
@@ -84,7 +86,7 @@ public class LappPackageBuilder {
 
     public Method addMethod(MethodReference reference) {
 
-        String namespace = reference.getDeclaringClass().getName().toString().substring(1).replace('/', '.');
+        String namespace = Util.typeReferenceToNamespace(reference.getDeclaringClass());
         String symbol = reference.getSelector().toString();
 
 
@@ -92,8 +94,6 @@ public class LappPackageBuilder {
             ArtifactRecord record = artifactResolver.artifactRecordFromMethodReference(reference);
 
             ResolvedMethod resolvedMethod = ResolvedMethod.findOrCreate(namespace, symbol, record.getIdentifier());
-
-            lappPackage.addResolvedMethod(resolvedMethod);
 
             return resolvedMethod;
 
@@ -109,10 +109,13 @@ public class LappPackageBuilder {
 
     }
 
-    public boolean addChaEdge(Method related, ResolvedMethod subject, ChaEdge.ChaEdgeType type) {
+    public ClassRecord makeClassRecord(IClass klass) {
+        ArtifactRecord artifactRecord = artifactResolver.artifactRecordFromClass(klass);
 
-        return lappPackage.addChaEdge(related, subject, type);
+        ClassRecord record = new ClassRecord(artifactRecord.getIdentifier(), Util.typeReferenceToNamespace(klass.getReference()));
+        lappPackage.addClassRecord(record);
 
+        return record;
     }
 
     public LappPackage build() {
@@ -122,4 +125,6 @@ public class LappPackageBuilder {
     private boolean inApplicationScope(MethodReference reference) {
         return reference.getDeclaringClass().getClassLoader().equals(ClassLoaderReference.Application);
     }
+
+
 }

@@ -2168,1007 +2168,6 @@ public final class Lapp {
 
   }
 
-  public interface ChaRelationOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:lapp.ChaRelation)
-      com.google.protobuf.MessageOrBuilder {
-
-    /**
-     * <code>.lapp.Method subject = 1;</code>
-     */
-    boolean hasSubject();
-    /**
-     * <code>.lapp.Method subject = 1;</code>
-     */
-    nl.wvdzwan.lapp.protobuf.Lapp.Method getSubject();
-    /**
-     * <code>.lapp.Method subject = 1;</code>
-     */
-    nl.wvdzwan.lapp.protobuf.Lapp.MethodOrBuilder getSubjectOrBuilder();
-
-    /**
-     * <code>.lapp.Method related = 2;</code>
-     */
-    boolean hasRelated();
-    /**
-     * <code>.lapp.Method related = 2;</code>
-     */
-    nl.wvdzwan.lapp.protobuf.Lapp.Method getRelated();
-    /**
-     * <code>.lapp.Method related = 2;</code>
-     */
-    nl.wvdzwan.lapp.protobuf.Lapp.MethodOrBuilder getRelatedOrBuilder();
-
-    /**
-     * <code>.lapp.ChaRelation.RelationType type = 3;</code>
-     */
-    int getTypeValue();
-    /**
-     * <code>.lapp.ChaRelation.RelationType type = 3;</code>
-     */
-    nl.wvdzwan.lapp.protobuf.Lapp.ChaRelation.RelationType getType();
-  }
-  /**
-   * Protobuf type {@code lapp.ChaRelation}
-   */
-  public  static final class ChaRelation extends
-      com.google.protobuf.GeneratedMessageV3 implements
-      // @@protoc_insertion_point(message_implements:lapp.ChaRelation)
-      ChaRelationOrBuilder {
-  private static final long serialVersionUID = 0L;
-    // Use ChaRelation.newBuilder() to construct.
-    private ChaRelation(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
-      super(builder);
-    }
-    private ChaRelation() {
-      type_ = 0;
-    }
-
-    @java.lang.Override
-    public final com.google.protobuf.UnknownFieldSet
-    getUnknownFields() {
-      return this.unknownFields;
-    }
-    private ChaRelation(
-        com.google.protobuf.CodedInputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      this();
-      if (extensionRegistry == null) {
-        throw new java.lang.NullPointerException();
-      }
-      int mutable_bitField0_ = 0;
-      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
-          com.google.protobuf.UnknownFieldSet.newBuilder();
-      try {
-        boolean done = false;
-        while (!done) {
-          int tag = input.readTag();
-          switch (tag) {
-            case 0:
-              done = true;
-              break;
-            case 10: {
-              nl.wvdzwan.lapp.protobuf.Lapp.Method.Builder subBuilder = null;
-              if (subject_ != null) {
-                subBuilder = subject_.toBuilder();
-              }
-              subject_ = input.readMessage(nl.wvdzwan.lapp.protobuf.Lapp.Method.parser(), extensionRegistry);
-              if (subBuilder != null) {
-                subBuilder.mergeFrom(subject_);
-                subject_ = subBuilder.buildPartial();
-              }
-
-              break;
-            }
-            case 18: {
-              nl.wvdzwan.lapp.protobuf.Lapp.Method.Builder subBuilder = null;
-              if (related_ != null) {
-                subBuilder = related_.toBuilder();
-              }
-              related_ = input.readMessage(nl.wvdzwan.lapp.protobuf.Lapp.Method.parser(), extensionRegistry);
-              if (subBuilder != null) {
-                subBuilder.mergeFrom(related_);
-                related_ = subBuilder.buildPartial();
-              }
-
-              break;
-            }
-            case 24: {
-              int rawValue = input.readEnum();
-
-              type_ = rawValue;
-              break;
-            }
-            default: {
-              if (!parseUnknownField(
-                  input, unknownFields, extensionRegistry, tag)) {
-                done = true;
-              }
-              break;
-            }
-          }
-        }
-      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-        throw e.setUnfinishedMessage(this);
-      } catch (java.io.IOException e) {
-        throw new com.google.protobuf.InvalidProtocolBufferException(
-            e).setUnfinishedMessage(this);
-      } finally {
-        this.unknownFields = unknownFields.build();
-        makeExtensionsImmutable();
-      }
-    }
-    public static final com.google.protobuf.Descriptors.Descriptor
-        getDescriptor() {
-      return nl.wvdzwan.lapp.protobuf.Lapp.internal_static_lapp_ChaRelation_descriptor;
-    }
-
-    @java.lang.Override
-    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-        internalGetFieldAccessorTable() {
-      return nl.wvdzwan.lapp.protobuf.Lapp.internal_static_lapp_ChaRelation_fieldAccessorTable
-          .ensureFieldAccessorsInitialized(
-              nl.wvdzwan.lapp.protobuf.Lapp.ChaRelation.class, nl.wvdzwan.lapp.protobuf.Lapp.ChaRelation.Builder.class);
-    }
-
-    /**
-     * Protobuf enum {@code lapp.ChaRelation.RelationType}
-     */
-    public enum RelationType
-        implements com.google.protobuf.ProtocolMessageEnum {
-      /**
-       * <code>UNKNOWN = 0;</code>
-       */
-      UNKNOWN(0),
-      /**
-       * <code>OVERRIDE = 1;</code>
-       */
-      OVERRIDE(1),
-      /**
-       * <code>IMPLEMENTS = 2;</code>
-       */
-      IMPLEMENTS(2),
-      UNRECOGNIZED(-1),
-      ;
-
-      /**
-       * <code>UNKNOWN = 0;</code>
-       */
-      public static final int UNKNOWN_VALUE = 0;
-      /**
-       * <code>OVERRIDE = 1;</code>
-       */
-      public static final int OVERRIDE_VALUE = 1;
-      /**
-       * <code>IMPLEMENTS = 2;</code>
-       */
-      public static final int IMPLEMENTS_VALUE = 2;
-
-
-      public final int getNumber() {
-        if (this == UNRECOGNIZED) {
-          throw new java.lang.IllegalArgumentException(
-              "Can't get the number of an unknown enum value.");
-        }
-        return value;
-      }
-
-      /**
-       * @deprecated Use {@link #forNumber(int)} instead.
-       */
-      @java.lang.Deprecated
-      public static RelationType valueOf(int value) {
-        return forNumber(value);
-      }
-
-      public static RelationType forNumber(int value) {
-        switch (value) {
-          case 0: return UNKNOWN;
-          case 1: return OVERRIDE;
-          case 2: return IMPLEMENTS;
-          default: return null;
-        }
-      }
-
-      public static com.google.protobuf.Internal.EnumLiteMap<RelationType>
-          internalGetValueMap() {
-        return internalValueMap;
-      }
-      private static final com.google.protobuf.Internal.EnumLiteMap<
-          RelationType> internalValueMap =
-            new com.google.protobuf.Internal.EnumLiteMap<RelationType>() {
-              public RelationType findValueByNumber(int number) {
-                return RelationType.forNumber(number);
-              }
-            };
-
-      public final com.google.protobuf.Descriptors.EnumValueDescriptor
-          getValueDescriptor() {
-        return getDescriptor().getValues().get(ordinal());
-      }
-      public final com.google.protobuf.Descriptors.EnumDescriptor
-          getDescriptorForType() {
-        return getDescriptor();
-      }
-      public static final com.google.protobuf.Descriptors.EnumDescriptor
-          getDescriptor() {
-        return nl.wvdzwan.lapp.protobuf.Lapp.ChaRelation.getDescriptor().getEnumTypes().get(0);
-      }
-
-      private static final RelationType[] VALUES = values();
-
-      public static RelationType valueOf(
-          com.google.protobuf.Descriptors.EnumValueDescriptor desc) {
-        if (desc.getType() != getDescriptor()) {
-          throw new java.lang.IllegalArgumentException(
-            "EnumValueDescriptor is not for this type.");
-        }
-        if (desc.getIndex() == -1) {
-          return UNRECOGNIZED;
-        }
-        return VALUES[desc.getIndex()];
-      }
-
-      private final int value;
-
-      private RelationType(int value) {
-        this.value = value;
-      }
-
-      // @@protoc_insertion_point(enum_scope:lapp.ChaRelation.RelationType)
-    }
-
-    public static final int SUBJECT_FIELD_NUMBER = 1;
-    private nl.wvdzwan.lapp.protobuf.Lapp.Method subject_;
-    /**
-     * <code>.lapp.Method subject = 1;</code>
-     */
-    public boolean hasSubject() {
-      return subject_ != null;
-    }
-    /**
-     * <code>.lapp.Method subject = 1;</code>
-     */
-    public nl.wvdzwan.lapp.protobuf.Lapp.Method getSubject() {
-      return subject_ == null ? nl.wvdzwan.lapp.protobuf.Lapp.Method.getDefaultInstance() : subject_;
-    }
-    /**
-     * <code>.lapp.Method subject = 1;</code>
-     */
-    public nl.wvdzwan.lapp.protobuf.Lapp.MethodOrBuilder getSubjectOrBuilder() {
-      return getSubject();
-    }
-
-    public static final int RELATED_FIELD_NUMBER = 2;
-    private nl.wvdzwan.lapp.protobuf.Lapp.Method related_;
-    /**
-     * <code>.lapp.Method related = 2;</code>
-     */
-    public boolean hasRelated() {
-      return related_ != null;
-    }
-    /**
-     * <code>.lapp.Method related = 2;</code>
-     */
-    public nl.wvdzwan.lapp.protobuf.Lapp.Method getRelated() {
-      return related_ == null ? nl.wvdzwan.lapp.protobuf.Lapp.Method.getDefaultInstance() : related_;
-    }
-    /**
-     * <code>.lapp.Method related = 2;</code>
-     */
-    public nl.wvdzwan.lapp.protobuf.Lapp.MethodOrBuilder getRelatedOrBuilder() {
-      return getRelated();
-    }
-
-    public static final int TYPE_FIELD_NUMBER = 3;
-    private int type_;
-    /**
-     * <code>.lapp.ChaRelation.RelationType type = 3;</code>
-     */
-    public int getTypeValue() {
-      return type_;
-    }
-    /**
-     * <code>.lapp.ChaRelation.RelationType type = 3;</code>
-     */
-    public nl.wvdzwan.lapp.protobuf.Lapp.ChaRelation.RelationType getType() {
-      @SuppressWarnings("deprecation")
-      nl.wvdzwan.lapp.protobuf.Lapp.ChaRelation.RelationType result = nl.wvdzwan.lapp.protobuf.Lapp.ChaRelation.RelationType.valueOf(type_);
-      return result == null ? nl.wvdzwan.lapp.protobuf.Lapp.ChaRelation.RelationType.UNRECOGNIZED : result;
-    }
-
-    private byte memoizedIsInitialized = -1;
-    @java.lang.Override
-    public final boolean isInitialized() {
-      byte isInitialized = memoizedIsInitialized;
-      if (isInitialized == 1) return true;
-      if (isInitialized == 0) return false;
-
-      memoizedIsInitialized = 1;
-      return true;
-    }
-
-    @java.lang.Override
-    public void writeTo(com.google.protobuf.CodedOutputStream output)
-                        throws java.io.IOException {
-      if (subject_ != null) {
-        output.writeMessage(1, getSubject());
-      }
-      if (related_ != null) {
-        output.writeMessage(2, getRelated());
-      }
-      if (type_ != nl.wvdzwan.lapp.protobuf.Lapp.ChaRelation.RelationType.UNKNOWN.getNumber()) {
-        output.writeEnum(3, type_);
-      }
-      unknownFields.writeTo(output);
-    }
-
-    @java.lang.Override
-    public int getSerializedSize() {
-      int size = memoizedSize;
-      if (size != -1) return size;
-
-      size = 0;
-      if (subject_ != null) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(1, getSubject());
-      }
-      if (related_ != null) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(2, getRelated());
-      }
-      if (type_ != nl.wvdzwan.lapp.protobuf.Lapp.ChaRelation.RelationType.UNKNOWN.getNumber()) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeEnumSize(3, type_);
-      }
-      size += unknownFields.getSerializedSize();
-      memoizedSize = size;
-      return size;
-    }
-
-    @java.lang.Override
-    public boolean equals(final java.lang.Object obj) {
-      if (obj == this) {
-       return true;
-      }
-      if (!(obj instanceof nl.wvdzwan.lapp.protobuf.Lapp.ChaRelation)) {
-        return super.equals(obj);
-      }
-      nl.wvdzwan.lapp.protobuf.Lapp.ChaRelation other = (nl.wvdzwan.lapp.protobuf.Lapp.ChaRelation) obj;
-
-      if (hasSubject() != other.hasSubject()) return false;
-      if (hasSubject()) {
-        if (!getSubject()
-            .equals(other.getSubject())) return false;
-      }
-      if (hasRelated() != other.hasRelated()) return false;
-      if (hasRelated()) {
-        if (!getRelated()
-            .equals(other.getRelated())) return false;
-      }
-      if (type_ != other.type_) return false;
-      if (!unknownFields.equals(other.unknownFields)) return false;
-      return true;
-    }
-
-    @java.lang.Override
-    public int hashCode() {
-      if (memoizedHashCode != 0) {
-        return memoizedHashCode;
-      }
-      int hash = 41;
-      hash = (19 * hash) + getDescriptor().hashCode();
-      if (hasSubject()) {
-        hash = (37 * hash) + SUBJECT_FIELD_NUMBER;
-        hash = (53 * hash) + getSubject().hashCode();
-      }
-      if (hasRelated()) {
-        hash = (37 * hash) + RELATED_FIELD_NUMBER;
-        hash = (53 * hash) + getRelated().hashCode();
-      }
-      hash = (37 * hash) + TYPE_FIELD_NUMBER;
-      hash = (53 * hash) + type_;
-      hash = (29 * hash) + unknownFields.hashCode();
-      memoizedHashCode = hash;
-      return hash;
-    }
-
-    public static nl.wvdzwan.lapp.protobuf.Lapp.ChaRelation parseFrom(
-        java.nio.ByteBuffer data)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data);
-    }
-    public static nl.wvdzwan.lapp.protobuf.Lapp.ChaRelation parseFrom(
-        java.nio.ByteBuffer data,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data, extensionRegistry);
-    }
-    public static nl.wvdzwan.lapp.protobuf.Lapp.ChaRelation parseFrom(
-        com.google.protobuf.ByteString data)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data);
-    }
-    public static nl.wvdzwan.lapp.protobuf.Lapp.ChaRelation parseFrom(
-        com.google.protobuf.ByteString data,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data, extensionRegistry);
-    }
-    public static nl.wvdzwan.lapp.protobuf.Lapp.ChaRelation parseFrom(byte[] data)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data);
-    }
-    public static nl.wvdzwan.lapp.protobuf.Lapp.ChaRelation parseFrom(
-        byte[] data,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data, extensionRegistry);
-    }
-    public static nl.wvdzwan.lapp.protobuf.Lapp.ChaRelation parseFrom(java.io.InputStream input)
-        throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessageV3
-          .parseWithIOException(PARSER, input);
-    }
-    public static nl.wvdzwan.lapp.protobuf.Lapp.ChaRelation parseFrom(
-        java.io.InputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessageV3
-          .parseWithIOException(PARSER, input, extensionRegistry);
-    }
-    public static nl.wvdzwan.lapp.protobuf.Lapp.ChaRelation parseDelimitedFrom(java.io.InputStream input)
-        throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessageV3
-          .parseDelimitedWithIOException(PARSER, input);
-    }
-    public static nl.wvdzwan.lapp.protobuf.Lapp.ChaRelation parseDelimitedFrom(
-        java.io.InputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessageV3
-          .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
-    }
-    public static nl.wvdzwan.lapp.protobuf.Lapp.ChaRelation parseFrom(
-        com.google.protobuf.CodedInputStream input)
-        throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessageV3
-          .parseWithIOException(PARSER, input);
-    }
-    public static nl.wvdzwan.lapp.protobuf.Lapp.ChaRelation parseFrom(
-        com.google.protobuf.CodedInputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessageV3
-          .parseWithIOException(PARSER, input, extensionRegistry);
-    }
-
-    @java.lang.Override
-    public Builder newBuilderForType() { return newBuilder(); }
-    public static Builder newBuilder() {
-      return DEFAULT_INSTANCE.toBuilder();
-    }
-    public static Builder newBuilder(nl.wvdzwan.lapp.protobuf.Lapp.ChaRelation prototype) {
-      return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
-    }
-    @java.lang.Override
-    public Builder toBuilder() {
-      return this == DEFAULT_INSTANCE
-          ? new Builder() : new Builder().mergeFrom(this);
-    }
-
-    @java.lang.Override
-    protected Builder newBuilderForType(
-        com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
-      Builder builder = new Builder(parent);
-      return builder;
-    }
-    /**
-     * Protobuf type {@code lapp.ChaRelation}
-     */
-    public static final class Builder extends
-        com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:lapp.ChaRelation)
-        nl.wvdzwan.lapp.protobuf.Lapp.ChaRelationOrBuilder {
-      public static final com.google.protobuf.Descriptors.Descriptor
-          getDescriptor() {
-        return nl.wvdzwan.lapp.protobuf.Lapp.internal_static_lapp_ChaRelation_descriptor;
-      }
-
-      @java.lang.Override
-      protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-          internalGetFieldAccessorTable() {
-        return nl.wvdzwan.lapp.protobuf.Lapp.internal_static_lapp_ChaRelation_fieldAccessorTable
-            .ensureFieldAccessorsInitialized(
-                nl.wvdzwan.lapp.protobuf.Lapp.ChaRelation.class, nl.wvdzwan.lapp.protobuf.Lapp.ChaRelation.Builder.class);
-      }
-
-      // Construct using nl.wvdzwan.lapp.protobuf.Lapp.ChaRelation.newBuilder()
-      private Builder() {
-        maybeForceBuilderInitialization();
-      }
-
-      private Builder(
-          com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
-        super(parent);
-        maybeForceBuilderInitialization();
-      }
-      private void maybeForceBuilderInitialization() {
-        if (com.google.protobuf.GeneratedMessageV3
-                .alwaysUseFieldBuilders) {
-        }
-      }
-      @java.lang.Override
-      public Builder clear() {
-        super.clear();
-        if (subjectBuilder_ == null) {
-          subject_ = null;
-        } else {
-          subject_ = null;
-          subjectBuilder_ = null;
-        }
-        if (relatedBuilder_ == null) {
-          related_ = null;
-        } else {
-          related_ = null;
-          relatedBuilder_ = null;
-        }
-        type_ = 0;
-
-        return this;
-      }
-
-      @java.lang.Override
-      public com.google.protobuf.Descriptors.Descriptor
-          getDescriptorForType() {
-        return nl.wvdzwan.lapp.protobuf.Lapp.internal_static_lapp_ChaRelation_descriptor;
-      }
-
-      @java.lang.Override
-      public nl.wvdzwan.lapp.protobuf.Lapp.ChaRelation getDefaultInstanceForType() {
-        return nl.wvdzwan.lapp.protobuf.Lapp.ChaRelation.getDefaultInstance();
-      }
-
-      @java.lang.Override
-      public nl.wvdzwan.lapp.protobuf.Lapp.ChaRelation build() {
-        nl.wvdzwan.lapp.protobuf.Lapp.ChaRelation result = buildPartial();
-        if (!result.isInitialized()) {
-          throw newUninitializedMessageException(result);
-        }
-        return result;
-      }
-
-      @java.lang.Override
-      public nl.wvdzwan.lapp.protobuf.Lapp.ChaRelation buildPartial() {
-        nl.wvdzwan.lapp.protobuf.Lapp.ChaRelation result = new nl.wvdzwan.lapp.protobuf.Lapp.ChaRelation(this);
-        if (subjectBuilder_ == null) {
-          result.subject_ = subject_;
-        } else {
-          result.subject_ = subjectBuilder_.build();
-        }
-        if (relatedBuilder_ == null) {
-          result.related_ = related_;
-        } else {
-          result.related_ = relatedBuilder_.build();
-        }
-        result.type_ = type_;
-        onBuilt();
-        return result;
-      }
-
-      @java.lang.Override
-      public Builder clone() {
-        return super.clone();
-      }
-      @java.lang.Override
-      public Builder setField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          java.lang.Object value) {
-        return super.setField(field, value);
-      }
-      @java.lang.Override
-      public Builder clearField(
-          com.google.protobuf.Descriptors.FieldDescriptor field) {
-        return super.clearField(field);
-      }
-      @java.lang.Override
-      public Builder clearOneof(
-          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-        return super.clearOneof(oneof);
-      }
-      @java.lang.Override
-      public Builder setRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          int index, java.lang.Object value) {
-        return super.setRepeatedField(field, index, value);
-      }
-      @java.lang.Override
-      public Builder addRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          java.lang.Object value) {
-        return super.addRepeatedField(field, value);
-      }
-      @java.lang.Override
-      public Builder mergeFrom(com.google.protobuf.Message other) {
-        if (other instanceof nl.wvdzwan.lapp.protobuf.Lapp.ChaRelation) {
-          return mergeFrom((nl.wvdzwan.lapp.protobuf.Lapp.ChaRelation)other);
-        } else {
-          super.mergeFrom(other);
-          return this;
-        }
-      }
-
-      public Builder mergeFrom(nl.wvdzwan.lapp.protobuf.Lapp.ChaRelation other) {
-        if (other == nl.wvdzwan.lapp.protobuf.Lapp.ChaRelation.getDefaultInstance()) return this;
-        if (other.hasSubject()) {
-          mergeSubject(other.getSubject());
-        }
-        if (other.hasRelated()) {
-          mergeRelated(other.getRelated());
-        }
-        if (other.type_ != 0) {
-          setTypeValue(other.getTypeValue());
-        }
-        this.mergeUnknownFields(other.unknownFields);
-        onChanged();
-        return this;
-      }
-
-      @java.lang.Override
-      public final boolean isInitialized() {
-        return true;
-      }
-
-      @java.lang.Override
-      public Builder mergeFrom(
-          com.google.protobuf.CodedInputStream input,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws java.io.IOException {
-        nl.wvdzwan.lapp.protobuf.Lapp.ChaRelation parsedMessage = null;
-        try {
-          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
-        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-          parsedMessage = (nl.wvdzwan.lapp.protobuf.Lapp.ChaRelation) e.getUnfinishedMessage();
-          throw e.unwrapIOException();
-        } finally {
-          if (parsedMessage != null) {
-            mergeFrom(parsedMessage);
-          }
-        }
-        return this;
-      }
-
-      private nl.wvdzwan.lapp.protobuf.Lapp.Method subject_;
-      private com.google.protobuf.SingleFieldBuilderV3<
-          nl.wvdzwan.lapp.protobuf.Lapp.Method, nl.wvdzwan.lapp.protobuf.Lapp.Method.Builder, nl.wvdzwan.lapp.protobuf.Lapp.MethodOrBuilder> subjectBuilder_;
-      /**
-       * <code>.lapp.Method subject = 1;</code>
-       */
-      public boolean hasSubject() {
-        return subjectBuilder_ != null || subject_ != null;
-      }
-      /**
-       * <code>.lapp.Method subject = 1;</code>
-       */
-      public nl.wvdzwan.lapp.protobuf.Lapp.Method getSubject() {
-        if (subjectBuilder_ == null) {
-          return subject_ == null ? nl.wvdzwan.lapp.protobuf.Lapp.Method.getDefaultInstance() : subject_;
-        } else {
-          return subjectBuilder_.getMessage();
-        }
-      }
-      /**
-       * <code>.lapp.Method subject = 1;</code>
-       */
-      public Builder setSubject(nl.wvdzwan.lapp.protobuf.Lapp.Method value) {
-        if (subjectBuilder_ == null) {
-          if (value == null) {
-            throw new NullPointerException();
-          }
-          subject_ = value;
-          onChanged();
-        } else {
-          subjectBuilder_.setMessage(value);
-        }
-
-        return this;
-      }
-      /**
-       * <code>.lapp.Method subject = 1;</code>
-       */
-      public Builder setSubject(
-          nl.wvdzwan.lapp.protobuf.Lapp.Method.Builder builderForValue) {
-        if (subjectBuilder_ == null) {
-          subject_ = builderForValue.build();
-          onChanged();
-        } else {
-          subjectBuilder_.setMessage(builderForValue.build());
-        }
-
-        return this;
-      }
-      /**
-       * <code>.lapp.Method subject = 1;</code>
-       */
-      public Builder mergeSubject(nl.wvdzwan.lapp.protobuf.Lapp.Method value) {
-        if (subjectBuilder_ == null) {
-          if (subject_ != null) {
-            subject_ =
-              nl.wvdzwan.lapp.protobuf.Lapp.Method.newBuilder(subject_).mergeFrom(value).buildPartial();
-          } else {
-            subject_ = value;
-          }
-          onChanged();
-        } else {
-          subjectBuilder_.mergeFrom(value);
-        }
-
-        return this;
-      }
-      /**
-       * <code>.lapp.Method subject = 1;</code>
-       */
-      public Builder clearSubject() {
-        if (subjectBuilder_ == null) {
-          subject_ = null;
-          onChanged();
-        } else {
-          subject_ = null;
-          subjectBuilder_ = null;
-        }
-
-        return this;
-      }
-      /**
-       * <code>.lapp.Method subject = 1;</code>
-       */
-      public nl.wvdzwan.lapp.protobuf.Lapp.Method.Builder getSubjectBuilder() {
-        
-        onChanged();
-        return getSubjectFieldBuilder().getBuilder();
-      }
-      /**
-       * <code>.lapp.Method subject = 1;</code>
-       */
-      public nl.wvdzwan.lapp.protobuf.Lapp.MethodOrBuilder getSubjectOrBuilder() {
-        if (subjectBuilder_ != null) {
-          return subjectBuilder_.getMessageOrBuilder();
-        } else {
-          return subject_ == null ?
-              nl.wvdzwan.lapp.protobuf.Lapp.Method.getDefaultInstance() : subject_;
-        }
-      }
-      /**
-       * <code>.lapp.Method subject = 1;</code>
-       */
-      private com.google.protobuf.SingleFieldBuilderV3<
-          nl.wvdzwan.lapp.protobuf.Lapp.Method, nl.wvdzwan.lapp.protobuf.Lapp.Method.Builder, nl.wvdzwan.lapp.protobuf.Lapp.MethodOrBuilder> 
-          getSubjectFieldBuilder() {
-        if (subjectBuilder_ == null) {
-          subjectBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
-              nl.wvdzwan.lapp.protobuf.Lapp.Method, nl.wvdzwan.lapp.protobuf.Lapp.Method.Builder, nl.wvdzwan.lapp.protobuf.Lapp.MethodOrBuilder>(
-                  getSubject(),
-                  getParentForChildren(),
-                  isClean());
-          subject_ = null;
-        }
-        return subjectBuilder_;
-      }
-
-      private nl.wvdzwan.lapp.protobuf.Lapp.Method related_;
-      private com.google.protobuf.SingleFieldBuilderV3<
-          nl.wvdzwan.lapp.protobuf.Lapp.Method, nl.wvdzwan.lapp.protobuf.Lapp.Method.Builder, nl.wvdzwan.lapp.protobuf.Lapp.MethodOrBuilder> relatedBuilder_;
-      /**
-       * <code>.lapp.Method related = 2;</code>
-       */
-      public boolean hasRelated() {
-        return relatedBuilder_ != null || related_ != null;
-      }
-      /**
-       * <code>.lapp.Method related = 2;</code>
-       */
-      public nl.wvdzwan.lapp.protobuf.Lapp.Method getRelated() {
-        if (relatedBuilder_ == null) {
-          return related_ == null ? nl.wvdzwan.lapp.protobuf.Lapp.Method.getDefaultInstance() : related_;
-        } else {
-          return relatedBuilder_.getMessage();
-        }
-      }
-      /**
-       * <code>.lapp.Method related = 2;</code>
-       */
-      public Builder setRelated(nl.wvdzwan.lapp.protobuf.Lapp.Method value) {
-        if (relatedBuilder_ == null) {
-          if (value == null) {
-            throw new NullPointerException();
-          }
-          related_ = value;
-          onChanged();
-        } else {
-          relatedBuilder_.setMessage(value);
-        }
-
-        return this;
-      }
-      /**
-       * <code>.lapp.Method related = 2;</code>
-       */
-      public Builder setRelated(
-          nl.wvdzwan.lapp.protobuf.Lapp.Method.Builder builderForValue) {
-        if (relatedBuilder_ == null) {
-          related_ = builderForValue.build();
-          onChanged();
-        } else {
-          relatedBuilder_.setMessage(builderForValue.build());
-        }
-
-        return this;
-      }
-      /**
-       * <code>.lapp.Method related = 2;</code>
-       */
-      public Builder mergeRelated(nl.wvdzwan.lapp.protobuf.Lapp.Method value) {
-        if (relatedBuilder_ == null) {
-          if (related_ != null) {
-            related_ =
-              nl.wvdzwan.lapp.protobuf.Lapp.Method.newBuilder(related_).mergeFrom(value).buildPartial();
-          } else {
-            related_ = value;
-          }
-          onChanged();
-        } else {
-          relatedBuilder_.mergeFrom(value);
-        }
-
-        return this;
-      }
-      /**
-       * <code>.lapp.Method related = 2;</code>
-       */
-      public Builder clearRelated() {
-        if (relatedBuilder_ == null) {
-          related_ = null;
-          onChanged();
-        } else {
-          related_ = null;
-          relatedBuilder_ = null;
-        }
-
-        return this;
-      }
-      /**
-       * <code>.lapp.Method related = 2;</code>
-       */
-      public nl.wvdzwan.lapp.protobuf.Lapp.Method.Builder getRelatedBuilder() {
-        
-        onChanged();
-        return getRelatedFieldBuilder().getBuilder();
-      }
-      /**
-       * <code>.lapp.Method related = 2;</code>
-       */
-      public nl.wvdzwan.lapp.protobuf.Lapp.MethodOrBuilder getRelatedOrBuilder() {
-        if (relatedBuilder_ != null) {
-          return relatedBuilder_.getMessageOrBuilder();
-        } else {
-          return related_ == null ?
-              nl.wvdzwan.lapp.protobuf.Lapp.Method.getDefaultInstance() : related_;
-        }
-      }
-      /**
-       * <code>.lapp.Method related = 2;</code>
-       */
-      private com.google.protobuf.SingleFieldBuilderV3<
-          nl.wvdzwan.lapp.protobuf.Lapp.Method, nl.wvdzwan.lapp.protobuf.Lapp.Method.Builder, nl.wvdzwan.lapp.protobuf.Lapp.MethodOrBuilder> 
-          getRelatedFieldBuilder() {
-        if (relatedBuilder_ == null) {
-          relatedBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
-              nl.wvdzwan.lapp.protobuf.Lapp.Method, nl.wvdzwan.lapp.protobuf.Lapp.Method.Builder, nl.wvdzwan.lapp.protobuf.Lapp.MethodOrBuilder>(
-                  getRelated(),
-                  getParentForChildren(),
-                  isClean());
-          related_ = null;
-        }
-        return relatedBuilder_;
-      }
-
-      private int type_ = 0;
-      /**
-       * <code>.lapp.ChaRelation.RelationType type = 3;</code>
-       */
-      public int getTypeValue() {
-        return type_;
-      }
-      /**
-       * <code>.lapp.ChaRelation.RelationType type = 3;</code>
-       */
-      public Builder setTypeValue(int value) {
-        type_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>.lapp.ChaRelation.RelationType type = 3;</code>
-       */
-      public nl.wvdzwan.lapp.protobuf.Lapp.ChaRelation.RelationType getType() {
-        @SuppressWarnings("deprecation")
-        nl.wvdzwan.lapp.protobuf.Lapp.ChaRelation.RelationType result = nl.wvdzwan.lapp.protobuf.Lapp.ChaRelation.RelationType.valueOf(type_);
-        return result == null ? nl.wvdzwan.lapp.protobuf.Lapp.ChaRelation.RelationType.UNRECOGNIZED : result;
-      }
-      /**
-       * <code>.lapp.ChaRelation.RelationType type = 3;</code>
-       */
-      public Builder setType(nl.wvdzwan.lapp.protobuf.Lapp.ChaRelation.RelationType value) {
-        if (value == null) {
-          throw new NullPointerException();
-        }
-        
-        type_ = value.getNumber();
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>.lapp.ChaRelation.RelationType type = 3;</code>
-       */
-      public Builder clearType() {
-        
-        type_ = 0;
-        onChanged();
-        return this;
-      }
-      @java.lang.Override
-      public final Builder setUnknownFields(
-          final com.google.protobuf.UnknownFieldSet unknownFields) {
-        return super.setUnknownFields(unknownFields);
-      }
-
-      @java.lang.Override
-      public final Builder mergeUnknownFields(
-          final com.google.protobuf.UnknownFieldSet unknownFields) {
-        return super.mergeUnknownFields(unknownFields);
-      }
-
-
-      // @@protoc_insertion_point(builder_scope:lapp.ChaRelation)
-    }
-
-    // @@protoc_insertion_point(class_scope:lapp.ChaRelation)
-    private static final nl.wvdzwan.lapp.protobuf.Lapp.ChaRelation DEFAULT_INSTANCE;
-    static {
-      DEFAULT_INSTANCE = new nl.wvdzwan.lapp.protobuf.Lapp.ChaRelation();
-    }
-
-    public static nl.wvdzwan.lapp.protobuf.Lapp.ChaRelation getDefaultInstance() {
-      return DEFAULT_INSTANCE;
-    }
-
-    private static final com.google.protobuf.Parser<ChaRelation>
-        PARSER = new com.google.protobuf.AbstractParser<ChaRelation>() {
-      @java.lang.Override
-      public ChaRelation parsePartialFrom(
-          com.google.protobuf.CodedInputStream input,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws com.google.protobuf.InvalidProtocolBufferException {
-        return new ChaRelation(input, extensionRegistry);
-      }
-    };
-
-    public static com.google.protobuf.Parser<ChaRelation> parser() {
-      return PARSER;
-    }
-
-    @java.lang.Override
-    public com.google.protobuf.Parser<ChaRelation> getParserForType() {
-      return PARSER;
-    }
-
-    @java.lang.Override
-    public nl.wvdzwan.lapp.protobuf.Lapp.ChaRelation getDefaultInstanceForType() {
-      return DEFAULT_INSTANCE;
-    }
-
-  }
-
   public interface ArtifactOrBuilder extends
       // @@protoc_insertion_point(interface_extends:lapp.Artifact)
       com.google.protobuf.MessageOrBuilder {
@@ -3992,6 +2991,1464 @@ public final class Lapp {
 
   }
 
+  public interface ClassRecordOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:lapp.ClassRecord)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>string name = 1;</code>
+     */
+    java.lang.String getName();
+    /**
+     * <code>string name = 1;</code>
+     */
+    com.google.protobuf.ByteString
+        getNameBytes();
+
+    /**
+     * <code>string package = 2;</code>
+     */
+    java.lang.String getPackage();
+    /**
+     * <code>string package = 2;</code>
+     */
+    com.google.protobuf.ByteString
+        getPackageBytes();
+
+    /**
+     * <code>string superClass = 3;</code>
+     */
+    java.lang.String getSuperClass();
+    /**
+     * <code>string superClass = 3;</code>
+     */
+    com.google.protobuf.ByteString
+        getSuperClassBytes();
+
+    /**
+     * <code>repeated string interfaces = 4;</code>
+     */
+    java.util.List<java.lang.String>
+        getInterfacesList();
+    /**
+     * <code>repeated string interfaces = 4;</code>
+     */
+    int getInterfacesCount();
+    /**
+     * <code>repeated string interfaces = 4;</code>
+     */
+    java.lang.String getInterfaces(int index);
+    /**
+     * <code>repeated string interfaces = 4;</code>
+     */
+    com.google.protobuf.ByteString
+        getInterfacesBytes(int index);
+
+    /**
+     * <code>repeated string methods = 5;</code>
+     */
+    java.util.List<java.lang.String>
+        getMethodsList();
+    /**
+     * <code>repeated string methods = 5;</code>
+     */
+    int getMethodsCount();
+    /**
+     * <code>repeated string methods = 5;</code>
+     */
+    java.lang.String getMethods(int index);
+    /**
+     * <code>repeated string methods = 5;</code>
+     */
+    com.google.protobuf.ByteString
+        getMethodsBytes(int index);
+
+    /**
+     * <code>bool public = 6;</code>
+     */
+    boolean getPublic();
+
+    /**
+     * <code>bool private = 7;</code>
+     */
+    boolean getPrivate();
+
+    /**
+     * <code>bool interface = 8;</code>
+     */
+    boolean getInterface();
+
+    /**
+     * <code>bool abstract = 9;</code>
+     */
+    boolean getAbstract();
+  }
+  /**
+   * Protobuf type {@code lapp.ClassRecord}
+   */
+  public  static final class ClassRecord extends
+      com.google.protobuf.GeneratedMessageV3 implements
+      // @@protoc_insertion_point(message_implements:lapp.ClassRecord)
+      ClassRecordOrBuilder {
+  private static final long serialVersionUID = 0L;
+    // Use ClassRecord.newBuilder() to construct.
+    private ClassRecord(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+      super(builder);
+    }
+    private ClassRecord() {
+      name_ = "";
+      package_ = "";
+      superClass_ = "";
+      interfaces_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+      methods_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+    }
+
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+    getUnknownFields() {
+      return this.unknownFields;
+    }
+    private ClassRecord(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      this();
+      if (extensionRegistry == null) {
+        throw new java.lang.NullPointerException();
+      }
+      int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            case 10: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              name_ = s;
+              break;
+            }
+            case 18: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              package_ = s;
+              break;
+            }
+            case 26: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              superClass_ = s;
+              break;
+            }
+            case 34: {
+              java.lang.String s = input.readStringRequireUtf8();
+              if (!((mutable_bitField0_ & 0x00000008) != 0)) {
+                interfaces_ = new com.google.protobuf.LazyStringArrayList();
+                mutable_bitField0_ |= 0x00000008;
+              }
+              interfaces_.add(s);
+              break;
+            }
+            case 42: {
+              java.lang.String s = input.readStringRequireUtf8();
+              if (!((mutable_bitField0_ & 0x00000010) != 0)) {
+                methods_ = new com.google.protobuf.LazyStringArrayList();
+                mutable_bitField0_ |= 0x00000010;
+              }
+              methods_.add(s);
+              break;
+            }
+            case 48: {
+
+              public_ = input.readBool();
+              break;
+            }
+            case 56: {
+
+              private_ = input.readBool();
+              break;
+            }
+            case 64: {
+
+              interface_ = input.readBool();
+              break;
+            }
+            case 72: {
+
+              abstract_ = input.readBool();
+              break;
+            }
+            default: {
+              if (!parseUnknownField(
+                  input, unknownFields, extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e).setUnfinishedMessage(this);
+      } finally {
+        if (((mutable_bitField0_ & 0x00000008) != 0)) {
+          interfaces_ = interfaces_.getUnmodifiableView();
+        }
+        if (((mutable_bitField0_ & 0x00000010) != 0)) {
+          methods_ = methods_.getUnmodifiableView();
+        }
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return nl.wvdzwan.lapp.protobuf.Lapp.internal_static_lapp_ClassRecord_descriptor;
+    }
+
+    @java.lang.Override
+    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return nl.wvdzwan.lapp.protobuf.Lapp.internal_static_lapp_ClassRecord_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              nl.wvdzwan.lapp.protobuf.Lapp.ClassRecord.class, nl.wvdzwan.lapp.protobuf.Lapp.ClassRecord.Builder.class);
+    }
+
+    private int bitField0_;
+    public static final int NAME_FIELD_NUMBER = 1;
+    private volatile java.lang.Object name_;
+    /**
+     * <code>string name = 1;</code>
+     */
+    public java.lang.String getName() {
+      java.lang.Object ref = name_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        name_ = s;
+        return s;
+      }
+    }
+    /**
+     * <code>string name = 1;</code>
+     */
+    public com.google.protobuf.ByteString
+        getNameBytes() {
+      java.lang.Object ref = name_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        name_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int PACKAGE_FIELD_NUMBER = 2;
+    private volatile java.lang.Object package_;
+    /**
+     * <code>string package = 2;</code>
+     */
+    public java.lang.String getPackage() {
+      java.lang.Object ref = package_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        package_ = s;
+        return s;
+      }
+    }
+    /**
+     * <code>string package = 2;</code>
+     */
+    public com.google.protobuf.ByteString
+        getPackageBytes() {
+      java.lang.Object ref = package_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        package_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int SUPERCLASS_FIELD_NUMBER = 3;
+    private volatile java.lang.Object superClass_;
+    /**
+     * <code>string superClass = 3;</code>
+     */
+    public java.lang.String getSuperClass() {
+      java.lang.Object ref = superClass_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        superClass_ = s;
+        return s;
+      }
+    }
+    /**
+     * <code>string superClass = 3;</code>
+     */
+    public com.google.protobuf.ByteString
+        getSuperClassBytes() {
+      java.lang.Object ref = superClass_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        superClass_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int INTERFACES_FIELD_NUMBER = 4;
+    private com.google.protobuf.LazyStringList interfaces_;
+    /**
+     * <code>repeated string interfaces = 4;</code>
+     */
+    public com.google.protobuf.ProtocolStringList
+        getInterfacesList() {
+      return interfaces_;
+    }
+    /**
+     * <code>repeated string interfaces = 4;</code>
+     */
+    public int getInterfacesCount() {
+      return interfaces_.size();
+    }
+    /**
+     * <code>repeated string interfaces = 4;</code>
+     */
+    public java.lang.String getInterfaces(int index) {
+      return interfaces_.get(index);
+    }
+    /**
+     * <code>repeated string interfaces = 4;</code>
+     */
+    public com.google.protobuf.ByteString
+        getInterfacesBytes(int index) {
+      return interfaces_.getByteString(index);
+    }
+
+    public static final int METHODS_FIELD_NUMBER = 5;
+    private com.google.protobuf.LazyStringList methods_;
+    /**
+     * <code>repeated string methods = 5;</code>
+     */
+    public com.google.protobuf.ProtocolStringList
+        getMethodsList() {
+      return methods_;
+    }
+    /**
+     * <code>repeated string methods = 5;</code>
+     */
+    public int getMethodsCount() {
+      return methods_.size();
+    }
+    /**
+     * <code>repeated string methods = 5;</code>
+     */
+    public java.lang.String getMethods(int index) {
+      return methods_.get(index);
+    }
+    /**
+     * <code>repeated string methods = 5;</code>
+     */
+    public com.google.protobuf.ByteString
+        getMethodsBytes(int index) {
+      return methods_.getByteString(index);
+    }
+
+    public static final int PUBLIC_FIELD_NUMBER = 6;
+    private boolean public_;
+    /**
+     * <code>bool public = 6;</code>
+     */
+    public boolean getPublic() {
+      return public_;
+    }
+
+    public static final int PRIVATE_FIELD_NUMBER = 7;
+    private boolean private_;
+    /**
+     * <code>bool private = 7;</code>
+     */
+    public boolean getPrivate() {
+      return private_;
+    }
+
+    public static final int INTERFACE_FIELD_NUMBER = 8;
+    private boolean interface_;
+    /**
+     * <code>bool interface = 8;</code>
+     */
+    public boolean getInterface() {
+      return interface_;
+    }
+
+    public static final int ABSTRACT_FIELD_NUMBER = 9;
+    private boolean abstract_;
+    /**
+     * <code>bool abstract = 9;</code>
+     */
+    public boolean getAbstract() {
+      return abstract_;
+    }
+
+    private byte memoizedIsInitialized = -1;
+    @java.lang.Override
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    @java.lang.Override
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      if (!getNameBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 1, name_);
+      }
+      if (!getPackageBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 2, package_);
+      }
+      if (!getSuperClassBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 3, superClass_);
+      }
+      for (int i = 0; i < interfaces_.size(); i++) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 4, interfaces_.getRaw(i));
+      }
+      for (int i = 0; i < methods_.size(); i++) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 5, methods_.getRaw(i));
+      }
+      if (public_ != false) {
+        output.writeBool(6, public_);
+      }
+      if (private_ != false) {
+        output.writeBool(7, private_);
+      }
+      if (interface_ != false) {
+        output.writeBool(8, interface_);
+      }
+      if (abstract_ != false) {
+        output.writeBool(9, abstract_);
+      }
+      unknownFields.writeTo(output);
+    }
+
+    @java.lang.Override
+    public int getSerializedSize() {
+      int size = memoizedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (!getNameBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, name_);
+      }
+      if (!getPackageBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, package_);
+      }
+      if (!getSuperClassBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(3, superClass_);
+      }
+      {
+        int dataSize = 0;
+        for (int i = 0; i < interfaces_.size(); i++) {
+          dataSize += computeStringSizeNoTag(interfaces_.getRaw(i));
+        }
+        size += dataSize;
+        size += 1 * getInterfacesList().size();
+      }
+      {
+        int dataSize = 0;
+        for (int i = 0; i < methods_.size(); i++) {
+          dataSize += computeStringSizeNoTag(methods_.getRaw(i));
+        }
+        size += dataSize;
+        size += 1 * getMethodsList().size();
+      }
+      if (public_ != false) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBoolSize(6, public_);
+      }
+      if (private_ != false) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBoolSize(7, private_);
+      }
+      if (interface_ != false) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBoolSize(8, interface_);
+      }
+      if (abstract_ != false) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBoolSize(9, abstract_);
+      }
+      size += unknownFields.getSerializedSize();
+      memoizedSize = size;
+      return size;
+    }
+
+    @java.lang.Override
+    public boolean equals(final java.lang.Object obj) {
+      if (obj == this) {
+       return true;
+      }
+      if (!(obj instanceof nl.wvdzwan.lapp.protobuf.Lapp.ClassRecord)) {
+        return super.equals(obj);
+      }
+      nl.wvdzwan.lapp.protobuf.Lapp.ClassRecord other = (nl.wvdzwan.lapp.protobuf.Lapp.ClassRecord) obj;
+
+      if (!getName()
+          .equals(other.getName())) return false;
+      if (!getPackage()
+          .equals(other.getPackage())) return false;
+      if (!getSuperClass()
+          .equals(other.getSuperClass())) return false;
+      if (!getInterfacesList()
+          .equals(other.getInterfacesList())) return false;
+      if (!getMethodsList()
+          .equals(other.getMethodsList())) return false;
+      if (getPublic()
+          != other.getPublic()) return false;
+      if (getPrivate()
+          != other.getPrivate()) return false;
+      if (getInterface()
+          != other.getInterface()) return false;
+      if (getAbstract()
+          != other.getAbstract()) return false;
+      if (!unknownFields.equals(other.unknownFields)) return false;
+      return true;
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+      if (memoizedHashCode != 0) {
+        return memoizedHashCode;
+      }
+      int hash = 41;
+      hash = (19 * hash) + getDescriptor().hashCode();
+      hash = (37 * hash) + NAME_FIELD_NUMBER;
+      hash = (53 * hash) + getName().hashCode();
+      hash = (37 * hash) + PACKAGE_FIELD_NUMBER;
+      hash = (53 * hash) + getPackage().hashCode();
+      hash = (37 * hash) + SUPERCLASS_FIELD_NUMBER;
+      hash = (53 * hash) + getSuperClass().hashCode();
+      if (getInterfacesCount() > 0) {
+        hash = (37 * hash) + INTERFACES_FIELD_NUMBER;
+        hash = (53 * hash) + getInterfacesList().hashCode();
+      }
+      if (getMethodsCount() > 0) {
+        hash = (37 * hash) + METHODS_FIELD_NUMBER;
+        hash = (53 * hash) + getMethodsList().hashCode();
+      }
+      hash = (37 * hash) + PUBLIC_FIELD_NUMBER;
+      hash = (53 * hash) + com.google.protobuf.Internal.hashBoolean(
+          getPublic());
+      hash = (37 * hash) + PRIVATE_FIELD_NUMBER;
+      hash = (53 * hash) + com.google.protobuf.Internal.hashBoolean(
+          getPrivate());
+      hash = (37 * hash) + INTERFACE_FIELD_NUMBER;
+      hash = (53 * hash) + com.google.protobuf.Internal.hashBoolean(
+          getInterface());
+      hash = (37 * hash) + ABSTRACT_FIELD_NUMBER;
+      hash = (53 * hash) + com.google.protobuf.Internal.hashBoolean(
+          getAbstract());
+      hash = (29 * hash) + unknownFields.hashCode();
+      memoizedHashCode = hash;
+      return hash;
+    }
+
+    public static nl.wvdzwan.lapp.protobuf.Lapp.ClassRecord parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static nl.wvdzwan.lapp.protobuf.Lapp.ClassRecord parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static nl.wvdzwan.lapp.protobuf.Lapp.ClassRecord parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static nl.wvdzwan.lapp.protobuf.Lapp.ClassRecord parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static nl.wvdzwan.lapp.protobuf.Lapp.ClassRecord parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static nl.wvdzwan.lapp.protobuf.Lapp.ClassRecord parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static nl.wvdzwan.lapp.protobuf.Lapp.ClassRecord parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static nl.wvdzwan.lapp.protobuf.Lapp.ClassRecord parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static nl.wvdzwan.lapp.protobuf.Lapp.ClassRecord parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input);
+    }
+    public static nl.wvdzwan.lapp.protobuf.Lapp.ClassRecord parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static nl.wvdzwan.lapp.protobuf.Lapp.ClassRecord parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static nl.wvdzwan.lapp.protobuf.Lapp.ClassRecord parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    @java.lang.Override
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder() {
+      return DEFAULT_INSTANCE.toBuilder();
+    }
+    public static Builder newBuilder(nl.wvdzwan.lapp.protobuf.Lapp.ClassRecord prototype) {
+      return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
+    }
+    @java.lang.Override
+    public Builder toBuilder() {
+      return this == DEFAULT_INSTANCE
+          ? new Builder() : new Builder().mergeFrom(this);
+    }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code lapp.ClassRecord}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:lapp.ClassRecord)
+        nl.wvdzwan.lapp.protobuf.Lapp.ClassRecordOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return nl.wvdzwan.lapp.protobuf.Lapp.internal_static_lapp_ClassRecord_descriptor;
+      }
+
+      @java.lang.Override
+      protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return nl.wvdzwan.lapp.protobuf.Lapp.internal_static_lapp_ClassRecord_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                nl.wvdzwan.lapp.protobuf.Lapp.ClassRecord.class, nl.wvdzwan.lapp.protobuf.Lapp.ClassRecord.Builder.class);
+      }
+
+      // Construct using nl.wvdzwan.lapp.protobuf.Lapp.ClassRecord.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessageV3
+                .alwaysUseFieldBuilders) {
+        }
+      }
+      @java.lang.Override
+      public Builder clear() {
+        super.clear();
+        name_ = "";
+
+        package_ = "";
+
+        superClass_ = "";
+
+        interfaces_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+        bitField0_ = (bitField0_ & ~0x00000008);
+        methods_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+        bitField0_ = (bitField0_ & ~0x00000010);
+        public_ = false;
+
+        private_ = false;
+
+        interface_ = false;
+
+        abstract_ = false;
+
+        return this;
+      }
+
+      @java.lang.Override
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return nl.wvdzwan.lapp.protobuf.Lapp.internal_static_lapp_ClassRecord_descriptor;
+      }
+
+      @java.lang.Override
+      public nl.wvdzwan.lapp.protobuf.Lapp.ClassRecord getDefaultInstanceForType() {
+        return nl.wvdzwan.lapp.protobuf.Lapp.ClassRecord.getDefaultInstance();
+      }
+
+      @java.lang.Override
+      public nl.wvdzwan.lapp.protobuf.Lapp.ClassRecord build() {
+        nl.wvdzwan.lapp.protobuf.Lapp.ClassRecord result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      @java.lang.Override
+      public nl.wvdzwan.lapp.protobuf.Lapp.ClassRecord buildPartial() {
+        nl.wvdzwan.lapp.protobuf.Lapp.ClassRecord result = new nl.wvdzwan.lapp.protobuf.Lapp.ClassRecord(this);
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        result.name_ = name_;
+        result.package_ = package_;
+        result.superClass_ = superClass_;
+        if (((bitField0_ & 0x00000008) != 0)) {
+          interfaces_ = interfaces_.getUnmodifiableView();
+          bitField0_ = (bitField0_ & ~0x00000008);
+        }
+        result.interfaces_ = interfaces_;
+        if (((bitField0_ & 0x00000010) != 0)) {
+          methods_ = methods_.getUnmodifiableView();
+          bitField0_ = (bitField0_ & ~0x00000010);
+        }
+        result.methods_ = methods_;
+        result.public_ = public_;
+        result.private_ = private_;
+        result.interface_ = interface_;
+        result.abstract_ = abstract_;
+        result.bitField0_ = to_bitField0_;
+        onBuilt();
+        return result;
+      }
+
+      @java.lang.Override
+      public Builder clone() {
+        return super.clone();
+      }
+      @java.lang.Override
+      public Builder setField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return super.setField(field, value);
+      }
+      @java.lang.Override
+      public Builder clearField(
+          com.google.protobuf.Descriptors.FieldDescriptor field) {
+        return super.clearField(field);
+      }
+      @java.lang.Override
+      public Builder clearOneof(
+          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
+        return super.clearOneof(oneof);
+      }
+      @java.lang.Override
+      public Builder setRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          int index, java.lang.Object value) {
+        return super.setRepeatedField(field, index, value);
+      }
+      @java.lang.Override
+      public Builder addRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return super.addRepeatedField(field, value);
+      }
+      @java.lang.Override
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof nl.wvdzwan.lapp.protobuf.Lapp.ClassRecord) {
+          return mergeFrom((nl.wvdzwan.lapp.protobuf.Lapp.ClassRecord)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(nl.wvdzwan.lapp.protobuf.Lapp.ClassRecord other) {
+        if (other == nl.wvdzwan.lapp.protobuf.Lapp.ClassRecord.getDefaultInstance()) return this;
+        if (!other.getName().isEmpty()) {
+          name_ = other.name_;
+          onChanged();
+        }
+        if (!other.getPackage().isEmpty()) {
+          package_ = other.package_;
+          onChanged();
+        }
+        if (!other.getSuperClass().isEmpty()) {
+          superClass_ = other.superClass_;
+          onChanged();
+        }
+        if (!other.interfaces_.isEmpty()) {
+          if (interfaces_.isEmpty()) {
+            interfaces_ = other.interfaces_;
+            bitField0_ = (bitField0_ & ~0x00000008);
+          } else {
+            ensureInterfacesIsMutable();
+            interfaces_.addAll(other.interfaces_);
+          }
+          onChanged();
+        }
+        if (!other.methods_.isEmpty()) {
+          if (methods_.isEmpty()) {
+            methods_ = other.methods_;
+            bitField0_ = (bitField0_ & ~0x00000010);
+          } else {
+            ensureMethodsIsMutable();
+            methods_.addAll(other.methods_);
+          }
+          onChanged();
+        }
+        if (other.getPublic() != false) {
+          setPublic(other.getPublic());
+        }
+        if (other.getPrivate() != false) {
+          setPrivate(other.getPrivate());
+        }
+        if (other.getInterface() != false) {
+          setInterface(other.getInterface());
+        }
+        if (other.getAbstract() != false) {
+          setAbstract(other.getAbstract());
+        }
+        this.mergeUnknownFields(other.unknownFields);
+        onChanged();
+        return this;
+      }
+
+      @java.lang.Override
+      public final boolean isInitialized() {
+        return true;
+      }
+
+      @java.lang.Override
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        nl.wvdzwan.lapp.protobuf.Lapp.ClassRecord parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (nl.wvdzwan.lapp.protobuf.Lapp.ClassRecord) e.getUnfinishedMessage();
+          throw e.unwrapIOException();
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+      private int bitField0_;
+
+      private java.lang.Object name_ = "";
+      /**
+       * <code>string name = 1;</code>
+       */
+      public java.lang.String getName() {
+        java.lang.Object ref = name_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          name_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>string name = 1;</code>
+       */
+      public com.google.protobuf.ByteString
+          getNameBytes() {
+        java.lang.Object ref = name_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          name_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>string name = 1;</code>
+       */
+      public Builder setName(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        name_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string name = 1;</code>
+       */
+      public Builder clearName() {
+        
+        name_ = getDefaultInstance().getName();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string name = 1;</code>
+       */
+      public Builder setNameBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        name_ = value;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object package_ = "";
+      /**
+       * <code>string package = 2;</code>
+       */
+      public java.lang.String getPackage() {
+        java.lang.Object ref = package_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          package_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>string package = 2;</code>
+       */
+      public com.google.protobuf.ByteString
+          getPackageBytes() {
+        java.lang.Object ref = package_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          package_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>string package = 2;</code>
+       */
+      public Builder setPackage(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        package_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string package = 2;</code>
+       */
+      public Builder clearPackage() {
+        
+        package_ = getDefaultInstance().getPackage();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string package = 2;</code>
+       */
+      public Builder setPackageBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        package_ = value;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object superClass_ = "";
+      /**
+       * <code>string superClass = 3;</code>
+       */
+      public java.lang.String getSuperClass() {
+        java.lang.Object ref = superClass_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          superClass_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>string superClass = 3;</code>
+       */
+      public com.google.protobuf.ByteString
+          getSuperClassBytes() {
+        java.lang.Object ref = superClass_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          superClass_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>string superClass = 3;</code>
+       */
+      public Builder setSuperClass(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        superClass_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string superClass = 3;</code>
+       */
+      public Builder clearSuperClass() {
+        
+        superClass_ = getDefaultInstance().getSuperClass();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string superClass = 3;</code>
+       */
+      public Builder setSuperClassBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        superClass_ = value;
+        onChanged();
+        return this;
+      }
+
+      private com.google.protobuf.LazyStringList interfaces_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+      private void ensureInterfacesIsMutable() {
+        if (!((bitField0_ & 0x00000008) != 0)) {
+          interfaces_ = new com.google.protobuf.LazyStringArrayList(interfaces_);
+          bitField0_ |= 0x00000008;
+         }
+      }
+      /**
+       * <code>repeated string interfaces = 4;</code>
+       */
+      public com.google.protobuf.ProtocolStringList
+          getInterfacesList() {
+        return interfaces_.getUnmodifiableView();
+      }
+      /**
+       * <code>repeated string interfaces = 4;</code>
+       */
+      public int getInterfacesCount() {
+        return interfaces_.size();
+      }
+      /**
+       * <code>repeated string interfaces = 4;</code>
+       */
+      public java.lang.String getInterfaces(int index) {
+        return interfaces_.get(index);
+      }
+      /**
+       * <code>repeated string interfaces = 4;</code>
+       */
+      public com.google.protobuf.ByteString
+          getInterfacesBytes(int index) {
+        return interfaces_.getByteString(index);
+      }
+      /**
+       * <code>repeated string interfaces = 4;</code>
+       */
+      public Builder setInterfaces(
+          int index, java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  ensureInterfacesIsMutable();
+        interfaces_.set(index, value);
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>repeated string interfaces = 4;</code>
+       */
+      public Builder addInterfaces(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  ensureInterfacesIsMutable();
+        interfaces_.add(value);
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>repeated string interfaces = 4;</code>
+       */
+      public Builder addAllInterfaces(
+          java.lang.Iterable<java.lang.String> values) {
+        ensureInterfacesIsMutable();
+        com.google.protobuf.AbstractMessageLite.Builder.addAll(
+            values, interfaces_);
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>repeated string interfaces = 4;</code>
+       */
+      public Builder clearInterfaces() {
+        interfaces_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+        bitField0_ = (bitField0_ & ~0x00000008);
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>repeated string interfaces = 4;</code>
+       */
+      public Builder addInterfacesBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        ensureInterfacesIsMutable();
+        interfaces_.add(value);
+        onChanged();
+        return this;
+      }
+
+      private com.google.protobuf.LazyStringList methods_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+      private void ensureMethodsIsMutable() {
+        if (!((bitField0_ & 0x00000010) != 0)) {
+          methods_ = new com.google.protobuf.LazyStringArrayList(methods_);
+          bitField0_ |= 0x00000010;
+         }
+      }
+      /**
+       * <code>repeated string methods = 5;</code>
+       */
+      public com.google.protobuf.ProtocolStringList
+          getMethodsList() {
+        return methods_.getUnmodifiableView();
+      }
+      /**
+       * <code>repeated string methods = 5;</code>
+       */
+      public int getMethodsCount() {
+        return methods_.size();
+      }
+      /**
+       * <code>repeated string methods = 5;</code>
+       */
+      public java.lang.String getMethods(int index) {
+        return methods_.get(index);
+      }
+      /**
+       * <code>repeated string methods = 5;</code>
+       */
+      public com.google.protobuf.ByteString
+          getMethodsBytes(int index) {
+        return methods_.getByteString(index);
+      }
+      /**
+       * <code>repeated string methods = 5;</code>
+       */
+      public Builder setMethods(
+          int index, java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  ensureMethodsIsMutable();
+        methods_.set(index, value);
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>repeated string methods = 5;</code>
+       */
+      public Builder addMethods(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  ensureMethodsIsMutable();
+        methods_.add(value);
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>repeated string methods = 5;</code>
+       */
+      public Builder addAllMethods(
+          java.lang.Iterable<java.lang.String> values) {
+        ensureMethodsIsMutable();
+        com.google.protobuf.AbstractMessageLite.Builder.addAll(
+            values, methods_);
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>repeated string methods = 5;</code>
+       */
+      public Builder clearMethods() {
+        methods_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+        bitField0_ = (bitField0_ & ~0x00000010);
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>repeated string methods = 5;</code>
+       */
+      public Builder addMethodsBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        ensureMethodsIsMutable();
+        methods_.add(value);
+        onChanged();
+        return this;
+      }
+
+      private boolean public_ ;
+      /**
+       * <code>bool public = 6;</code>
+       */
+      public boolean getPublic() {
+        return public_;
+      }
+      /**
+       * <code>bool public = 6;</code>
+       */
+      public Builder setPublic(boolean value) {
+        
+        public_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>bool public = 6;</code>
+       */
+      public Builder clearPublic() {
+        
+        public_ = false;
+        onChanged();
+        return this;
+      }
+
+      private boolean private_ ;
+      /**
+       * <code>bool private = 7;</code>
+       */
+      public boolean getPrivate() {
+        return private_;
+      }
+      /**
+       * <code>bool private = 7;</code>
+       */
+      public Builder setPrivate(boolean value) {
+        
+        private_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>bool private = 7;</code>
+       */
+      public Builder clearPrivate() {
+        
+        private_ = false;
+        onChanged();
+        return this;
+      }
+
+      private boolean interface_ ;
+      /**
+       * <code>bool interface = 8;</code>
+       */
+      public boolean getInterface() {
+        return interface_;
+      }
+      /**
+       * <code>bool interface = 8;</code>
+       */
+      public Builder setInterface(boolean value) {
+        
+        interface_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>bool interface = 8;</code>
+       */
+      public Builder clearInterface() {
+        
+        interface_ = false;
+        onChanged();
+        return this;
+      }
+
+      private boolean abstract_ ;
+      /**
+       * <code>bool abstract = 9;</code>
+       */
+      public boolean getAbstract() {
+        return abstract_;
+      }
+      /**
+       * <code>bool abstract = 9;</code>
+       */
+      public Builder setAbstract(boolean value) {
+        
+        abstract_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>bool abstract = 9;</code>
+       */
+      public Builder clearAbstract() {
+        
+        abstract_ = false;
+        onChanged();
+        return this;
+      }
+      @java.lang.Override
+      public final Builder setUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.setUnknownFields(unknownFields);
+      }
+
+      @java.lang.Override
+      public final Builder mergeUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.mergeUnknownFields(unknownFields);
+      }
+
+
+      // @@protoc_insertion_point(builder_scope:lapp.ClassRecord)
+    }
+
+    // @@protoc_insertion_point(class_scope:lapp.ClassRecord)
+    private static final nl.wvdzwan.lapp.protobuf.Lapp.ClassRecord DEFAULT_INSTANCE;
+    static {
+      DEFAULT_INSTANCE = new nl.wvdzwan.lapp.protobuf.Lapp.ClassRecord();
+    }
+
+    public static nl.wvdzwan.lapp.protobuf.Lapp.ClassRecord getDefaultInstance() {
+      return DEFAULT_INSTANCE;
+    }
+
+    private static final com.google.protobuf.Parser<ClassRecord>
+        PARSER = new com.google.protobuf.AbstractParser<ClassRecord>() {
+      @java.lang.Override
+      public ClassRecord parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new ClassRecord(input, extensionRegistry);
+      }
+    };
+
+    public static com.google.protobuf.Parser<ClassRecord> parser() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<ClassRecord> getParserForType() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public nl.wvdzwan.lapp.protobuf.Lapp.ClassRecord getDefaultInstanceForType() {
+      return DEFAULT_INSTANCE;
+    }
+
+  }
+
   public interface PackageOrBuilder extends
       // @@protoc_insertion_point(interface_extends:lapp.Package)
       com.google.protobuf.MessageOrBuilder {
@@ -4021,27 +4478,27 @@ public final class Lapp {
         int index);
 
     /**
-     * <code>repeated .lapp.Method methods = 3;</code>
+     * <code>repeated .lapp.ClassRecord classRecords = 6;</code>
      */
-    java.util.List<nl.wvdzwan.lapp.protobuf.Lapp.Method> 
-        getMethodsList();
+    java.util.List<nl.wvdzwan.lapp.protobuf.Lapp.ClassRecord> 
+        getClassRecordsList();
     /**
-     * <code>repeated .lapp.Method methods = 3;</code>
+     * <code>repeated .lapp.ClassRecord classRecords = 6;</code>
      */
-    nl.wvdzwan.lapp.protobuf.Lapp.Method getMethods(int index);
+    nl.wvdzwan.lapp.protobuf.Lapp.ClassRecord getClassRecords(int index);
     /**
-     * <code>repeated .lapp.Method methods = 3;</code>
+     * <code>repeated .lapp.ClassRecord classRecords = 6;</code>
      */
-    int getMethodsCount();
+    int getClassRecordsCount();
     /**
-     * <code>repeated .lapp.Method methods = 3;</code>
+     * <code>repeated .lapp.ClassRecord classRecords = 6;</code>
      */
-    java.util.List<? extends nl.wvdzwan.lapp.protobuf.Lapp.MethodOrBuilder> 
-        getMethodsOrBuilderList();
+    java.util.List<? extends nl.wvdzwan.lapp.protobuf.Lapp.ClassRecordOrBuilder> 
+        getClassRecordsOrBuilderList();
     /**
-     * <code>repeated .lapp.Method methods = 3;</code>
+     * <code>repeated .lapp.ClassRecord classRecords = 6;</code>
      */
-    nl.wvdzwan.lapp.protobuf.Lapp.MethodOrBuilder getMethodsOrBuilder(
+    nl.wvdzwan.lapp.protobuf.Lapp.ClassRecordOrBuilder getClassRecordsOrBuilder(
         int index);
 
     /**
@@ -4093,54 +4550,6 @@ public final class Lapp {
         int index);
 
     /**
-     * <code>repeated .lapp.ChaRelation cha = 6;</code>
-     */
-    java.util.List<nl.wvdzwan.lapp.protobuf.Lapp.ChaRelation> 
-        getChaList();
-    /**
-     * <code>repeated .lapp.ChaRelation cha = 6;</code>
-     */
-    nl.wvdzwan.lapp.protobuf.Lapp.ChaRelation getCha(int index);
-    /**
-     * <code>repeated .lapp.ChaRelation cha = 6;</code>
-     */
-    int getChaCount();
-    /**
-     * <code>repeated .lapp.ChaRelation cha = 6;</code>
-     */
-    java.util.List<? extends nl.wvdzwan.lapp.protobuf.Lapp.ChaRelationOrBuilder> 
-        getChaOrBuilderList();
-    /**
-     * <code>repeated .lapp.ChaRelation cha = 6;</code>
-     */
-    nl.wvdzwan.lapp.protobuf.Lapp.ChaRelationOrBuilder getChaOrBuilder(
-        int index);
-
-    /**
-     * <code>repeated .lapp.ChaRelation unresolvedCha = 7;</code>
-     */
-    java.util.List<nl.wvdzwan.lapp.protobuf.Lapp.ChaRelation> 
-        getUnresolvedChaList();
-    /**
-     * <code>repeated .lapp.ChaRelation unresolvedCha = 7;</code>
-     */
-    nl.wvdzwan.lapp.protobuf.Lapp.ChaRelation getUnresolvedCha(int index);
-    /**
-     * <code>repeated .lapp.ChaRelation unresolvedCha = 7;</code>
-     */
-    int getUnresolvedChaCount();
-    /**
-     * <code>repeated .lapp.ChaRelation unresolvedCha = 7;</code>
-     */
-    java.util.List<? extends nl.wvdzwan.lapp.protobuf.Lapp.ChaRelationOrBuilder> 
-        getUnresolvedChaOrBuilderList();
-    /**
-     * <code>repeated .lapp.ChaRelation unresolvedCha = 7;</code>
-     */
-    nl.wvdzwan.lapp.protobuf.Lapp.ChaRelationOrBuilder getUnresolvedChaOrBuilder(
-        int index);
-
-    /**
      * <code>map&lt;string, string&gt; metadata = 8;</code>
      */
     int getMetadataCount();
@@ -4188,11 +4597,9 @@ public final class Lapp {
     }
     private Package() {
       artifacts_ = java.util.Collections.emptyList();
-      methods_ = java.util.Collections.emptyList();
+      classRecords_ = java.util.Collections.emptyList();
       resolvedCalls_ = java.util.Collections.emptyList();
       unresolvedCalls_ = java.util.Collections.emptyList();
-      cha_ = java.util.Collections.emptyList();
-      unresolvedCha_ = java.util.Collections.emptyList();
     }
 
     @java.lang.Override
@@ -4228,15 +4635,6 @@ public final class Lapp {
                   input.readMessage(nl.wvdzwan.lapp.protobuf.Lapp.Artifact.parser(), extensionRegistry));
               break;
             }
-            case 26: {
-              if (!((mutable_bitField0_ & 0x00000002) != 0)) {
-                methods_ = new java.util.ArrayList<nl.wvdzwan.lapp.protobuf.Lapp.Method>();
-                mutable_bitField0_ |= 0x00000002;
-              }
-              methods_.add(
-                  input.readMessage(nl.wvdzwan.lapp.protobuf.Lapp.Method.parser(), extensionRegistry));
-              break;
-            }
             case 34: {
               if (!((mutable_bitField0_ & 0x00000004) != 0)) {
                 resolvedCalls_ = new java.util.ArrayList<nl.wvdzwan.lapp.protobuf.Lapp.Call>();
@@ -4256,28 +4654,19 @@ public final class Lapp {
               break;
             }
             case 50: {
-              if (!((mutable_bitField0_ & 0x00000010) != 0)) {
-                cha_ = new java.util.ArrayList<nl.wvdzwan.lapp.protobuf.Lapp.ChaRelation>();
-                mutable_bitField0_ |= 0x00000010;
+              if (!((mutable_bitField0_ & 0x00000002) != 0)) {
+                classRecords_ = new java.util.ArrayList<nl.wvdzwan.lapp.protobuf.Lapp.ClassRecord>();
+                mutable_bitField0_ |= 0x00000002;
               }
-              cha_.add(
-                  input.readMessage(nl.wvdzwan.lapp.protobuf.Lapp.ChaRelation.parser(), extensionRegistry));
-              break;
-            }
-            case 58: {
-              if (!((mutable_bitField0_ & 0x00000020) != 0)) {
-                unresolvedCha_ = new java.util.ArrayList<nl.wvdzwan.lapp.protobuf.Lapp.ChaRelation>();
-                mutable_bitField0_ |= 0x00000020;
-              }
-              unresolvedCha_.add(
-                  input.readMessage(nl.wvdzwan.lapp.protobuf.Lapp.ChaRelation.parser(), extensionRegistry));
+              classRecords_.add(
+                  input.readMessage(nl.wvdzwan.lapp.protobuf.Lapp.ClassRecord.parser(), extensionRegistry));
               break;
             }
             case 66: {
-              if (!((mutable_bitField0_ & 0x00000040) != 0)) {
+              if (!((mutable_bitField0_ & 0x00000010) != 0)) {
                 metadata_ = com.google.protobuf.MapField.newMapField(
                     MetadataDefaultEntryHolder.defaultEntry);
-                mutable_bitField0_ |= 0x00000040;
+                mutable_bitField0_ |= 0x00000010;
               }
               com.google.protobuf.MapEntry<java.lang.String, java.lang.String>
               metadata__ = input.readMessage(
@@ -4304,20 +4693,14 @@ public final class Lapp {
         if (((mutable_bitField0_ & 0x00000001) != 0)) {
           artifacts_ = java.util.Collections.unmodifiableList(artifacts_);
         }
-        if (((mutable_bitField0_ & 0x00000002) != 0)) {
-          methods_ = java.util.Collections.unmodifiableList(methods_);
-        }
         if (((mutable_bitField0_ & 0x00000004) != 0)) {
           resolvedCalls_ = java.util.Collections.unmodifiableList(resolvedCalls_);
         }
         if (((mutable_bitField0_ & 0x00000008) != 0)) {
           unresolvedCalls_ = java.util.Collections.unmodifiableList(unresolvedCalls_);
         }
-        if (((mutable_bitField0_ & 0x00000010) != 0)) {
-          cha_ = java.util.Collections.unmodifiableList(cha_);
-        }
-        if (((mutable_bitField0_ & 0x00000020) != 0)) {
-          unresolvedCha_ = java.util.Collections.unmodifiableList(unresolvedCha_);
+        if (((mutable_bitField0_ & 0x00000002) != 0)) {
+          classRecords_ = java.util.Collections.unmodifiableList(classRecords_);
         }
         this.unknownFields = unknownFields.build();
         makeExtensionsImmutable();
@@ -4383,39 +4766,39 @@ public final class Lapp {
       return artifacts_.get(index);
     }
 
-    public static final int METHODS_FIELD_NUMBER = 3;
-    private java.util.List<nl.wvdzwan.lapp.protobuf.Lapp.Method> methods_;
+    public static final int CLASSRECORDS_FIELD_NUMBER = 6;
+    private java.util.List<nl.wvdzwan.lapp.protobuf.Lapp.ClassRecord> classRecords_;
     /**
-     * <code>repeated .lapp.Method methods = 3;</code>
+     * <code>repeated .lapp.ClassRecord classRecords = 6;</code>
      */
-    public java.util.List<nl.wvdzwan.lapp.protobuf.Lapp.Method> getMethodsList() {
-      return methods_;
+    public java.util.List<nl.wvdzwan.lapp.protobuf.Lapp.ClassRecord> getClassRecordsList() {
+      return classRecords_;
     }
     /**
-     * <code>repeated .lapp.Method methods = 3;</code>
+     * <code>repeated .lapp.ClassRecord classRecords = 6;</code>
      */
-    public java.util.List<? extends nl.wvdzwan.lapp.protobuf.Lapp.MethodOrBuilder> 
-        getMethodsOrBuilderList() {
-      return methods_;
+    public java.util.List<? extends nl.wvdzwan.lapp.protobuf.Lapp.ClassRecordOrBuilder> 
+        getClassRecordsOrBuilderList() {
+      return classRecords_;
     }
     /**
-     * <code>repeated .lapp.Method methods = 3;</code>
+     * <code>repeated .lapp.ClassRecord classRecords = 6;</code>
      */
-    public int getMethodsCount() {
-      return methods_.size();
+    public int getClassRecordsCount() {
+      return classRecords_.size();
     }
     /**
-     * <code>repeated .lapp.Method methods = 3;</code>
+     * <code>repeated .lapp.ClassRecord classRecords = 6;</code>
      */
-    public nl.wvdzwan.lapp.protobuf.Lapp.Method getMethods(int index) {
-      return methods_.get(index);
+    public nl.wvdzwan.lapp.protobuf.Lapp.ClassRecord getClassRecords(int index) {
+      return classRecords_.get(index);
     }
     /**
-     * <code>repeated .lapp.Method methods = 3;</code>
+     * <code>repeated .lapp.ClassRecord classRecords = 6;</code>
      */
-    public nl.wvdzwan.lapp.protobuf.Lapp.MethodOrBuilder getMethodsOrBuilder(
+    public nl.wvdzwan.lapp.protobuf.Lapp.ClassRecordOrBuilder getClassRecordsOrBuilder(
         int index) {
-      return methods_.get(index);
+      return classRecords_.get(index);
     }
 
     public static final int RESOLVEDCALLS_FIELD_NUMBER = 4;
@@ -4486,76 +4869,6 @@ public final class Lapp {
     public nl.wvdzwan.lapp.protobuf.Lapp.CallOrBuilder getUnresolvedCallsOrBuilder(
         int index) {
       return unresolvedCalls_.get(index);
-    }
-
-    public static final int CHA_FIELD_NUMBER = 6;
-    private java.util.List<nl.wvdzwan.lapp.protobuf.Lapp.ChaRelation> cha_;
-    /**
-     * <code>repeated .lapp.ChaRelation cha = 6;</code>
-     */
-    public java.util.List<nl.wvdzwan.lapp.protobuf.Lapp.ChaRelation> getChaList() {
-      return cha_;
-    }
-    /**
-     * <code>repeated .lapp.ChaRelation cha = 6;</code>
-     */
-    public java.util.List<? extends nl.wvdzwan.lapp.protobuf.Lapp.ChaRelationOrBuilder> 
-        getChaOrBuilderList() {
-      return cha_;
-    }
-    /**
-     * <code>repeated .lapp.ChaRelation cha = 6;</code>
-     */
-    public int getChaCount() {
-      return cha_.size();
-    }
-    /**
-     * <code>repeated .lapp.ChaRelation cha = 6;</code>
-     */
-    public nl.wvdzwan.lapp.protobuf.Lapp.ChaRelation getCha(int index) {
-      return cha_.get(index);
-    }
-    /**
-     * <code>repeated .lapp.ChaRelation cha = 6;</code>
-     */
-    public nl.wvdzwan.lapp.protobuf.Lapp.ChaRelationOrBuilder getChaOrBuilder(
-        int index) {
-      return cha_.get(index);
-    }
-
-    public static final int UNRESOLVEDCHA_FIELD_NUMBER = 7;
-    private java.util.List<nl.wvdzwan.lapp.protobuf.Lapp.ChaRelation> unresolvedCha_;
-    /**
-     * <code>repeated .lapp.ChaRelation unresolvedCha = 7;</code>
-     */
-    public java.util.List<nl.wvdzwan.lapp.protobuf.Lapp.ChaRelation> getUnresolvedChaList() {
-      return unresolvedCha_;
-    }
-    /**
-     * <code>repeated .lapp.ChaRelation unresolvedCha = 7;</code>
-     */
-    public java.util.List<? extends nl.wvdzwan.lapp.protobuf.Lapp.ChaRelationOrBuilder> 
-        getUnresolvedChaOrBuilderList() {
-      return unresolvedCha_;
-    }
-    /**
-     * <code>repeated .lapp.ChaRelation unresolvedCha = 7;</code>
-     */
-    public int getUnresolvedChaCount() {
-      return unresolvedCha_.size();
-    }
-    /**
-     * <code>repeated .lapp.ChaRelation unresolvedCha = 7;</code>
-     */
-    public nl.wvdzwan.lapp.protobuf.Lapp.ChaRelation getUnresolvedCha(int index) {
-      return unresolvedCha_.get(index);
-    }
-    /**
-     * <code>repeated .lapp.ChaRelation unresolvedCha = 7;</code>
-     */
-    public nl.wvdzwan.lapp.protobuf.Lapp.ChaRelationOrBuilder getUnresolvedChaOrBuilder(
-        int index) {
-      return unresolvedCha_.get(index);
     }
 
     public static final int METADATA_FIELD_NUMBER = 8;
@@ -4651,20 +4964,14 @@ public final class Lapp {
       for (int i = 0; i < artifacts_.size(); i++) {
         output.writeMessage(1, artifacts_.get(i));
       }
-      for (int i = 0; i < methods_.size(); i++) {
-        output.writeMessage(3, methods_.get(i));
-      }
       for (int i = 0; i < resolvedCalls_.size(); i++) {
         output.writeMessage(4, resolvedCalls_.get(i));
       }
       for (int i = 0; i < unresolvedCalls_.size(); i++) {
         output.writeMessage(5, unresolvedCalls_.get(i));
       }
-      for (int i = 0; i < cha_.size(); i++) {
-        output.writeMessage(6, cha_.get(i));
-      }
-      for (int i = 0; i < unresolvedCha_.size(); i++) {
-        output.writeMessage(7, unresolvedCha_.get(i));
+      for (int i = 0; i < classRecords_.size(); i++) {
+        output.writeMessage(6, classRecords_.get(i));
       }
       com.google.protobuf.GeneratedMessageV3
         .serializeStringMapTo(
@@ -4685,10 +4992,6 @@ public final class Lapp {
         size += com.google.protobuf.CodedOutputStream
           .computeMessageSize(1, artifacts_.get(i));
       }
-      for (int i = 0; i < methods_.size(); i++) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(3, methods_.get(i));
-      }
       for (int i = 0; i < resolvedCalls_.size(); i++) {
         size += com.google.protobuf.CodedOutputStream
           .computeMessageSize(4, resolvedCalls_.get(i));
@@ -4697,13 +5000,9 @@ public final class Lapp {
         size += com.google.protobuf.CodedOutputStream
           .computeMessageSize(5, unresolvedCalls_.get(i));
       }
-      for (int i = 0; i < cha_.size(); i++) {
+      for (int i = 0; i < classRecords_.size(); i++) {
         size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(6, cha_.get(i));
-      }
-      for (int i = 0; i < unresolvedCha_.size(); i++) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(7, unresolvedCha_.get(i));
+          .computeMessageSize(6, classRecords_.get(i));
       }
       for (java.util.Map.Entry<java.lang.String, java.lang.String> entry
            : internalGetMetadata().getMap().entrySet()) {
@@ -4732,16 +5031,12 @@ public final class Lapp {
 
       if (!getArtifactsList()
           .equals(other.getArtifactsList())) return false;
-      if (!getMethodsList()
-          .equals(other.getMethodsList())) return false;
+      if (!getClassRecordsList()
+          .equals(other.getClassRecordsList())) return false;
       if (!getResolvedCallsList()
           .equals(other.getResolvedCallsList())) return false;
       if (!getUnresolvedCallsList()
           .equals(other.getUnresolvedCallsList())) return false;
-      if (!getChaList()
-          .equals(other.getChaList())) return false;
-      if (!getUnresolvedChaList()
-          .equals(other.getUnresolvedChaList())) return false;
       if (!internalGetMetadata().equals(
           other.internalGetMetadata())) return false;
       if (!unknownFields.equals(other.unknownFields)) return false;
@@ -4759,9 +5054,9 @@ public final class Lapp {
         hash = (37 * hash) + ARTIFACTS_FIELD_NUMBER;
         hash = (53 * hash) + getArtifactsList().hashCode();
       }
-      if (getMethodsCount() > 0) {
-        hash = (37 * hash) + METHODS_FIELD_NUMBER;
-        hash = (53 * hash) + getMethodsList().hashCode();
+      if (getClassRecordsCount() > 0) {
+        hash = (37 * hash) + CLASSRECORDS_FIELD_NUMBER;
+        hash = (53 * hash) + getClassRecordsList().hashCode();
       }
       if (getResolvedCallsCount() > 0) {
         hash = (37 * hash) + RESOLVEDCALLS_FIELD_NUMBER;
@@ -4770,14 +5065,6 @@ public final class Lapp {
       if (getUnresolvedCallsCount() > 0) {
         hash = (37 * hash) + UNRESOLVEDCALLS_FIELD_NUMBER;
         hash = (53 * hash) + getUnresolvedCallsList().hashCode();
-      }
-      if (getChaCount() > 0) {
-        hash = (37 * hash) + CHA_FIELD_NUMBER;
-        hash = (53 * hash) + getChaList().hashCode();
-      }
-      if (getUnresolvedChaCount() > 0) {
-        hash = (37 * hash) + UNRESOLVEDCHA_FIELD_NUMBER;
-        hash = (53 * hash) + getUnresolvedChaList().hashCode();
       }
       if (!internalGetMetadata().getMap().isEmpty()) {
         hash = (37 * hash) + METADATA_FIELD_NUMBER;
@@ -4934,11 +5221,9 @@ public final class Lapp {
         if (com.google.protobuf.GeneratedMessageV3
                 .alwaysUseFieldBuilders) {
           getArtifactsFieldBuilder();
-          getMethodsFieldBuilder();
+          getClassRecordsFieldBuilder();
           getResolvedCallsFieldBuilder();
           getUnresolvedCallsFieldBuilder();
-          getChaFieldBuilder();
-          getUnresolvedChaFieldBuilder();
         }
       }
       @java.lang.Override
@@ -4950,11 +5235,11 @@ public final class Lapp {
         } else {
           artifactsBuilder_.clear();
         }
-        if (methodsBuilder_ == null) {
-          methods_ = java.util.Collections.emptyList();
+        if (classRecordsBuilder_ == null) {
+          classRecords_ = java.util.Collections.emptyList();
           bitField0_ = (bitField0_ & ~0x00000002);
         } else {
-          methodsBuilder_.clear();
+          classRecordsBuilder_.clear();
         }
         if (resolvedCallsBuilder_ == null) {
           resolvedCalls_ = java.util.Collections.emptyList();
@@ -4967,18 +5252,6 @@ public final class Lapp {
           bitField0_ = (bitField0_ & ~0x00000008);
         } else {
           unresolvedCallsBuilder_.clear();
-        }
-        if (chaBuilder_ == null) {
-          cha_ = java.util.Collections.emptyList();
-          bitField0_ = (bitField0_ & ~0x00000010);
-        } else {
-          chaBuilder_.clear();
-        }
-        if (unresolvedChaBuilder_ == null) {
-          unresolvedCha_ = java.util.Collections.emptyList();
-          bitField0_ = (bitField0_ & ~0x00000020);
-        } else {
-          unresolvedChaBuilder_.clear();
         }
         internalGetMutableMetadata().clear();
         return this;
@@ -5017,14 +5290,14 @@ public final class Lapp {
         } else {
           result.artifacts_ = artifactsBuilder_.build();
         }
-        if (methodsBuilder_ == null) {
+        if (classRecordsBuilder_ == null) {
           if (((bitField0_ & 0x00000002) != 0)) {
-            methods_ = java.util.Collections.unmodifiableList(methods_);
+            classRecords_ = java.util.Collections.unmodifiableList(classRecords_);
             bitField0_ = (bitField0_ & ~0x00000002);
           }
-          result.methods_ = methods_;
+          result.classRecords_ = classRecords_;
         } else {
-          result.methods_ = methodsBuilder_.build();
+          result.classRecords_ = classRecordsBuilder_.build();
         }
         if (resolvedCallsBuilder_ == null) {
           if (((bitField0_ & 0x00000004) != 0)) {
@@ -5043,24 +5316,6 @@ public final class Lapp {
           result.unresolvedCalls_ = unresolvedCalls_;
         } else {
           result.unresolvedCalls_ = unresolvedCallsBuilder_.build();
-        }
-        if (chaBuilder_ == null) {
-          if (((bitField0_ & 0x00000010) != 0)) {
-            cha_ = java.util.Collections.unmodifiableList(cha_);
-            bitField0_ = (bitField0_ & ~0x00000010);
-          }
-          result.cha_ = cha_;
-        } else {
-          result.cha_ = chaBuilder_.build();
-        }
-        if (unresolvedChaBuilder_ == null) {
-          if (((bitField0_ & 0x00000020) != 0)) {
-            unresolvedCha_ = java.util.Collections.unmodifiableList(unresolvedCha_);
-            bitField0_ = (bitField0_ & ~0x00000020);
-          }
-          result.unresolvedCha_ = unresolvedCha_;
-        } else {
-          result.unresolvedCha_ = unresolvedChaBuilder_.build();
         }
         result.metadata_ = internalGetMetadata();
         result.metadata_.makeImmutable();
@@ -5138,29 +5393,29 @@ public final class Lapp {
             }
           }
         }
-        if (methodsBuilder_ == null) {
-          if (!other.methods_.isEmpty()) {
-            if (methods_.isEmpty()) {
-              methods_ = other.methods_;
+        if (classRecordsBuilder_ == null) {
+          if (!other.classRecords_.isEmpty()) {
+            if (classRecords_.isEmpty()) {
+              classRecords_ = other.classRecords_;
               bitField0_ = (bitField0_ & ~0x00000002);
             } else {
-              ensureMethodsIsMutable();
-              methods_.addAll(other.methods_);
+              ensureClassRecordsIsMutable();
+              classRecords_.addAll(other.classRecords_);
             }
             onChanged();
           }
         } else {
-          if (!other.methods_.isEmpty()) {
-            if (methodsBuilder_.isEmpty()) {
-              methodsBuilder_.dispose();
-              methodsBuilder_ = null;
-              methods_ = other.methods_;
+          if (!other.classRecords_.isEmpty()) {
+            if (classRecordsBuilder_.isEmpty()) {
+              classRecordsBuilder_.dispose();
+              classRecordsBuilder_ = null;
+              classRecords_ = other.classRecords_;
               bitField0_ = (bitField0_ & ~0x00000002);
-              methodsBuilder_ = 
+              classRecordsBuilder_ = 
                 com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders ?
-                   getMethodsFieldBuilder() : null;
+                   getClassRecordsFieldBuilder() : null;
             } else {
-              methodsBuilder_.addAllMessages(other.methods_);
+              classRecordsBuilder_.addAllMessages(other.classRecords_);
             }
           }
         }
@@ -5213,58 +5468,6 @@ public final class Lapp {
                    getUnresolvedCallsFieldBuilder() : null;
             } else {
               unresolvedCallsBuilder_.addAllMessages(other.unresolvedCalls_);
-            }
-          }
-        }
-        if (chaBuilder_ == null) {
-          if (!other.cha_.isEmpty()) {
-            if (cha_.isEmpty()) {
-              cha_ = other.cha_;
-              bitField0_ = (bitField0_ & ~0x00000010);
-            } else {
-              ensureChaIsMutable();
-              cha_.addAll(other.cha_);
-            }
-            onChanged();
-          }
-        } else {
-          if (!other.cha_.isEmpty()) {
-            if (chaBuilder_.isEmpty()) {
-              chaBuilder_.dispose();
-              chaBuilder_ = null;
-              cha_ = other.cha_;
-              bitField0_ = (bitField0_ & ~0x00000010);
-              chaBuilder_ = 
-                com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders ?
-                   getChaFieldBuilder() : null;
-            } else {
-              chaBuilder_.addAllMessages(other.cha_);
-            }
-          }
-        }
-        if (unresolvedChaBuilder_ == null) {
-          if (!other.unresolvedCha_.isEmpty()) {
-            if (unresolvedCha_.isEmpty()) {
-              unresolvedCha_ = other.unresolvedCha_;
-              bitField0_ = (bitField0_ & ~0x00000020);
-            } else {
-              ensureUnresolvedChaIsMutable();
-              unresolvedCha_.addAll(other.unresolvedCha_);
-            }
-            onChanged();
-          }
-        } else {
-          if (!other.unresolvedCha_.isEmpty()) {
-            if (unresolvedChaBuilder_.isEmpty()) {
-              unresolvedChaBuilder_.dispose();
-              unresolvedChaBuilder_ = null;
-              unresolvedCha_ = other.unresolvedCha_;
-              bitField0_ = (bitField0_ & ~0x00000020);
-              unresolvedChaBuilder_ = 
-                com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders ?
-                   getUnresolvedChaFieldBuilder() : null;
-            } else {
-              unresolvedChaBuilder_.addAllMessages(other.unresolvedCha_);
             }
           }
         }
@@ -5540,244 +5743,244 @@ public final class Lapp {
         return artifactsBuilder_;
       }
 
-      private java.util.List<nl.wvdzwan.lapp.protobuf.Lapp.Method> methods_ =
+      private java.util.List<nl.wvdzwan.lapp.protobuf.Lapp.ClassRecord> classRecords_ =
         java.util.Collections.emptyList();
-      private void ensureMethodsIsMutable() {
+      private void ensureClassRecordsIsMutable() {
         if (!((bitField0_ & 0x00000002) != 0)) {
-          methods_ = new java.util.ArrayList<nl.wvdzwan.lapp.protobuf.Lapp.Method>(methods_);
+          classRecords_ = new java.util.ArrayList<nl.wvdzwan.lapp.protobuf.Lapp.ClassRecord>(classRecords_);
           bitField0_ |= 0x00000002;
          }
       }
 
       private com.google.protobuf.RepeatedFieldBuilderV3<
-          nl.wvdzwan.lapp.protobuf.Lapp.Method, nl.wvdzwan.lapp.protobuf.Lapp.Method.Builder, nl.wvdzwan.lapp.protobuf.Lapp.MethodOrBuilder> methodsBuilder_;
+          nl.wvdzwan.lapp.protobuf.Lapp.ClassRecord, nl.wvdzwan.lapp.protobuf.Lapp.ClassRecord.Builder, nl.wvdzwan.lapp.protobuf.Lapp.ClassRecordOrBuilder> classRecordsBuilder_;
 
       /**
-       * <code>repeated .lapp.Method methods = 3;</code>
+       * <code>repeated .lapp.ClassRecord classRecords = 6;</code>
        */
-      public java.util.List<nl.wvdzwan.lapp.protobuf.Lapp.Method> getMethodsList() {
-        if (methodsBuilder_ == null) {
-          return java.util.Collections.unmodifiableList(methods_);
+      public java.util.List<nl.wvdzwan.lapp.protobuf.Lapp.ClassRecord> getClassRecordsList() {
+        if (classRecordsBuilder_ == null) {
+          return java.util.Collections.unmodifiableList(classRecords_);
         } else {
-          return methodsBuilder_.getMessageList();
+          return classRecordsBuilder_.getMessageList();
         }
       }
       /**
-       * <code>repeated .lapp.Method methods = 3;</code>
+       * <code>repeated .lapp.ClassRecord classRecords = 6;</code>
        */
-      public int getMethodsCount() {
-        if (methodsBuilder_ == null) {
-          return methods_.size();
+      public int getClassRecordsCount() {
+        if (classRecordsBuilder_ == null) {
+          return classRecords_.size();
         } else {
-          return methodsBuilder_.getCount();
+          return classRecordsBuilder_.getCount();
         }
       }
       /**
-       * <code>repeated .lapp.Method methods = 3;</code>
+       * <code>repeated .lapp.ClassRecord classRecords = 6;</code>
        */
-      public nl.wvdzwan.lapp.protobuf.Lapp.Method getMethods(int index) {
-        if (methodsBuilder_ == null) {
-          return methods_.get(index);
+      public nl.wvdzwan.lapp.protobuf.Lapp.ClassRecord getClassRecords(int index) {
+        if (classRecordsBuilder_ == null) {
+          return classRecords_.get(index);
         } else {
-          return methodsBuilder_.getMessage(index);
+          return classRecordsBuilder_.getMessage(index);
         }
       }
       /**
-       * <code>repeated .lapp.Method methods = 3;</code>
+       * <code>repeated .lapp.ClassRecord classRecords = 6;</code>
        */
-      public Builder setMethods(
-          int index, nl.wvdzwan.lapp.protobuf.Lapp.Method value) {
-        if (methodsBuilder_ == null) {
+      public Builder setClassRecords(
+          int index, nl.wvdzwan.lapp.protobuf.Lapp.ClassRecord value) {
+        if (classRecordsBuilder_ == null) {
           if (value == null) {
             throw new NullPointerException();
           }
-          ensureMethodsIsMutable();
-          methods_.set(index, value);
+          ensureClassRecordsIsMutable();
+          classRecords_.set(index, value);
           onChanged();
         } else {
-          methodsBuilder_.setMessage(index, value);
+          classRecordsBuilder_.setMessage(index, value);
         }
         return this;
       }
       /**
-       * <code>repeated .lapp.Method methods = 3;</code>
+       * <code>repeated .lapp.ClassRecord classRecords = 6;</code>
        */
-      public Builder setMethods(
-          int index, nl.wvdzwan.lapp.protobuf.Lapp.Method.Builder builderForValue) {
-        if (methodsBuilder_ == null) {
-          ensureMethodsIsMutable();
-          methods_.set(index, builderForValue.build());
+      public Builder setClassRecords(
+          int index, nl.wvdzwan.lapp.protobuf.Lapp.ClassRecord.Builder builderForValue) {
+        if (classRecordsBuilder_ == null) {
+          ensureClassRecordsIsMutable();
+          classRecords_.set(index, builderForValue.build());
           onChanged();
         } else {
-          methodsBuilder_.setMessage(index, builderForValue.build());
+          classRecordsBuilder_.setMessage(index, builderForValue.build());
         }
         return this;
       }
       /**
-       * <code>repeated .lapp.Method methods = 3;</code>
+       * <code>repeated .lapp.ClassRecord classRecords = 6;</code>
        */
-      public Builder addMethods(nl.wvdzwan.lapp.protobuf.Lapp.Method value) {
-        if (methodsBuilder_ == null) {
+      public Builder addClassRecords(nl.wvdzwan.lapp.protobuf.Lapp.ClassRecord value) {
+        if (classRecordsBuilder_ == null) {
           if (value == null) {
             throw new NullPointerException();
           }
-          ensureMethodsIsMutable();
-          methods_.add(value);
+          ensureClassRecordsIsMutable();
+          classRecords_.add(value);
           onChanged();
         } else {
-          methodsBuilder_.addMessage(value);
+          classRecordsBuilder_.addMessage(value);
         }
         return this;
       }
       /**
-       * <code>repeated .lapp.Method methods = 3;</code>
+       * <code>repeated .lapp.ClassRecord classRecords = 6;</code>
        */
-      public Builder addMethods(
-          int index, nl.wvdzwan.lapp.protobuf.Lapp.Method value) {
-        if (methodsBuilder_ == null) {
+      public Builder addClassRecords(
+          int index, nl.wvdzwan.lapp.protobuf.Lapp.ClassRecord value) {
+        if (classRecordsBuilder_ == null) {
           if (value == null) {
             throw new NullPointerException();
           }
-          ensureMethodsIsMutable();
-          methods_.add(index, value);
+          ensureClassRecordsIsMutable();
+          classRecords_.add(index, value);
           onChanged();
         } else {
-          methodsBuilder_.addMessage(index, value);
+          classRecordsBuilder_.addMessage(index, value);
         }
         return this;
       }
       /**
-       * <code>repeated .lapp.Method methods = 3;</code>
+       * <code>repeated .lapp.ClassRecord classRecords = 6;</code>
        */
-      public Builder addMethods(
-          nl.wvdzwan.lapp.protobuf.Lapp.Method.Builder builderForValue) {
-        if (methodsBuilder_ == null) {
-          ensureMethodsIsMutable();
-          methods_.add(builderForValue.build());
+      public Builder addClassRecords(
+          nl.wvdzwan.lapp.protobuf.Lapp.ClassRecord.Builder builderForValue) {
+        if (classRecordsBuilder_ == null) {
+          ensureClassRecordsIsMutable();
+          classRecords_.add(builderForValue.build());
           onChanged();
         } else {
-          methodsBuilder_.addMessage(builderForValue.build());
+          classRecordsBuilder_.addMessage(builderForValue.build());
         }
         return this;
       }
       /**
-       * <code>repeated .lapp.Method methods = 3;</code>
+       * <code>repeated .lapp.ClassRecord classRecords = 6;</code>
        */
-      public Builder addMethods(
-          int index, nl.wvdzwan.lapp.protobuf.Lapp.Method.Builder builderForValue) {
-        if (methodsBuilder_ == null) {
-          ensureMethodsIsMutable();
-          methods_.add(index, builderForValue.build());
+      public Builder addClassRecords(
+          int index, nl.wvdzwan.lapp.protobuf.Lapp.ClassRecord.Builder builderForValue) {
+        if (classRecordsBuilder_ == null) {
+          ensureClassRecordsIsMutable();
+          classRecords_.add(index, builderForValue.build());
           onChanged();
         } else {
-          methodsBuilder_.addMessage(index, builderForValue.build());
+          classRecordsBuilder_.addMessage(index, builderForValue.build());
         }
         return this;
       }
       /**
-       * <code>repeated .lapp.Method methods = 3;</code>
+       * <code>repeated .lapp.ClassRecord classRecords = 6;</code>
        */
-      public Builder addAllMethods(
-          java.lang.Iterable<? extends nl.wvdzwan.lapp.protobuf.Lapp.Method> values) {
-        if (methodsBuilder_ == null) {
-          ensureMethodsIsMutable();
+      public Builder addAllClassRecords(
+          java.lang.Iterable<? extends nl.wvdzwan.lapp.protobuf.Lapp.ClassRecord> values) {
+        if (classRecordsBuilder_ == null) {
+          ensureClassRecordsIsMutable();
           com.google.protobuf.AbstractMessageLite.Builder.addAll(
-              values, methods_);
+              values, classRecords_);
           onChanged();
         } else {
-          methodsBuilder_.addAllMessages(values);
+          classRecordsBuilder_.addAllMessages(values);
         }
         return this;
       }
       /**
-       * <code>repeated .lapp.Method methods = 3;</code>
+       * <code>repeated .lapp.ClassRecord classRecords = 6;</code>
        */
-      public Builder clearMethods() {
-        if (methodsBuilder_ == null) {
-          methods_ = java.util.Collections.emptyList();
+      public Builder clearClassRecords() {
+        if (classRecordsBuilder_ == null) {
+          classRecords_ = java.util.Collections.emptyList();
           bitField0_ = (bitField0_ & ~0x00000002);
           onChanged();
         } else {
-          methodsBuilder_.clear();
+          classRecordsBuilder_.clear();
         }
         return this;
       }
       /**
-       * <code>repeated .lapp.Method methods = 3;</code>
+       * <code>repeated .lapp.ClassRecord classRecords = 6;</code>
        */
-      public Builder removeMethods(int index) {
-        if (methodsBuilder_ == null) {
-          ensureMethodsIsMutable();
-          methods_.remove(index);
+      public Builder removeClassRecords(int index) {
+        if (classRecordsBuilder_ == null) {
+          ensureClassRecordsIsMutable();
+          classRecords_.remove(index);
           onChanged();
         } else {
-          methodsBuilder_.remove(index);
+          classRecordsBuilder_.remove(index);
         }
         return this;
       }
       /**
-       * <code>repeated .lapp.Method methods = 3;</code>
+       * <code>repeated .lapp.ClassRecord classRecords = 6;</code>
        */
-      public nl.wvdzwan.lapp.protobuf.Lapp.Method.Builder getMethodsBuilder(
+      public nl.wvdzwan.lapp.protobuf.Lapp.ClassRecord.Builder getClassRecordsBuilder(
           int index) {
-        return getMethodsFieldBuilder().getBuilder(index);
+        return getClassRecordsFieldBuilder().getBuilder(index);
       }
       /**
-       * <code>repeated .lapp.Method methods = 3;</code>
+       * <code>repeated .lapp.ClassRecord classRecords = 6;</code>
        */
-      public nl.wvdzwan.lapp.protobuf.Lapp.MethodOrBuilder getMethodsOrBuilder(
+      public nl.wvdzwan.lapp.protobuf.Lapp.ClassRecordOrBuilder getClassRecordsOrBuilder(
           int index) {
-        if (methodsBuilder_ == null) {
-          return methods_.get(index);  } else {
-          return methodsBuilder_.getMessageOrBuilder(index);
+        if (classRecordsBuilder_ == null) {
+          return classRecords_.get(index);  } else {
+          return classRecordsBuilder_.getMessageOrBuilder(index);
         }
       }
       /**
-       * <code>repeated .lapp.Method methods = 3;</code>
+       * <code>repeated .lapp.ClassRecord classRecords = 6;</code>
        */
-      public java.util.List<? extends nl.wvdzwan.lapp.protobuf.Lapp.MethodOrBuilder> 
-           getMethodsOrBuilderList() {
-        if (methodsBuilder_ != null) {
-          return methodsBuilder_.getMessageOrBuilderList();
+      public java.util.List<? extends nl.wvdzwan.lapp.protobuf.Lapp.ClassRecordOrBuilder> 
+           getClassRecordsOrBuilderList() {
+        if (classRecordsBuilder_ != null) {
+          return classRecordsBuilder_.getMessageOrBuilderList();
         } else {
-          return java.util.Collections.unmodifiableList(methods_);
+          return java.util.Collections.unmodifiableList(classRecords_);
         }
       }
       /**
-       * <code>repeated .lapp.Method methods = 3;</code>
+       * <code>repeated .lapp.ClassRecord classRecords = 6;</code>
        */
-      public nl.wvdzwan.lapp.protobuf.Lapp.Method.Builder addMethodsBuilder() {
-        return getMethodsFieldBuilder().addBuilder(
-            nl.wvdzwan.lapp.protobuf.Lapp.Method.getDefaultInstance());
+      public nl.wvdzwan.lapp.protobuf.Lapp.ClassRecord.Builder addClassRecordsBuilder() {
+        return getClassRecordsFieldBuilder().addBuilder(
+            nl.wvdzwan.lapp.protobuf.Lapp.ClassRecord.getDefaultInstance());
       }
       /**
-       * <code>repeated .lapp.Method methods = 3;</code>
+       * <code>repeated .lapp.ClassRecord classRecords = 6;</code>
        */
-      public nl.wvdzwan.lapp.protobuf.Lapp.Method.Builder addMethodsBuilder(
+      public nl.wvdzwan.lapp.protobuf.Lapp.ClassRecord.Builder addClassRecordsBuilder(
           int index) {
-        return getMethodsFieldBuilder().addBuilder(
-            index, nl.wvdzwan.lapp.protobuf.Lapp.Method.getDefaultInstance());
+        return getClassRecordsFieldBuilder().addBuilder(
+            index, nl.wvdzwan.lapp.protobuf.Lapp.ClassRecord.getDefaultInstance());
       }
       /**
-       * <code>repeated .lapp.Method methods = 3;</code>
+       * <code>repeated .lapp.ClassRecord classRecords = 6;</code>
        */
-      public java.util.List<nl.wvdzwan.lapp.protobuf.Lapp.Method.Builder> 
-           getMethodsBuilderList() {
-        return getMethodsFieldBuilder().getBuilderList();
+      public java.util.List<nl.wvdzwan.lapp.protobuf.Lapp.ClassRecord.Builder> 
+           getClassRecordsBuilderList() {
+        return getClassRecordsFieldBuilder().getBuilderList();
       }
       private com.google.protobuf.RepeatedFieldBuilderV3<
-          nl.wvdzwan.lapp.protobuf.Lapp.Method, nl.wvdzwan.lapp.protobuf.Lapp.Method.Builder, nl.wvdzwan.lapp.protobuf.Lapp.MethodOrBuilder> 
-          getMethodsFieldBuilder() {
-        if (methodsBuilder_ == null) {
-          methodsBuilder_ = new com.google.protobuf.RepeatedFieldBuilderV3<
-              nl.wvdzwan.lapp.protobuf.Lapp.Method, nl.wvdzwan.lapp.protobuf.Lapp.Method.Builder, nl.wvdzwan.lapp.protobuf.Lapp.MethodOrBuilder>(
-                  methods_,
+          nl.wvdzwan.lapp.protobuf.Lapp.ClassRecord, nl.wvdzwan.lapp.protobuf.Lapp.ClassRecord.Builder, nl.wvdzwan.lapp.protobuf.Lapp.ClassRecordOrBuilder> 
+          getClassRecordsFieldBuilder() {
+        if (classRecordsBuilder_ == null) {
+          classRecordsBuilder_ = new com.google.protobuf.RepeatedFieldBuilderV3<
+              nl.wvdzwan.lapp.protobuf.Lapp.ClassRecord, nl.wvdzwan.lapp.protobuf.Lapp.ClassRecord.Builder, nl.wvdzwan.lapp.protobuf.Lapp.ClassRecordOrBuilder>(
+                  classRecords_,
                   ((bitField0_ & 0x00000002) != 0),
                   getParentForChildren(),
                   isClean());
-          methods_ = null;
+          classRecords_ = null;
         }
-        return methodsBuilder_;
+        return classRecordsBuilder_;
       }
 
       private java.util.List<nl.wvdzwan.lapp.protobuf.Lapp.Call> resolvedCalls_ =
@@ -6260,486 +6463,6 @@ public final class Lapp {
         return unresolvedCallsBuilder_;
       }
 
-      private java.util.List<nl.wvdzwan.lapp.protobuf.Lapp.ChaRelation> cha_ =
-        java.util.Collections.emptyList();
-      private void ensureChaIsMutable() {
-        if (!((bitField0_ & 0x00000010) != 0)) {
-          cha_ = new java.util.ArrayList<nl.wvdzwan.lapp.protobuf.Lapp.ChaRelation>(cha_);
-          bitField0_ |= 0x00000010;
-         }
-      }
-
-      private com.google.protobuf.RepeatedFieldBuilderV3<
-          nl.wvdzwan.lapp.protobuf.Lapp.ChaRelation, nl.wvdzwan.lapp.protobuf.Lapp.ChaRelation.Builder, nl.wvdzwan.lapp.protobuf.Lapp.ChaRelationOrBuilder> chaBuilder_;
-
-      /**
-       * <code>repeated .lapp.ChaRelation cha = 6;</code>
-       */
-      public java.util.List<nl.wvdzwan.lapp.protobuf.Lapp.ChaRelation> getChaList() {
-        if (chaBuilder_ == null) {
-          return java.util.Collections.unmodifiableList(cha_);
-        } else {
-          return chaBuilder_.getMessageList();
-        }
-      }
-      /**
-       * <code>repeated .lapp.ChaRelation cha = 6;</code>
-       */
-      public int getChaCount() {
-        if (chaBuilder_ == null) {
-          return cha_.size();
-        } else {
-          return chaBuilder_.getCount();
-        }
-      }
-      /**
-       * <code>repeated .lapp.ChaRelation cha = 6;</code>
-       */
-      public nl.wvdzwan.lapp.protobuf.Lapp.ChaRelation getCha(int index) {
-        if (chaBuilder_ == null) {
-          return cha_.get(index);
-        } else {
-          return chaBuilder_.getMessage(index);
-        }
-      }
-      /**
-       * <code>repeated .lapp.ChaRelation cha = 6;</code>
-       */
-      public Builder setCha(
-          int index, nl.wvdzwan.lapp.protobuf.Lapp.ChaRelation value) {
-        if (chaBuilder_ == null) {
-          if (value == null) {
-            throw new NullPointerException();
-          }
-          ensureChaIsMutable();
-          cha_.set(index, value);
-          onChanged();
-        } else {
-          chaBuilder_.setMessage(index, value);
-        }
-        return this;
-      }
-      /**
-       * <code>repeated .lapp.ChaRelation cha = 6;</code>
-       */
-      public Builder setCha(
-          int index, nl.wvdzwan.lapp.protobuf.Lapp.ChaRelation.Builder builderForValue) {
-        if (chaBuilder_ == null) {
-          ensureChaIsMutable();
-          cha_.set(index, builderForValue.build());
-          onChanged();
-        } else {
-          chaBuilder_.setMessage(index, builderForValue.build());
-        }
-        return this;
-      }
-      /**
-       * <code>repeated .lapp.ChaRelation cha = 6;</code>
-       */
-      public Builder addCha(nl.wvdzwan.lapp.protobuf.Lapp.ChaRelation value) {
-        if (chaBuilder_ == null) {
-          if (value == null) {
-            throw new NullPointerException();
-          }
-          ensureChaIsMutable();
-          cha_.add(value);
-          onChanged();
-        } else {
-          chaBuilder_.addMessage(value);
-        }
-        return this;
-      }
-      /**
-       * <code>repeated .lapp.ChaRelation cha = 6;</code>
-       */
-      public Builder addCha(
-          int index, nl.wvdzwan.lapp.protobuf.Lapp.ChaRelation value) {
-        if (chaBuilder_ == null) {
-          if (value == null) {
-            throw new NullPointerException();
-          }
-          ensureChaIsMutable();
-          cha_.add(index, value);
-          onChanged();
-        } else {
-          chaBuilder_.addMessage(index, value);
-        }
-        return this;
-      }
-      /**
-       * <code>repeated .lapp.ChaRelation cha = 6;</code>
-       */
-      public Builder addCha(
-          nl.wvdzwan.lapp.protobuf.Lapp.ChaRelation.Builder builderForValue) {
-        if (chaBuilder_ == null) {
-          ensureChaIsMutable();
-          cha_.add(builderForValue.build());
-          onChanged();
-        } else {
-          chaBuilder_.addMessage(builderForValue.build());
-        }
-        return this;
-      }
-      /**
-       * <code>repeated .lapp.ChaRelation cha = 6;</code>
-       */
-      public Builder addCha(
-          int index, nl.wvdzwan.lapp.protobuf.Lapp.ChaRelation.Builder builderForValue) {
-        if (chaBuilder_ == null) {
-          ensureChaIsMutable();
-          cha_.add(index, builderForValue.build());
-          onChanged();
-        } else {
-          chaBuilder_.addMessage(index, builderForValue.build());
-        }
-        return this;
-      }
-      /**
-       * <code>repeated .lapp.ChaRelation cha = 6;</code>
-       */
-      public Builder addAllCha(
-          java.lang.Iterable<? extends nl.wvdzwan.lapp.protobuf.Lapp.ChaRelation> values) {
-        if (chaBuilder_ == null) {
-          ensureChaIsMutable();
-          com.google.protobuf.AbstractMessageLite.Builder.addAll(
-              values, cha_);
-          onChanged();
-        } else {
-          chaBuilder_.addAllMessages(values);
-        }
-        return this;
-      }
-      /**
-       * <code>repeated .lapp.ChaRelation cha = 6;</code>
-       */
-      public Builder clearCha() {
-        if (chaBuilder_ == null) {
-          cha_ = java.util.Collections.emptyList();
-          bitField0_ = (bitField0_ & ~0x00000010);
-          onChanged();
-        } else {
-          chaBuilder_.clear();
-        }
-        return this;
-      }
-      /**
-       * <code>repeated .lapp.ChaRelation cha = 6;</code>
-       */
-      public Builder removeCha(int index) {
-        if (chaBuilder_ == null) {
-          ensureChaIsMutable();
-          cha_.remove(index);
-          onChanged();
-        } else {
-          chaBuilder_.remove(index);
-        }
-        return this;
-      }
-      /**
-       * <code>repeated .lapp.ChaRelation cha = 6;</code>
-       */
-      public nl.wvdzwan.lapp.protobuf.Lapp.ChaRelation.Builder getChaBuilder(
-          int index) {
-        return getChaFieldBuilder().getBuilder(index);
-      }
-      /**
-       * <code>repeated .lapp.ChaRelation cha = 6;</code>
-       */
-      public nl.wvdzwan.lapp.protobuf.Lapp.ChaRelationOrBuilder getChaOrBuilder(
-          int index) {
-        if (chaBuilder_ == null) {
-          return cha_.get(index);  } else {
-          return chaBuilder_.getMessageOrBuilder(index);
-        }
-      }
-      /**
-       * <code>repeated .lapp.ChaRelation cha = 6;</code>
-       */
-      public java.util.List<? extends nl.wvdzwan.lapp.protobuf.Lapp.ChaRelationOrBuilder> 
-           getChaOrBuilderList() {
-        if (chaBuilder_ != null) {
-          return chaBuilder_.getMessageOrBuilderList();
-        } else {
-          return java.util.Collections.unmodifiableList(cha_);
-        }
-      }
-      /**
-       * <code>repeated .lapp.ChaRelation cha = 6;</code>
-       */
-      public nl.wvdzwan.lapp.protobuf.Lapp.ChaRelation.Builder addChaBuilder() {
-        return getChaFieldBuilder().addBuilder(
-            nl.wvdzwan.lapp.protobuf.Lapp.ChaRelation.getDefaultInstance());
-      }
-      /**
-       * <code>repeated .lapp.ChaRelation cha = 6;</code>
-       */
-      public nl.wvdzwan.lapp.protobuf.Lapp.ChaRelation.Builder addChaBuilder(
-          int index) {
-        return getChaFieldBuilder().addBuilder(
-            index, nl.wvdzwan.lapp.protobuf.Lapp.ChaRelation.getDefaultInstance());
-      }
-      /**
-       * <code>repeated .lapp.ChaRelation cha = 6;</code>
-       */
-      public java.util.List<nl.wvdzwan.lapp.protobuf.Lapp.ChaRelation.Builder> 
-           getChaBuilderList() {
-        return getChaFieldBuilder().getBuilderList();
-      }
-      private com.google.protobuf.RepeatedFieldBuilderV3<
-          nl.wvdzwan.lapp.protobuf.Lapp.ChaRelation, nl.wvdzwan.lapp.protobuf.Lapp.ChaRelation.Builder, nl.wvdzwan.lapp.protobuf.Lapp.ChaRelationOrBuilder> 
-          getChaFieldBuilder() {
-        if (chaBuilder_ == null) {
-          chaBuilder_ = new com.google.protobuf.RepeatedFieldBuilderV3<
-              nl.wvdzwan.lapp.protobuf.Lapp.ChaRelation, nl.wvdzwan.lapp.protobuf.Lapp.ChaRelation.Builder, nl.wvdzwan.lapp.protobuf.Lapp.ChaRelationOrBuilder>(
-                  cha_,
-                  ((bitField0_ & 0x00000010) != 0),
-                  getParentForChildren(),
-                  isClean());
-          cha_ = null;
-        }
-        return chaBuilder_;
-      }
-
-      private java.util.List<nl.wvdzwan.lapp.protobuf.Lapp.ChaRelation> unresolvedCha_ =
-        java.util.Collections.emptyList();
-      private void ensureUnresolvedChaIsMutable() {
-        if (!((bitField0_ & 0x00000020) != 0)) {
-          unresolvedCha_ = new java.util.ArrayList<nl.wvdzwan.lapp.protobuf.Lapp.ChaRelation>(unresolvedCha_);
-          bitField0_ |= 0x00000020;
-         }
-      }
-
-      private com.google.protobuf.RepeatedFieldBuilderV3<
-          nl.wvdzwan.lapp.protobuf.Lapp.ChaRelation, nl.wvdzwan.lapp.protobuf.Lapp.ChaRelation.Builder, nl.wvdzwan.lapp.protobuf.Lapp.ChaRelationOrBuilder> unresolvedChaBuilder_;
-
-      /**
-       * <code>repeated .lapp.ChaRelation unresolvedCha = 7;</code>
-       */
-      public java.util.List<nl.wvdzwan.lapp.protobuf.Lapp.ChaRelation> getUnresolvedChaList() {
-        if (unresolvedChaBuilder_ == null) {
-          return java.util.Collections.unmodifiableList(unresolvedCha_);
-        } else {
-          return unresolvedChaBuilder_.getMessageList();
-        }
-      }
-      /**
-       * <code>repeated .lapp.ChaRelation unresolvedCha = 7;</code>
-       */
-      public int getUnresolvedChaCount() {
-        if (unresolvedChaBuilder_ == null) {
-          return unresolvedCha_.size();
-        } else {
-          return unresolvedChaBuilder_.getCount();
-        }
-      }
-      /**
-       * <code>repeated .lapp.ChaRelation unresolvedCha = 7;</code>
-       */
-      public nl.wvdzwan.lapp.protobuf.Lapp.ChaRelation getUnresolvedCha(int index) {
-        if (unresolvedChaBuilder_ == null) {
-          return unresolvedCha_.get(index);
-        } else {
-          return unresolvedChaBuilder_.getMessage(index);
-        }
-      }
-      /**
-       * <code>repeated .lapp.ChaRelation unresolvedCha = 7;</code>
-       */
-      public Builder setUnresolvedCha(
-          int index, nl.wvdzwan.lapp.protobuf.Lapp.ChaRelation value) {
-        if (unresolvedChaBuilder_ == null) {
-          if (value == null) {
-            throw new NullPointerException();
-          }
-          ensureUnresolvedChaIsMutable();
-          unresolvedCha_.set(index, value);
-          onChanged();
-        } else {
-          unresolvedChaBuilder_.setMessage(index, value);
-        }
-        return this;
-      }
-      /**
-       * <code>repeated .lapp.ChaRelation unresolvedCha = 7;</code>
-       */
-      public Builder setUnresolvedCha(
-          int index, nl.wvdzwan.lapp.protobuf.Lapp.ChaRelation.Builder builderForValue) {
-        if (unresolvedChaBuilder_ == null) {
-          ensureUnresolvedChaIsMutable();
-          unresolvedCha_.set(index, builderForValue.build());
-          onChanged();
-        } else {
-          unresolvedChaBuilder_.setMessage(index, builderForValue.build());
-        }
-        return this;
-      }
-      /**
-       * <code>repeated .lapp.ChaRelation unresolvedCha = 7;</code>
-       */
-      public Builder addUnresolvedCha(nl.wvdzwan.lapp.protobuf.Lapp.ChaRelation value) {
-        if (unresolvedChaBuilder_ == null) {
-          if (value == null) {
-            throw new NullPointerException();
-          }
-          ensureUnresolvedChaIsMutable();
-          unresolvedCha_.add(value);
-          onChanged();
-        } else {
-          unresolvedChaBuilder_.addMessage(value);
-        }
-        return this;
-      }
-      /**
-       * <code>repeated .lapp.ChaRelation unresolvedCha = 7;</code>
-       */
-      public Builder addUnresolvedCha(
-          int index, nl.wvdzwan.lapp.protobuf.Lapp.ChaRelation value) {
-        if (unresolvedChaBuilder_ == null) {
-          if (value == null) {
-            throw new NullPointerException();
-          }
-          ensureUnresolvedChaIsMutable();
-          unresolvedCha_.add(index, value);
-          onChanged();
-        } else {
-          unresolvedChaBuilder_.addMessage(index, value);
-        }
-        return this;
-      }
-      /**
-       * <code>repeated .lapp.ChaRelation unresolvedCha = 7;</code>
-       */
-      public Builder addUnresolvedCha(
-          nl.wvdzwan.lapp.protobuf.Lapp.ChaRelation.Builder builderForValue) {
-        if (unresolvedChaBuilder_ == null) {
-          ensureUnresolvedChaIsMutable();
-          unresolvedCha_.add(builderForValue.build());
-          onChanged();
-        } else {
-          unresolvedChaBuilder_.addMessage(builderForValue.build());
-        }
-        return this;
-      }
-      /**
-       * <code>repeated .lapp.ChaRelation unresolvedCha = 7;</code>
-       */
-      public Builder addUnresolvedCha(
-          int index, nl.wvdzwan.lapp.protobuf.Lapp.ChaRelation.Builder builderForValue) {
-        if (unresolvedChaBuilder_ == null) {
-          ensureUnresolvedChaIsMutable();
-          unresolvedCha_.add(index, builderForValue.build());
-          onChanged();
-        } else {
-          unresolvedChaBuilder_.addMessage(index, builderForValue.build());
-        }
-        return this;
-      }
-      /**
-       * <code>repeated .lapp.ChaRelation unresolvedCha = 7;</code>
-       */
-      public Builder addAllUnresolvedCha(
-          java.lang.Iterable<? extends nl.wvdzwan.lapp.protobuf.Lapp.ChaRelation> values) {
-        if (unresolvedChaBuilder_ == null) {
-          ensureUnresolvedChaIsMutable();
-          com.google.protobuf.AbstractMessageLite.Builder.addAll(
-              values, unresolvedCha_);
-          onChanged();
-        } else {
-          unresolvedChaBuilder_.addAllMessages(values);
-        }
-        return this;
-      }
-      /**
-       * <code>repeated .lapp.ChaRelation unresolvedCha = 7;</code>
-       */
-      public Builder clearUnresolvedCha() {
-        if (unresolvedChaBuilder_ == null) {
-          unresolvedCha_ = java.util.Collections.emptyList();
-          bitField0_ = (bitField0_ & ~0x00000020);
-          onChanged();
-        } else {
-          unresolvedChaBuilder_.clear();
-        }
-        return this;
-      }
-      /**
-       * <code>repeated .lapp.ChaRelation unresolvedCha = 7;</code>
-       */
-      public Builder removeUnresolvedCha(int index) {
-        if (unresolvedChaBuilder_ == null) {
-          ensureUnresolvedChaIsMutable();
-          unresolvedCha_.remove(index);
-          onChanged();
-        } else {
-          unresolvedChaBuilder_.remove(index);
-        }
-        return this;
-      }
-      /**
-       * <code>repeated .lapp.ChaRelation unresolvedCha = 7;</code>
-       */
-      public nl.wvdzwan.lapp.protobuf.Lapp.ChaRelation.Builder getUnresolvedChaBuilder(
-          int index) {
-        return getUnresolvedChaFieldBuilder().getBuilder(index);
-      }
-      /**
-       * <code>repeated .lapp.ChaRelation unresolvedCha = 7;</code>
-       */
-      public nl.wvdzwan.lapp.protobuf.Lapp.ChaRelationOrBuilder getUnresolvedChaOrBuilder(
-          int index) {
-        if (unresolvedChaBuilder_ == null) {
-          return unresolvedCha_.get(index);  } else {
-          return unresolvedChaBuilder_.getMessageOrBuilder(index);
-        }
-      }
-      /**
-       * <code>repeated .lapp.ChaRelation unresolvedCha = 7;</code>
-       */
-      public java.util.List<? extends nl.wvdzwan.lapp.protobuf.Lapp.ChaRelationOrBuilder> 
-           getUnresolvedChaOrBuilderList() {
-        if (unresolvedChaBuilder_ != null) {
-          return unresolvedChaBuilder_.getMessageOrBuilderList();
-        } else {
-          return java.util.Collections.unmodifiableList(unresolvedCha_);
-        }
-      }
-      /**
-       * <code>repeated .lapp.ChaRelation unresolvedCha = 7;</code>
-       */
-      public nl.wvdzwan.lapp.protobuf.Lapp.ChaRelation.Builder addUnresolvedChaBuilder() {
-        return getUnresolvedChaFieldBuilder().addBuilder(
-            nl.wvdzwan.lapp.protobuf.Lapp.ChaRelation.getDefaultInstance());
-      }
-      /**
-       * <code>repeated .lapp.ChaRelation unresolvedCha = 7;</code>
-       */
-      public nl.wvdzwan.lapp.protobuf.Lapp.ChaRelation.Builder addUnresolvedChaBuilder(
-          int index) {
-        return getUnresolvedChaFieldBuilder().addBuilder(
-            index, nl.wvdzwan.lapp.protobuf.Lapp.ChaRelation.getDefaultInstance());
-      }
-      /**
-       * <code>repeated .lapp.ChaRelation unresolvedCha = 7;</code>
-       */
-      public java.util.List<nl.wvdzwan.lapp.protobuf.Lapp.ChaRelation.Builder> 
-           getUnresolvedChaBuilderList() {
-        return getUnresolvedChaFieldBuilder().getBuilderList();
-      }
-      private com.google.protobuf.RepeatedFieldBuilderV3<
-          nl.wvdzwan.lapp.protobuf.Lapp.ChaRelation, nl.wvdzwan.lapp.protobuf.Lapp.ChaRelation.Builder, nl.wvdzwan.lapp.protobuf.Lapp.ChaRelationOrBuilder> 
-          getUnresolvedChaFieldBuilder() {
-        if (unresolvedChaBuilder_ == null) {
-          unresolvedChaBuilder_ = new com.google.protobuf.RepeatedFieldBuilderV3<
-              nl.wvdzwan.lapp.protobuf.Lapp.ChaRelation, nl.wvdzwan.lapp.protobuf.Lapp.ChaRelation.Builder, nl.wvdzwan.lapp.protobuf.Lapp.ChaRelationOrBuilder>(
-                  unresolvedCha_,
-                  ((bitField0_ & 0x00000020) != 0),
-                  getParentForChildren(),
-                  isClean());
-          unresolvedCha_ = null;
-        }
-        return unresolvedChaBuilder_;
-      }
-
       private com.google.protobuf.MapField<
           java.lang.String, java.lang.String> metadata_;
       private com.google.protobuf.MapField<java.lang.String, java.lang.String>
@@ -6931,15 +6654,15 @@ public final class Lapp {
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internal_static_lapp_Call_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_lapp_ChaRelation_descriptor;
-  private static final 
-    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-      internal_static_lapp_ChaRelation_fieldAccessorTable;
-  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_lapp_Artifact_descriptor;
   private static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internal_static_lapp_Artifact_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_lapp_ClassRecord_descriptor;
+  private static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_lapp_ClassRecord_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_lapp_Package_descriptor;
   private static final 
@@ -6969,22 +6692,20 @@ public final class Lapp {
       "ethod\022%\n\010callType\030\003 \001(\0162\023.lapp.Call.Call" +
       "Type\"L\n\010CallType\022\013\n\007UNKNOWN\020\000\022\r\n\tINTERFA" +
       "CE\020\001\022\013\n\007VIRTUAL\020\002\022\013\n\007SPECIAL\020\003\022\n\n\006STATIC" +
-      "\020\004\"\264\001\n\013ChaRelation\022\035\n\007subject\030\001 \001(\0132\014.la" +
-      "pp.Method\022\035\n\007related\030\002 \001(\0132\014.lapp.Method" +
-      "\022,\n\004type\030\003 \001(\0162\036.lapp.ChaRelation.Relati" +
-      "onType\"9\n\014RelationType\022\013\n\007UNKNOWN\020\000\022\014\n\010O" +
-      "VERRIDE\020\001\022\016\n\nIMPLEMENTS\020\002\"8\n\010Artifact\022\r\n" +
-      "\005group\030\001 \001(\t\022\014\n\004name\030\002 \001(\t\022\017\n\007version\030\003 " +
-      "\001(\t\"\275\002\n\007Package\022!\n\tartifacts\030\001 \003(\0132\016.lap" +
-      "p.Artifact\022\035\n\007methods\030\003 \003(\0132\014.lapp.Metho" +
-      "d\022!\n\rresolvedCalls\030\004 \003(\0132\n.lapp.Call\022#\n\017" +
-      "unresolvedCalls\030\005 \003(\0132\n.lapp.Call\022\036\n\003cha" +
-      "\030\006 \003(\0132\021.lapp.ChaRelation\022(\n\runresolvedC" +
-      "ha\030\007 \003(\0132\021.lapp.ChaRelation\022-\n\010metadata\030" +
-      "\010 \003(\0132\033.lapp.Package.MetadataEntry\032/\n\rMe" +
-      "tadataEntry\022\013\n\003key\030\001 \001(\t\022\r\n\005value\030\002 \001(\t:" +
-      "\0028\001B \n\030nl.wvdzwan.lapp.protobufB\004Lappb\006p" +
-      "roto3"
+      "\020\004\"8\n\010Artifact\022\r\n\005group\030\001 \001(\t\022\014\n\004name\030\002 " +
+      "\001(\t\022\017\n\007version\030\003 \001(\t\"\253\001\n\013ClassRecord\022\014\n\004" +
+      "name\030\001 \001(\t\022\017\n\007package\030\002 \001(\t\022\022\n\nsuperClas" +
+      "s\030\003 \001(\t\022\022\n\ninterfaces\030\004 \003(\t\022\017\n\007methods\030\005" +
+      " \003(\t\022\016\n\006public\030\006 \001(\010\022\017\n\007private\030\007 \001(\010\022\021\n" +
+      "\tinterface\030\010 \001(\010\022\020\n\010abstract\030\t \001(\010\"\375\001\n\007P" +
+      "ackage\022!\n\tartifacts\030\001 \003(\0132\016.lapp.Artifac" +
+      "t\022\'\n\014classRecords\030\006 \003(\0132\021.lapp.ClassReco" +
+      "rd\022!\n\rresolvedCalls\030\004 \003(\0132\n.lapp.Call\022#\n" +
+      "\017unresolvedCalls\030\005 \003(\0132\n.lapp.Call\022-\n\010me" +
+      "tadata\030\010 \003(\0132\033.lapp.Package.MetadataEntr" +
+      "y\032/\n\rMetadataEntry\022\013\n\003key\030\001 \001(\t\022\r\n\005value" +
+      "\030\002 \001(\t:\0028\001B \n\030nl.wvdzwan.lapp.protobufB\004" +
+      "Lappb\006proto3"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -7016,24 +6737,24 @@ public final class Lapp {
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_lapp_Call_descriptor,
         new java.lang.String[] { "Source", "Target", "CallType", });
-    internal_static_lapp_ChaRelation_descriptor =
-      getDescriptor().getMessageTypes().get(2);
-    internal_static_lapp_ChaRelation_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
-        internal_static_lapp_ChaRelation_descriptor,
-        new java.lang.String[] { "Subject", "Related", "Type", });
     internal_static_lapp_Artifact_descriptor =
-      getDescriptor().getMessageTypes().get(3);
+      getDescriptor().getMessageTypes().get(2);
     internal_static_lapp_Artifact_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_lapp_Artifact_descriptor,
         new java.lang.String[] { "Group", "Name", "Version", });
+    internal_static_lapp_ClassRecord_descriptor =
+      getDescriptor().getMessageTypes().get(3);
+    internal_static_lapp_ClassRecord_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_lapp_ClassRecord_descriptor,
+        new java.lang.String[] { "Name", "Package", "SuperClass", "Interfaces", "Methods", "Public", "Private", "Interface", "Abstract", });
     internal_static_lapp_Package_descriptor =
       getDescriptor().getMessageTypes().get(4);
     internal_static_lapp_Package_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_lapp_Package_descriptor,
-        new java.lang.String[] { "Artifacts", "Methods", "ResolvedCalls", "UnresolvedCalls", "Cha", "UnresolvedCha", "Metadata", });
+        new java.lang.String[] { "Artifacts", "ClassRecords", "ResolvedCalls", "UnresolvedCalls", "Metadata", });
     internal_static_lapp_Package_MetadataEntry_descriptor =
       internal_static_lapp_Package_descriptor.getNestedTypes().get(0);
     internal_static_lapp_Package_MetadataEntry_fieldAccessorTable = new
