@@ -9,12 +9,12 @@ public class StubClassResolver implements ClassArtifactResolver {
     }
 
     @Override
-    public ArtifactRecord artifactRecordFromMethodReference(MethodReference n) {
-        return new ArtifactRecord("company:testArtifact:1.0");
+    public String artifactFromMethodReference(MethodReference n) {
+        return "company.testArtifact.1.0";
     }
 
     @Override
-    public ArtifactRecord artifactRecordFromClass(IClass klass) {
-        return new ArtifactRecord("company:testArtifact:1.0");
+    public String artifactFromClass(IClass klass) {
+        return "company.testArtifact.1.0";
     }
 }

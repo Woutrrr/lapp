@@ -3,8 +3,10 @@ package nl.wvdzwan.lapp;
 import org.jgrapht.graph.DefaultDirectedGraph;
 
 import nl.wvdzwan.lapp.call.Call;
+import nl.wvdzwan.lapp.core.ClassRecord;
 import nl.wvdzwan.lapp.core.LappPackage;
 import nl.wvdzwan.lapp.core.Method;
+import nl.wvdzwan.lapp.core.ResolvedMethod;
 import nl.wvdzwan.lapp.protobuf.Lapp;
 import nl.wvdzwan.lapp.protobuf.LappPackageReader;
 
@@ -14,10 +16,12 @@ public class LappPackageTransformer {
 
         DefaultDirectedGraph<Method, Call> graph = new DefaultDirectedGraph<>(Call.class);
 
-//        for (Method m : lappPackage.methods) {
-//            graph.addVertex(m);
-//        }
-        // TODO add all methods from class hierarchy
+        for(ClassRecord cr : lappPackage.classRecords) {
+            for(String method : cr.methods) {
+                ResolvedMethod resolvedMethod = ResolvedMethod.findOrCreate(cr.name, method, cr.artifact);
+                graph.addVertex(resolvedMethod);
+            }
+        }
 
         for (Call c : lappPackage.resolvedCalls) {
             graph.addVertex(c.source);

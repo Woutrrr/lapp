@@ -28,10 +28,11 @@ public class ClassHierarchyInserter {
     }
 
     public void insertCHA() {
-        IClassLoader classLoader = cha.getLoader(ClassLoaderReference.Primordial);
+        IClassLoader classLoader = cha.getLoader(ClassLoaderReference.Application);
 
         // Iterate all classes in Application scope
         for (Iterator<IClass> it = classLoader.iterateAllClasses(); it.hasNext(); ) {
+
             IClass klass = it.next();
             processClass(klass);
         }
@@ -49,6 +50,7 @@ public class ClassHierarchyInserter {
         for (IMethod method : klass.getDeclaredMethods()){
             classRecord.addMethod(method.getSelector().toString());
         }
+        if (klass.getName().toString().equals("Ljava/lang/Object")) { return; }
 
         if (klass instanceof ShrikeClass) {
             ClassReader cr = ((ShrikeClass)klass).getReader();

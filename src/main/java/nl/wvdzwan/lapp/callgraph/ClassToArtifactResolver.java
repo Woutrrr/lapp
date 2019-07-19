@@ -24,7 +24,7 @@ public class ClassToArtifactResolver implements ClassArtifactResolver {
     private final ArtifactFolderLayout transformer;
     private IClassHierarchy cha;
 
-    private HashMap<IClass, ArtifactRecord> classArtifactRecordCache = new HashMap<>();
+    private HashMap<IClass, String> classArtifactRecordCache = new HashMap<>();
 
     public ClassToArtifactResolver(IClassHierarchy cha, ArtifactFolderLayout transformer) {
         this.cha = cha;
@@ -32,7 +32,7 @@ public class ClassToArtifactResolver implements ClassArtifactResolver {
     }
 
     @Override
-    public ArtifactRecord artifactRecordFromMethodReference(MethodReference n) {
+    public String artifactFromMethodReference(MethodReference n) {
         IClass klass = cha.lookupClass(n.getDeclaringClass());
 
         if (klass == null) {
@@ -43,14 +43,14 @@ public class ClassToArtifactResolver implements ClassArtifactResolver {
 
         if (klass == null) {
             logger.warn("Couldn't find class for {}", () -> n);
-            return new ArtifactRecord("unknown", n.getDeclaringClass().toString(), "unknown");
+            return "unknown";
         }
 
-        return artifactRecordFromClass(klass);
+        return artifactFromClass(klass);
     }
 
     @Override
-    public ArtifactRecord artifactRecordFromClass(IClass klass) {
+    public String artifactFromClass(IClass klass) {
         Objects.requireNonNull(klass);
 
         if (classArtifactRecordCache.containsKey(klass)) {
@@ -60,15 +60,15 @@ public class ClassToArtifactResolver implements ClassArtifactResolver {
         JarFile jarFile = classToJarFile(klass);
 
         if (jarFile == null) {
-            return new ArtifactRecord("unknown", "unknown", "unknown");
+            return "#unknown#";
         }
 
-        ArtifactRecord artifactRecord = transformer.artifactRecordFromJarFile(jarFile);
+        String artifact = transformer.artifactFromJarFile(jarFile);
 
         // Store in cache
-        classArtifactRecordCache.put(klass, artifactRecord);
+        classArtifactRecordCache.put(klass, artifact);
 
-        return artifactRecord;
+        return artifact;
     }
 
     private JarFile classToJarFile(IClass klass) {

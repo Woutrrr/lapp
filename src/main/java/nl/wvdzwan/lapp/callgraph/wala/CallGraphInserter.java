@@ -1,6 +1,7 @@
 package nl.wvdzwan.lapp.callgraph.wala;
 
 import java.util.Iterator;
+import java.util.Set;
 import java.util.function.Predicate;
 
 import com.ibm.wala.classLoader.CallSiteReference;
@@ -40,15 +41,28 @@ public class CallGraphInserter {
             Method methodNode = lappPackageBuilder.addMethod(nodeReference, LappPackageBuilder.MethodType.IMPLEMENTATION);
 
             for (Iterator<CallSiteReference> callSites = node.iterateCallSites(); callSites.hasNext(); ) {
+
                 CallSiteReference callSite = callSites.next();
+
+                if (lappPackageBuilder.getPackageCount() > 1) {
+                    // More than 1 package, thus should be able to use call site context
+                    Set<CGNode> possibleTargets = cg.getPossibleTargets(node, callSite);
+                    for (CGNode possibleTarget : possibleTargets) {
+                        MethodReference targetWithCorrectClassLoader = correctClassLoader(possibleTarget.getMethod().getReference());
+
+                        Method targetMethodNode = lappPackageBuilder.addMethod(targetWithCorrectClassLoader);
+                        lappPackageBuilder.addCall(methodNode, targetMethodNode, getInvocationLabel(callSite));
+                    }
+                } else {
 
                 /* If the target is unknown, is gets the Application loader by default. We would like this to be the
                    Extension loader, that way it is easy to filter them out later.
                    */
-                MethodReference targetWithCorrectClassLoader = correctClassLoader(callSite.getDeclaredTarget());
+                    MethodReference targetWithCorrectClassLoader = correctClassLoader(callSite.getDeclaredTarget());
 
-                Method targetMethodNode = lappPackageBuilder.addMethod(targetWithCorrectClassLoader);
-                lappPackageBuilder.addCall(methodNode, targetMethodNode, getInvocationLabel(callSite));
+                    Method targetMethodNode = lappPackageBuilder.addMethod(targetWithCorrectClassLoader);
+                    lappPackageBuilder.addCall(methodNode, targetMethodNode, getInvocationLabel(callSite));
+                }
             }
 
         }

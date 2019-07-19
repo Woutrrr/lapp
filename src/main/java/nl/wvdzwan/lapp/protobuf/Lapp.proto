@@ -47,7 +47,7 @@ message ClassRecord {
 }
 
 message Package {
-    repeated Artifact artifacts = 1;
+    repeated string artifacts = 1;
     repeated ClassRecord classRecords = 6;
 
     repeated Call resolvedCalls = 4;

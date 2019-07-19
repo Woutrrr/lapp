@@ -5,54 +5,33 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 public class ClassPathFile {
+    private static Logger logger = LogManager.getLogger();
 
-    private String mainJar;
-    private ArrayList<String> dependencies = new ArrayList<>();
+    private ArrayList<String> jars = new ArrayList<>();
 
-    public ClassPathFile (File file, Path jarsFolder) throws FileNotFoundException {
-        this(new BufferedReader(new FileReader(file)), jarsFolder);
-    }
+    public ClassPathFile (File classpathFile) throws FileNotFoundException {
 
-    public ClassPathFile (BufferedReader reader, Path jarsFolder) {
-
-
-
-        // Read mainJar
-        try {
-            String line = reader.readLine();
-
-            if (null == line) {
-                throw new IllegalArgumentException("Invalid classpath file, first line must contain jar filename");
-            }
-
-            mainJar = jarsFolder.resolve(Paths.get(line)).toString();
-
-        } catch (IOException e) {
-            // Client responsibility
-            mainJar = null;
-        }
+        BufferedReader reader = new BufferedReader(new FileReader(classpathFile));
 
         try {
             for (String line = reader.readLine(); line != null; line = reader.readLine()) {
-                String combinedPath = jarsFolder.resolve(Paths.get(line)).toString();
-                dependencies.add(combinedPath);
+                jars.add(line);
             }
         } catch (IOException e) {
-            // No dependencies are also ok
+            logger.error("Error reading classpath file");
         }
 
     }
 
-    public String getMainJar() {
-        return this.mainJar;
-    }
 
-    public ArrayList<String> getDependencies() {
-        return this.dependencies;
+
+    public ArrayList<String> getJars() {
+        return this.jars;
     }
 }

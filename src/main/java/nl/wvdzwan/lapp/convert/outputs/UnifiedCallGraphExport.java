@@ -10,13 +10,14 @@ import nl.wvdzwan.lapp.core.UnresolvedMethod;
 
 public class UnifiedCallGraphExport extends GraphVizOutput {
 
+    public final static String SEPARATOR = ":";
     @Override
     public String vertexIdProvider(Method method) {
         String id;
         if (method instanceof ResolvedMethod) {
-            id = resolvedMethodToLabel((ResolvedMethod) method);
+            id = resolvedMethodToID((ResolvedMethod) method);
         } else {
-            id = unresolvedMethodToLabel((UnresolvedMethod) method);
+            id = unresolvedMethodToID((UnresolvedMethod) method);
         }
 
         return "\"" + id + "\"";
@@ -24,12 +25,14 @@ public class UnifiedCallGraphExport extends GraphVizOutput {
 
     public String vertexLabelProvider(Method method) {
 
-        String label = vertexIdProvider(method);
-
-        if (method.metadata.containsKey("type")) {
-            label = "" + method.metadata.get("type") + " - " + label;
+        String id;
+        if (method instanceof ResolvedMethod) {
+            id = resolvedMethodToLabel((ResolvedMethod) method);
+        } else {
+            id = unresolvedMethodToLabel((UnresolvedMethod) method);
         }
-        return label;
+
+        return id;
     }
 
     public Map<String, Attribute> vertexAttributeProvider(Method vertex) {
@@ -37,17 +40,30 @@ public class UnifiedCallGraphExport extends GraphVizOutput {
     }
 
     private String resolvedMethodToLabel(ResolvedMethod method) {
-        String separator = "::";
-        return "mvn"
-                + separator + method.artifact
-                + separator + method.namespace
-                + separator + method.symbol;
+
+        return  method.artifact
+                + SEPARATOR + method.namespace
+                + SEPARATOR + "\n" + method.symbol;
+    }
+
+    private String resolvedMethodToID(ResolvedMethod method) {
+
+        return  method.artifact
+                + SEPARATOR + method.namespace
+                + SEPARATOR + method.symbol;
     }
 
     private String unresolvedMethodToLabel(UnresolvedMethod method) {
-        return "mvn::__"
-                + "::" + method.namespace
-                + "::" + method.symbol;
+        return "__"
+                + SEPARATOR + method.namespace
+                + SEPARATOR + "\n" + method.symbol;
+
+    }
+
+    private String unresolvedMethodToID(UnresolvedMethod method) {
+        return "__"
+                + SEPARATOR + method.namespace
+                + SEPARATOR + method.symbol;
 
     }
 }

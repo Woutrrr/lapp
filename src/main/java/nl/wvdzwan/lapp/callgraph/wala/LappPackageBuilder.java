@@ -13,7 +13,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import nl.wvdzwan.lapp.call.Call;
-import nl.wvdzwan.lapp.callgraph.ArtifactRecord;
 import nl.wvdzwan.lapp.callgraph.ClassToArtifactResolver;
 import nl.wvdzwan.lapp.callgraph.FolderLayout.ArtifactFolderLayout;
 import nl.wvdzwan.lapp.core.ClassRecord;
@@ -49,13 +48,17 @@ public class LappPackageBuilder {
            if (m instanceof JarFileModule) {
                JarFileModule jfm = ((JarFileModule) m);
 
-               lappPackage.artifacts.add(folderLayout.artifactRecordFromJarFile(jfm.getJarFile()));
+               lappPackage.artifacts.add(folderLayout.artifactFromJarFile(jfm.getJarFile()));
            } else {
                logger.warn("Unknown module to analyse found.");
            }
         }
 
         return this;
+    }
+
+    public int getPackageCount() {
+        return lappPackage.artifacts.size();
     }
 
     public LappPackageBuilder insertCha(IClassHierarchy cha) {
@@ -91,9 +94,9 @@ public class LappPackageBuilder {
 
 
         if (inApplicationScope(reference)) {
-            ArtifactRecord record = artifactResolver.artifactRecordFromMethodReference(reference);
+            String artifact = artifactResolver.artifactFromMethodReference(reference);
 
-            ResolvedMethod resolvedMethod = ResolvedMethod.findOrCreate(namespace, symbol, record.getIdentifier());
+            ResolvedMethod resolvedMethod = ResolvedMethod.findOrCreate(namespace, symbol, artifact);
 
             return resolvedMethod;
 
@@ -110,9 +113,9 @@ public class LappPackageBuilder {
     }
 
     public ClassRecord makeClassRecord(IClass klass) {
-        ArtifactRecord artifactRecord = artifactResolver.artifactRecordFromClass(klass);
+        String artifact = artifactResolver.artifactFromClass(klass);
 
-        ClassRecord record = new ClassRecord(artifactRecord.getIdentifier(), Util.typeReferenceToNamespace(klass.getReference()));
+        ClassRecord record = new ClassRecord(artifact, Util.typeReferenceToNamespace(klass.getReference()));
         lappPackage.addClassRecord(record);
 
         return record;

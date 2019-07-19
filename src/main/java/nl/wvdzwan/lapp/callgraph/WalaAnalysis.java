@@ -30,29 +30,24 @@ import nl.wvdzwan.lapp.callgraph.wala.WalaAnalysisResult;
 public class WalaAnalysis {
     private static Logger logger = LogManager.getLogger();
 
-    private String mainJar;
-    private String classPath;
+    private ArrayList<String> jars;
     private String exclusionFile;
 
 
-    public WalaAnalysis(String mainJar, String classPath, String exclusionFile) {
-        this.mainJar = mainJar;
-        this.classPath = classPath;
+    public WalaAnalysis(ArrayList<String> jars, String exclusionFile) {
+        this.jars = jars;
         this.exclusionFile = exclusionFile;
     }
 
     public WalaAnalysisResult run() throws IOException, ClassHierarchyException {
         try {
-
             File exclusionsFile = (new FileProvider()).getFile(exclusionFile);
             AnalysisScope scope = AnalysisScopeReader.makePrimordialScope(exclusionsFile);
-            AnalysisScopeReader.addClassPathToScope(mainJar, scope, scope.getLoader(AnalysisScope.APPLICATION));
 
-            if (!classPath.equals("")) {
-                AnalysisScopeReader.addClassPathToScope(classPath, scope, scope.getLoader(AnalysisScope.EXTENSION));
+            for (String jar : jars) {
+                AnalysisScopeReader.addClassPathToScope(jar, scope, scope.getLoader(AnalysisScope.APPLICATION));
             }
             logger.debug("Building class hierarchy...");
-            // TODO : This really should use makeWithPhantom however that function is not yet stable and will cause NPE's later in the analysis
             ClassHierarchy cha = ClassHierarchyFactory.makeWithRoot(scope);
             logger.info("Class hierarchy built, {} classes", cha::getNumberOfClasses);
 
@@ -71,6 +66,7 @@ public class WalaAnalysis {
                 logger.warn("No entry points found! So no reason to try and generate a call graph!");
                 return new WalaAnalysisResult(null, cha);
             }
+            logger.info("Found {} entry points", entryPoints.size());
 
             AnalysisOptions options = new AnalysisOptions(scope, entryPoints);
             AnalysisCache cache = new AnalysisCacheImpl();
@@ -84,6 +80,10 @@ public class WalaAnalysis {
             logger.info("RTA analysis done!");
             logger.info(() -> CallGraphStats.getStats(cg));
 
+            for (Iterator<Warning> it = Warnings.iterator(); it.hasNext(); ) {
+                Warning warning = it.next();
+                logger.warn(warning);
+            }
 
             logger.info("Took {}", () -> (endTime - startTime) / 1000000);
 
@@ -152,14 +152,19 @@ public class WalaAnalysis {
 
 
     private static boolean acceptClassForEntryPoints(IClass klass) {
+        if (klass.getClassLoader().getReference().equals(ClassLoaderReference.Application)) {
+            return klass.getClassLoader().getReference().equals(ClassLoaderReference.Application)
+                    && !klass.isInterface()
+                    && !klass.isPrivate();
+        }
         return klass.getClassLoader().getReference().equals(ClassLoaderReference.Application)
                 && !klass.isInterface()
-                && klass.isPublic();
+                && !klass.isPrivate();
     }
 
     public static boolean acceptMethodAsEntryPoint(IMethod method) {
         return method.getDeclaringClass().getClassLoader().getReference().equals(ClassLoaderReference.Application)
-                && method.isPublic()
+                && !method.isPrivate()
                 && !method.isAbstract();
     }
 }

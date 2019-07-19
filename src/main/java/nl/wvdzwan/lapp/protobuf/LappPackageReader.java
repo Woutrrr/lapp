@@ -20,7 +20,7 @@ public class LappPackageReader {
 
         LappPackage lappPackage = new LappPackage();
 
-        lappPackage.artifacts.addAll(fromArtifacts(proto.getArtifactsList()));
+        lappPackage.artifacts.addAll(proto.getArtifactsList());
 
         lappPackage.classRecords.addAll(fromClassRecords(proto.getClassRecordsList()));
         lappPackage.resolvedCalls.addAll(fromCalls(proto.getResolvedCallsList()));

@@ -6,10 +6,9 @@ import java.util.Map;
 import java.util.Set;
 
 import nl.wvdzwan.lapp.call.Call;
-import nl.wvdzwan.lapp.callgraph.ArtifactRecord;
 
 public class LappPackage {
-    public final Set<ArtifactRecord> artifacts = new HashSet<>();
+    public final Set<String> artifacts = new HashSet<>();
 
     public final Set<Call> resolvedCalls = new HashSet<>();
     public final Set<Call> unresolvedCalls = new HashSet<>();

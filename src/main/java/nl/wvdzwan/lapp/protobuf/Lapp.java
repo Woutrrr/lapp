@@ -4454,28 +4454,23 @@ public final class Lapp {
       com.google.protobuf.MessageOrBuilder {
 
     /**
-     * <code>repeated .lapp.Artifact artifacts = 1;</code>
+     * <code>repeated string artifacts = 1;</code>
      */
-    java.util.List<nl.wvdzwan.lapp.protobuf.Lapp.Artifact> 
+    java.util.List<java.lang.String>
         getArtifactsList();
     /**
-     * <code>repeated .lapp.Artifact artifacts = 1;</code>
-     */
-    nl.wvdzwan.lapp.protobuf.Lapp.Artifact getArtifacts(int index);
-    /**
-     * <code>repeated .lapp.Artifact artifacts = 1;</code>
+     * <code>repeated string artifacts = 1;</code>
      */
     int getArtifactsCount();
     /**
-     * <code>repeated .lapp.Artifact artifacts = 1;</code>
+     * <code>repeated string artifacts = 1;</code>
      */
-    java.util.List<? extends nl.wvdzwan.lapp.protobuf.Lapp.ArtifactOrBuilder> 
-        getArtifactsOrBuilderList();
+    java.lang.String getArtifacts(int index);
     /**
-     * <code>repeated .lapp.Artifact artifacts = 1;</code>
+     * <code>repeated string artifacts = 1;</code>
      */
-    nl.wvdzwan.lapp.protobuf.Lapp.ArtifactOrBuilder getArtifactsOrBuilder(
-        int index);
+    com.google.protobuf.ByteString
+        getArtifactsBytes(int index);
 
     /**
      * <code>repeated .lapp.ClassRecord classRecords = 6;</code>
@@ -4596,7 +4591,7 @@ public final class Lapp {
       super(builder);
     }
     private Package() {
-      artifacts_ = java.util.Collections.emptyList();
+      artifacts_ = com.google.protobuf.LazyStringArrayList.EMPTY;
       classRecords_ = java.util.Collections.emptyList();
       resolvedCalls_ = java.util.Collections.emptyList();
       unresolvedCalls_ = java.util.Collections.emptyList();
@@ -4627,12 +4622,12 @@ public final class Lapp {
               done = true;
               break;
             case 10: {
+              java.lang.String s = input.readStringRequireUtf8();
               if (!((mutable_bitField0_ & 0x00000001) != 0)) {
-                artifacts_ = new java.util.ArrayList<nl.wvdzwan.lapp.protobuf.Lapp.Artifact>();
+                artifacts_ = new com.google.protobuf.LazyStringArrayList();
                 mutable_bitField0_ |= 0x00000001;
               }
-              artifacts_.add(
-                  input.readMessage(nl.wvdzwan.lapp.protobuf.Lapp.Artifact.parser(), extensionRegistry));
+              artifacts_.add(s);
               break;
             }
             case 34: {
@@ -4691,7 +4686,7 @@ public final class Lapp {
             e).setUnfinishedMessage(this);
       } finally {
         if (((mutable_bitField0_ & 0x00000001) != 0)) {
-          artifacts_ = java.util.Collections.unmodifiableList(artifacts_);
+          artifacts_ = artifacts_.getUnmodifiableView();
         }
         if (((mutable_bitField0_ & 0x00000004) != 0)) {
           resolvedCalls_ = java.util.Collections.unmodifiableList(resolvedCalls_);
@@ -4732,38 +4727,32 @@ public final class Lapp {
     }
 
     public static final int ARTIFACTS_FIELD_NUMBER = 1;
-    private java.util.List<nl.wvdzwan.lapp.protobuf.Lapp.Artifact> artifacts_;
+    private com.google.protobuf.LazyStringList artifacts_;
     /**
-     * <code>repeated .lapp.Artifact artifacts = 1;</code>
+     * <code>repeated string artifacts = 1;</code>
      */
-    public java.util.List<nl.wvdzwan.lapp.protobuf.Lapp.Artifact> getArtifactsList() {
+    public com.google.protobuf.ProtocolStringList
+        getArtifactsList() {
       return artifacts_;
     }
     /**
-     * <code>repeated .lapp.Artifact artifacts = 1;</code>
-     */
-    public java.util.List<? extends nl.wvdzwan.lapp.protobuf.Lapp.ArtifactOrBuilder> 
-        getArtifactsOrBuilderList() {
-      return artifacts_;
-    }
-    /**
-     * <code>repeated .lapp.Artifact artifacts = 1;</code>
+     * <code>repeated string artifacts = 1;</code>
      */
     public int getArtifactsCount() {
       return artifacts_.size();
     }
     /**
-     * <code>repeated .lapp.Artifact artifacts = 1;</code>
+     * <code>repeated string artifacts = 1;</code>
      */
-    public nl.wvdzwan.lapp.protobuf.Lapp.Artifact getArtifacts(int index) {
+    public java.lang.String getArtifacts(int index) {
       return artifacts_.get(index);
     }
     /**
-     * <code>repeated .lapp.Artifact artifacts = 1;</code>
+     * <code>repeated string artifacts = 1;</code>
      */
-    public nl.wvdzwan.lapp.protobuf.Lapp.ArtifactOrBuilder getArtifactsOrBuilder(
-        int index) {
-      return artifacts_.get(index);
+    public com.google.protobuf.ByteString
+        getArtifactsBytes(int index) {
+      return artifacts_.getByteString(index);
     }
 
     public static final int CLASSRECORDS_FIELD_NUMBER = 6;
@@ -4962,7 +4951,7 @@ public final class Lapp {
     public void writeTo(com.google.protobuf.CodedOutputStream output)
                         throws java.io.IOException {
       for (int i = 0; i < artifacts_.size(); i++) {
-        output.writeMessage(1, artifacts_.get(i));
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 1, artifacts_.getRaw(i));
       }
       for (int i = 0; i < resolvedCalls_.size(); i++) {
         output.writeMessage(4, resolvedCalls_.get(i));
@@ -4988,9 +4977,13 @@ public final class Lapp {
       if (size != -1) return size;
 
       size = 0;
-      for (int i = 0; i < artifacts_.size(); i++) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(1, artifacts_.get(i));
+      {
+        int dataSize = 0;
+        for (int i = 0; i < artifacts_.size(); i++) {
+          dataSize += computeStringSizeNoTag(artifacts_.getRaw(i));
+        }
+        size += dataSize;
+        size += 1 * getArtifactsList().size();
       }
       for (int i = 0; i < resolvedCalls_.size(); i++) {
         size += com.google.protobuf.CodedOutputStream
@@ -5220,7 +5213,6 @@ public final class Lapp {
       private void maybeForceBuilderInitialization() {
         if (com.google.protobuf.GeneratedMessageV3
                 .alwaysUseFieldBuilders) {
-          getArtifactsFieldBuilder();
           getClassRecordsFieldBuilder();
           getResolvedCallsFieldBuilder();
           getUnresolvedCallsFieldBuilder();
@@ -5229,12 +5221,8 @@ public final class Lapp {
       @java.lang.Override
       public Builder clear() {
         super.clear();
-        if (artifactsBuilder_ == null) {
-          artifacts_ = java.util.Collections.emptyList();
-          bitField0_ = (bitField0_ & ~0x00000001);
-        } else {
-          artifactsBuilder_.clear();
-        }
+        artifacts_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+        bitField0_ = (bitField0_ & ~0x00000001);
         if (classRecordsBuilder_ == null) {
           classRecords_ = java.util.Collections.emptyList();
           bitField0_ = (bitField0_ & ~0x00000002);
@@ -5281,15 +5269,11 @@ public final class Lapp {
       public nl.wvdzwan.lapp.protobuf.Lapp.Package buildPartial() {
         nl.wvdzwan.lapp.protobuf.Lapp.Package result = new nl.wvdzwan.lapp.protobuf.Lapp.Package(this);
         int from_bitField0_ = bitField0_;
-        if (artifactsBuilder_ == null) {
-          if (((bitField0_ & 0x00000001) != 0)) {
-            artifacts_ = java.util.Collections.unmodifiableList(artifacts_);
-            bitField0_ = (bitField0_ & ~0x00000001);
-          }
-          result.artifacts_ = artifacts_;
-        } else {
-          result.artifacts_ = artifactsBuilder_.build();
+        if (((bitField0_ & 0x00000001) != 0)) {
+          artifacts_ = artifacts_.getUnmodifiableView();
+          bitField0_ = (bitField0_ & ~0x00000001);
         }
+        result.artifacts_ = artifacts_;
         if (classRecordsBuilder_ == null) {
           if (((bitField0_ & 0x00000002) != 0)) {
             classRecords_ = java.util.Collections.unmodifiableList(classRecords_);
@@ -5367,31 +5351,15 @@ public final class Lapp {
 
       public Builder mergeFrom(nl.wvdzwan.lapp.protobuf.Lapp.Package other) {
         if (other == nl.wvdzwan.lapp.protobuf.Lapp.Package.getDefaultInstance()) return this;
-        if (artifactsBuilder_ == null) {
-          if (!other.artifacts_.isEmpty()) {
-            if (artifacts_.isEmpty()) {
-              artifacts_ = other.artifacts_;
-              bitField0_ = (bitField0_ & ~0x00000001);
-            } else {
-              ensureArtifactsIsMutable();
-              artifacts_.addAll(other.artifacts_);
-            }
-            onChanged();
+        if (!other.artifacts_.isEmpty()) {
+          if (artifacts_.isEmpty()) {
+            artifacts_ = other.artifacts_;
+            bitField0_ = (bitField0_ & ~0x00000001);
+          } else {
+            ensureArtifactsIsMutable();
+            artifacts_.addAll(other.artifacts_);
           }
-        } else {
-          if (!other.artifacts_.isEmpty()) {
-            if (artifactsBuilder_.isEmpty()) {
-              artifactsBuilder_.dispose();
-              artifactsBuilder_ = null;
-              artifacts_ = other.artifacts_;
-              bitField0_ = (bitField0_ & ~0x00000001);
-              artifactsBuilder_ = 
-                com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders ?
-                   getArtifactsFieldBuilder() : null;
-            } else {
-              artifactsBuilder_.addAllMessages(other.artifacts_);
-            }
-          }
+          onChanged();
         }
         if (classRecordsBuilder_ == null) {
           if (!other.classRecords_.isEmpty()) {
@@ -5503,244 +5471,98 @@ public final class Lapp {
       }
       private int bitField0_;
 
-      private java.util.List<nl.wvdzwan.lapp.protobuf.Lapp.Artifact> artifacts_ =
-        java.util.Collections.emptyList();
+      private com.google.protobuf.LazyStringList artifacts_ = com.google.protobuf.LazyStringArrayList.EMPTY;
       private void ensureArtifactsIsMutable() {
         if (!((bitField0_ & 0x00000001) != 0)) {
-          artifacts_ = new java.util.ArrayList<nl.wvdzwan.lapp.protobuf.Lapp.Artifact>(artifacts_);
+          artifacts_ = new com.google.protobuf.LazyStringArrayList(artifacts_);
           bitField0_ |= 0x00000001;
          }
       }
-
-      private com.google.protobuf.RepeatedFieldBuilderV3<
-          nl.wvdzwan.lapp.protobuf.Lapp.Artifact, nl.wvdzwan.lapp.protobuf.Lapp.Artifact.Builder, nl.wvdzwan.lapp.protobuf.Lapp.ArtifactOrBuilder> artifactsBuilder_;
-
       /**
-       * <code>repeated .lapp.Artifact artifacts = 1;</code>
+       * <code>repeated string artifacts = 1;</code>
        */
-      public java.util.List<nl.wvdzwan.lapp.protobuf.Lapp.Artifact> getArtifactsList() {
-        if (artifactsBuilder_ == null) {
-          return java.util.Collections.unmodifiableList(artifacts_);
-        } else {
-          return artifactsBuilder_.getMessageList();
-        }
+      public com.google.protobuf.ProtocolStringList
+          getArtifactsList() {
+        return artifacts_.getUnmodifiableView();
       }
       /**
-       * <code>repeated .lapp.Artifact artifacts = 1;</code>
+       * <code>repeated string artifacts = 1;</code>
        */
       public int getArtifactsCount() {
-        if (artifactsBuilder_ == null) {
-          return artifacts_.size();
-        } else {
-          return artifactsBuilder_.getCount();
-        }
+        return artifacts_.size();
       }
       /**
-       * <code>repeated .lapp.Artifact artifacts = 1;</code>
+       * <code>repeated string artifacts = 1;</code>
        */
-      public nl.wvdzwan.lapp.protobuf.Lapp.Artifact getArtifacts(int index) {
-        if (artifactsBuilder_ == null) {
-          return artifacts_.get(index);
-        } else {
-          return artifactsBuilder_.getMessage(index);
-        }
+      public java.lang.String getArtifacts(int index) {
+        return artifacts_.get(index);
       }
       /**
-       * <code>repeated .lapp.Artifact artifacts = 1;</code>
+       * <code>repeated string artifacts = 1;</code>
        */
-      public Builder setArtifacts(
-          int index, nl.wvdzwan.lapp.protobuf.Lapp.Artifact value) {
-        if (artifactsBuilder_ == null) {
-          if (value == null) {
-            throw new NullPointerException();
-          }
-          ensureArtifactsIsMutable();
-          artifacts_.set(index, value);
-          onChanged();
-        } else {
-          artifactsBuilder_.setMessage(index, value);
-        }
-        return this;
+      public com.google.protobuf.ByteString
+          getArtifactsBytes(int index) {
+        return artifacts_.getByteString(index);
       }
       /**
-       * <code>repeated .lapp.Artifact artifacts = 1;</code>
+       * <code>repeated string artifacts = 1;</code>
        */
       public Builder setArtifacts(
-          int index, nl.wvdzwan.lapp.protobuf.Lapp.Artifact.Builder builderForValue) {
-        if (artifactsBuilder_ == null) {
-          ensureArtifactsIsMutable();
-          artifacts_.set(index, builderForValue.build());
-          onChanged();
-        } else {
-          artifactsBuilder_.setMessage(index, builderForValue.build());
-        }
+          int index, java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  ensureArtifactsIsMutable();
+        artifacts_.set(index, value);
+        onChanged();
         return this;
       }
       /**
-       * <code>repeated .lapp.Artifact artifacts = 1;</code>
-       */
-      public Builder addArtifacts(nl.wvdzwan.lapp.protobuf.Lapp.Artifact value) {
-        if (artifactsBuilder_ == null) {
-          if (value == null) {
-            throw new NullPointerException();
-          }
-          ensureArtifactsIsMutable();
-          artifacts_.add(value);
-          onChanged();
-        } else {
-          artifactsBuilder_.addMessage(value);
-        }
-        return this;
-      }
-      /**
-       * <code>repeated .lapp.Artifact artifacts = 1;</code>
+       * <code>repeated string artifacts = 1;</code>
        */
       public Builder addArtifacts(
-          int index, nl.wvdzwan.lapp.protobuf.Lapp.Artifact value) {
-        if (artifactsBuilder_ == null) {
-          if (value == null) {
-            throw new NullPointerException();
-          }
-          ensureArtifactsIsMutable();
-          artifacts_.add(index, value);
-          onChanged();
-        } else {
-          artifactsBuilder_.addMessage(index, value);
-        }
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  ensureArtifactsIsMutable();
+        artifacts_.add(value);
+        onChanged();
         return this;
       }
       /**
-       * <code>repeated .lapp.Artifact artifacts = 1;</code>
-       */
-      public Builder addArtifacts(
-          nl.wvdzwan.lapp.protobuf.Lapp.Artifact.Builder builderForValue) {
-        if (artifactsBuilder_ == null) {
-          ensureArtifactsIsMutable();
-          artifacts_.add(builderForValue.build());
-          onChanged();
-        } else {
-          artifactsBuilder_.addMessage(builderForValue.build());
-        }
-        return this;
-      }
-      /**
-       * <code>repeated .lapp.Artifact artifacts = 1;</code>
-       */
-      public Builder addArtifacts(
-          int index, nl.wvdzwan.lapp.protobuf.Lapp.Artifact.Builder builderForValue) {
-        if (artifactsBuilder_ == null) {
-          ensureArtifactsIsMutable();
-          artifacts_.add(index, builderForValue.build());
-          onChanged();
-        } else {
-          artifactsBuilder_.addMessage(index, builderForValue.build());
-        }
-        return this;
-      }
-      /**
-       * <code>repeated .lapp.Artifact artifacts = 1;</code>
+       * <code>repeated string artifacts = 1;</code>
        */
       public Builder addAllArtifacts(
-          java.lang.Iterable<? extends nl.wvdzwan.lapp.protobuf.Lapp.Artifact> values) {
-        if (artifactsBuilder_ == null) {
-          ensureArtifactsIsMutable();
-          com.google.protobuf.AbstractMessageLite.Builder.addAll(
-              values, artifacts_);
-          onChanged();
-        } else {
-          artifactsBuilder_.addAllMessages(values);
-        }
+          java.lang.Iterable<java.lang.String> values) {
+        ensureArtifactsIsMutable();
+        com.google.protobuf.AbstractMessageLite.Builder.addAll(
+            values, artifacts_);
+        onChanged();
         return this;
       }
       /**
-       * <code>repeated .lapp.Artifact artifacts = 1;</code>
+       * <code>repeated string artifacts = 1;</code>
        */
       public Builder clearArtifacts() {
-        if (artifactsBuilder_ == null) {
-          artifacts_ = java.util.Collections.emptyList();
-          bitField0_ = (bitField0_ & ~0x00000001);
-          onChanged();
-        } else {
-          artifactsBuilder_.clear();
-        }
+        artifacts_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+        bitField0_ = (bitField0_ & ~0x00000001);
+        onChanged();
         return this;
       }
       /**
-       * <code>repeated .lapp.Artifact artifacts = 1;</code>
+       * <code>repeated string artifacts = 1;</code>
        */
-      public Builder removeArtifacts(int index) {
-        if (artifactsBuilder_ == null) {
-          ensureArtifactsIsMutable();
-          artifacts_.remove(index);
-          onChanged();
-        } else {
-          artifactsBuilder_.remove(index);
-        }
+      public Builder addArtifactsBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        ensureArtifactsIsMutable();
+        artifacts_.add(value);
+        onChanged();
         return this;
-      }
-      /**
-       * <code>repeated .lapp.Artifact artifacts = 1;</code>
-       */
-      public nl.wvdzwan.lapp.protobuf.Lapp.Artifact.Builder getArtifactsBuilder(
-          int index) {
-        return getArtifactsFieldBuilder().getBuilder(index);
-      }
-      /**
-       * <code>repeated .lapp.Artifact artifacts = 1;</code>
-       */
-      public nl.wvdzwan.lapp.protobuf.Lapp.ArtifactOrBuilder getArtifactsOrBuilder(
-          int index) {
-        if (artifactsBuilder_ == null) {
-          return artifacts_.get(index);  } else {
-          return artifactsBuilder_.getMessageOrBuilder(index);
-        }
-      }
-      /**
-       * <code>repeated .lapp.Artifact artifacts = 1;</code>
-       */
-      public java.util.List<? extends nl.wvdzwan.lapp.protobuf.Lapp.ArtifactOrBuilder> 
-           getArtifactsOrBuilderList() {
-        if (artifactsBuilder_ != null) {
-          return artifactsBuilder_.getMessageOrBuilderList();
-        } else {
-          return java.util.Collections.unmodifiableList(artifacts_);
-        }
-      }
-      /**
-       * <code>repeated .lapp.Artifact artifacts = 1;</code>
-       */
-      public nl.wvdzwan.lapp.protobuf.Lapp.Artifact.Builder addArtifactsBuilder() {
-        return getArtifactsFieldBuilder().addBuilder(
-            nl.wvdzwan.lapp.protobuf.Lapp.Artifact.getDefaultInstance());
-      }
-      /**
-       * <code>repeated .lapp.Artifact artifacts = 1;</code>
-       */
-      public nl.wvdzwan.lapp.protobuf.Lapp.Artifact.Builder addArtifactsBuilder(
-          int index) {
-        return getArtifactsFieldBuilder().addBuilder(
-            index, nl.wvdzwan.lapp.protobuf.Lapp.Artifact.getDefaultInstance());
-      }
-      /**
-       * <code>repeated .lapp.Artifact artifacts = 1;</code>
-       */
-      public java.util.List<nl.wvdzwan.lapp.protobuf.Lapp.Artifact.Builder> 
-           getArtifactsBuilderList() {
-        return getArtifactsFieldBuilder().getBuilderList();
-      }
-      private com.google.protobuf.RepeatedFieldBuilderV3<
-          nl.wvdzwan.lapp.protobuf.Lapp.Artifact, nl.wvdzwan.lapp.protobuf.Lapp.Artifact.Builder, nl.wvdzwan.lapp.protobuf.Lapp.ArtifactOrBuilder> 
-          getArtifactsFieldBuilder() {
-        if (artifactsBuilder_ == null) {
-          artifactsBuilder_ = new com.google.protobuf.RepeatedFieldBuilderV3<
-              nl.wvdzwan.lapp.protobuf.Lapp.Artifact, nl.wvdzwan.lapp.protobuf.Lapp.Artifact.Builder, nl.wvdzwan.lapp.protobuf.Lapp.ArtifactOrBuilder>(
-                  artifacts_,
-                  ((bitField0_ & 0x00000001) != 0),
-                  getParentForChildren(),
-                  isClean());
-          artifacts_ = null;
-        }
-        return artifactsBuilder_;
       }
 
       private java.util.List<nl.wvdzwan.lapp.protobuf.Lapp.ClassRecord> classRecords_ =
@@ -6697,15 +6519,14 @@ public final class Lapp {
       "name\030\001 \001(\t\022\017\n\007package\030\002 \001(\t\022\022\n\nsuperClas" +
       "s\030\003 \001(\t\022\022\n\ninterfaces\030\004 \003(\t\022\017\n\007methods\030\005" +
       " \003(\t\022\016\n\006public\030\006 \001(\010\022\017\n\007private\030\007 \001(\010\022\021\n" +
-      "\tinterface\030\010 \001(\010\022\020\n\010abstract\030\t \001(\010\"\375\001\n\007P" +
-      "ackage\022!\n\tartifacts\030\001 \003(\0132\016.lapp.Artifac" +
-      "t\022\'\n\014classRecords\030\006 \003(\0132\021.lapp.ClassReco" +
-      "rd\022!\n\rresolvedCalls\030\004 \003(\0132\n.lapp.Call\022#\n" +
-      "\017unresolvedCalls\030\005 \003(\0132\n.lapp.Call\022-\n\010me" +
-      "tadata\030\010 \003(\0132\033.lapp.Package.MetadataEntr" +
-      "y\032/\n\rMetadataEntry\022\013\n\003key\030\001 \001(\t\022\r\n\005value" +
-      "\030\002 \001(\t:\0028\001B \n\030nl.wvdzwan.lapp.protobufB\004" +
-      "Lappb\006proto3"
+      "\tinterface\030\010 \001(\010\022\020\n\010abstract\030\t \001(\010\"\355\001\n\007P" +
+      "ackage\022\021\n\tartifacts\030\001 \003(\t\022\'\n\014classRecord" +
+      "s\030\006 \003(\0132\021.lapp.ClassRecord\022!\n\rresolvedCa" +
+      "lls\030\004 \003(\0132\n.lapp.Call\022#\n\017unresolvedCalls" +
+      "\030\005 \003(\0132\n.lapp.Call\022-\n\010metadata\030\010 \003(\0132\033.l" +
+      "app.Package.MetadataEntry\032/\n\rMetadataEnt" +
+      "ry\022\013\n\003key\030\001 \001(\t\022\r\n\005value\030\002 \001(\t:\0028\001B \n\030nl" +
+      ".wvdzwan.lapp.protobufB\004Lappb\006proto3"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {

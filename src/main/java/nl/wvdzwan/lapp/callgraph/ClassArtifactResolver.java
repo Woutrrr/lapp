@@ -4,7 +4,7 @@ import com.ibm.wala.classLoader.IClass;
 import com.ibm.wala.types.MethodReference;
 
 public interface ClassArtifactResolver {
-    ArtifactRecord artifactRecordFromMethodReference(MethodReference n);
+    String artifactFromMethodReference(MethodReference n);
 
-    ArtifactRecord artifactRecordFromClass(IClass klass);
+    String artifactFromClass(IClass klass);
 }

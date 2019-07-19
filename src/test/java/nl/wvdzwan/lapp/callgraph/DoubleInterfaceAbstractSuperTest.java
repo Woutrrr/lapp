@@ -5,18 +5,14 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Set;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import com.ibm.wala.ipa.cha.ClassHierarchyException;
 import org.jgrapht.Graph;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
-import nl.wvdzwan.lapp.LappPackageTransformer;
 import nl.wvdzwan.lapp.call.Call;
-import nl.wvdzwan.lapp.callgraph.FolderLayout.DollarSeparatedLayout;
 import nl.wvdzwan.lapp.callgraph.wala.WalaAnalysisResult;
-import nl.wvdzwan.lapp.callgraph.wala.WalaAnalysisTransformer;
 import nl.wvdzwan.lapp.core.LappPackage;
 import nl.wvdzwan.lapp.core.Method;
 
@@ -35,17 +31,17 @@ class DoubleInterfaceAbstractSuperTest {
     @BeforeAll
     static void run() throws IOException, ClassHierarchyException {
 
-        String mainJar = getResourcePath("double-interface-method-1.0-SNAPSHOT.jar");
-        String classpath = Stream.of("double-interface-method-dep-1.0-SNAPSHOT.jar", "double-interface-method-dep2-1.0-SNAPSHOT.jar")
-                .map(DoubleInterfaceAbstractSuperTest::getResourcePath)
-                .collect(Collectors.joining(":"));
-
-
-        WalaAnalysis analysis = new WalaAnalysis(mainJar, classpath, "Java60RegressionExclusions.txt");
-        analysisResult = analysis.run();
-
-        lappPackage = WalaAnalysisTransformer.toPackage(analysisResult, new DollarSeparatedLayout());
-        graph = LappPackageTransformer.toGraph(lappPackage);
+//        String mainJar = getResourcePath("double-interface-method-1.0-SNAPSHOT.jar");
+//        String classpath = Stream.of("double-interface-method-dep-1.0-SNAPSHOT.jar", "double-interface-method-dep2-1.0-SNAPSHOT.jar")
+//                .map(DoubleInterfaceAbstractSuperTest::getResourcePath)
+//                .collect(Collectors.joining(":"));
+//
+//
+//        WalaAnalysis analysis = new WalaAnalysis(mainJar, classpath, "Java60RegressionExclusions.txt");
+//        analysisResult = analysis.run();
+//
+//        lappPackage = WalaAnalysisTransformer.toPackage(analysisResult, new SimpleNameLayout());
+//        graph = LappPackageTransformer.toGraph(lappPackage);
 
     }
 

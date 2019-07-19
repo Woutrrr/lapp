@@ -5,7 +5,6 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.concurrent.Callable;
-import java.util.stream.Collectors;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -65,7 +64,7 @@ public class MergeMain implements Callable<Void> {
 
     static void printPackageStatistics(Lapp.Package p) {
 
-        System.out.printf("Number of artifacts: %s  (%s) \n", p.getArtifactsCount(), p.getArtifactsList().stream().map(a -> a.getGroup() +":" + a.getName() + ":" + a.getVersion()).collect(Collectors.toList()));
+        System.out.printf("Number of artifacts: %s  (%s) \n", p.getArtifactsCount(), p.getArtifactsList());
         System.out.printf("Classes: %d\n", p.getClassRecordsCount());
         System.out.printf("Calls: Resolved: %6d    Unresolved: %6d\n", p.getResolvedCallsCount(), p.getUnresolvedCallsCount());
         System.out.println("----");

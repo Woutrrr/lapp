@@ -13,7 +13,7 @@ public class Protobuf {
 
     public static Lapp.Package of(LappPackage p) {
         return Lapp.Package.newBuilder()
-                .addAllArtifacts(p.artifacts.stream().map(Protobuf::of).collect(Collectors.toList()))
+                .addAllArtifacts(p.artifacts)
                 .addAllResolvedCalls(p.resolvedCalls.stream().map(Protobuf::of).collect(Collectors.toList()))
                 .addAllUnresolvedCalls(p.unresolvedCalls.stream().map(Protobuf::of).collect(Collectors.toList()))
                 .addAllClassRecords(p.classRecords.stream().map(Protobuf::of).collect(Collectors.toList()))
@@ -68,18 +68,20 @@ public class Protobuf {
     }
 
     public static Lapp.ClassRecord of(ClassRecord r) {
-        return Lapp.ClassRecord.newBuilder()
+        Lapp.ClassRecord.Builder builder = Lapp.ClassRecord.newBuilder()
                 .setPackage(r.artifact)
                 .setName(r.name)
-                .setSuperClass(r.superClass)
                 .addAllInterfaces(r.interfaces)
                 .addAllMethods(r.methods)
-
                 .setPublic(r.isPublic)
                 .setPrivate(r.isPrivate)
                 .setInterface(r.isInterface)
-                .setAbstract(r.isAbstract)
+                .setAbstract(r.isAbstract);
 
-                .build();
+        if (r.superClass != null) { // java/lang/Object doesn't have a super class
+            builder.setSuperClass(r.superClass);
+        }
+
+        return builder.build();
     }
 }
