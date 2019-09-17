@@ -15,12 +15,7 @@ import org.apache.logging.log4j.Logger;
 import nl.wvdzwan.lapp.call.Call;
 import nl.wvdzwan.lapp.callgraph.ClassToArtifactResolver;
 import nl.wvdzwan.lapp.callgraph.FolderLayout.ArtifactFolderLayout;
-import nl.wvdzwan.lapp.core.ClassRecord;
-import nl.wvdzwan.lapp.core.LappPackage;
-import nl.wvdzwan.lapp.core.Method;
-import nl.wvdzwan.lapp.core.ResolvedMethod;
-import nl.wvdzwan.lapp.core.UnresolvedMethod;
-import nl.wvdzwan.lapp.core.Util;
+import nl.wvdzwan.lapp.core.*;
 
 public class LappPackageBuilder {
 
@@ -93,7 +88,7 @@ public class LappPackageBuilder {
         String symbol = reference.getSelector().toString();
 
 
-        if (inApplicationScope(reference)) {
+        if (inApplicationScope(reference) || inPrimodialScope(reference)) {
             String artifact = artifactResolver.artifactFromMethodReference(reference);
 
             ResolvedMethod resolvedMethod = ResolvedMethod.findOrCreate(namespace, symbol, artifact);
@@ -128,6 +123,8 @@ public class LappPackageBuilder {
     private boolean inApplicationScope(MethodReference reference) {
         return reference.getDeclaringClass().getClassLoader().equals(ClassLoaderReference.Application);
     }
-
+    private boolean inPrimodialScope(MethodReference reference) {
+        return reference.getDeclaringClass().getClassLoader().equals(ClassLoaderReference.Primordial);
+    }
 
 }

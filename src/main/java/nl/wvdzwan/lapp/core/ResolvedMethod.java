@@ -23,4 +23,13 @@ public class ResolvedMethod extends Method {
     public static ResolvedMethod findOrCreate(String namespace, String symbol, String artifact) {
         return DEFAULT_CONTEXT.makeResolved(namespace, symbol, artifact);
     }
+
+    @Override
+    public String toString() {
+        return "ResolvedMethod{" +
+                "artifact='" + artifact + '\'' +
+                ", namespace='" + namespace + '\'' +
+                ", symbol='" + symbol + '\'' +
+                '}';
+    }
 }

@@ -14,10 +14,10 @@ public class ClassRecord {
     public boolean isAbstract;
 
 
-
     public String superClass;
     public final List<String> interfaces = new ArrayList<>();
     public final List<String> methods = new ArrayList<>();
+    public final List<ExpectedCall> expectedCalls = new ArrayList<>();
 
 
     public ClassRecord(String artifact, String reference) {
@@ -35,6 +35,10 @@ public class ClassRecord {
 
     public void addMethod(String method) {
         this.methods.add(method);
+    }
+
+    public void addExpectedCall(ExpectedCall expectedCall) {
+        this.expectedCalls.add(expectedCall);
     }
 
 }

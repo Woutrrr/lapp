@@ -8,6 +8,7 @@ import java.util.stream.Collectors;
 import nl.wvdzwan.lapp.call.Call;
 import nl.wvdzwan.lapp.callgraph.ArtifactRecord;
 import nl.wvdzwan.lapp.core.ClassRecord;
+import nl.wvdzwan.lapp.core.ExpectedCall;
 import nl.wvdzwan.lapp.core.LappPackage;
 import nl.wvdzwan.lapp.core.Method;
 import nl.wvdzwan.lapp.core.ResolvedMethod;
@@ -61,6 +62,15 @@ public class LappPackageReader {
                 .collect(Collectors.toSet());
     }
 
+    private static Set<ExpectedCall> fromExpectedCalls(List<Lapp.ExpectedCall> proto) {
+        return proto.stream()
+                .map(c -> new ExpectedCall(
+                        fromMethod(c.getSource()),
+                        fromMethod(c.getTarget())
+                        ))
+                .collect(Collectors.toSet());
+    }
+
     private static Set<ClassRecord> fromClassRecords(List<Lapp.ClassRecord> proto) {
         return proto.stream()
                 .map(c -> {
@@ -68,6 +78,7 @@ public class LappPackageReader {
                     result.setSuperClass(c.getSuperClass());
                     result.interfaces.addAll(c.getInterfacesList());
                     result.methods.addAll(c.getMethodsList());
+                    result.expectedCalls.addAll(fromExpectedCalls(c.getExpectedCallsList()));
 
                     result.isPublic = c.getPublic();
                     result.isPrivate = c.getPrivate();
@@ -90,6 +101,8 @@ public class LappPackageReader {
                 return Call.CallType.SPECIAL;
             case STATIC:
                 return Call.CallType.STATIC;
+            case RESOLVED:
+                return Call.CallType.RESOLVED_DISPATCH;
             case UNRECOGNIZED:
             case UNKNOWN:
             default:

@@ -1317,6 +1317,10 @@ public final class Lapp {
        * <code>STATIC = 4;</code>
        */
       STATIC(4),
+      /**
+       * <code>RESOLVED = 5;</code>
+       */
+      RESOLVED(5),
       UNRECOGNIZED(-1),
       ;
 
@@ -1340,6 +1344,10 @@ public final class Lapp {
        * <code>STATIC = 4;</code>
        */
       public static final int STATIC_VALUE = 4;
+      /**
+       * <code>RESOLVED = 5;</code>
+       */
+      public static final int RESOLVED_VALUE = 5;
 
 
       public final int getNumber() {
@@ -1365,6 +1373,7 @@ public final class Lapp {
           case 2: return VIRTUAL;
           case 3: return SPECIAL;
           case 4: return STATIC;
+          case 5: return RESOLVED;
           default: return null;
         }
       }
@@ -2163,6 +2172,806 @@ public final class Lapp {
 
     @java.lang.Override
     public nl.wvdzwan.lapp.protobuf.Lapp.Call getDefaultInstanceForType() {
+      return DEFAULT_INSTANCE;
+    }
+
+  }
+
+  public interface ExpectedCallOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:lapp.ExpectedCall)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>.lapp.Method source = 1;</code>
+     */
+    boolean hasSource();
+    /**
+     * <code>.lapp.Method source = 1;</code>
+     */
+    nl.wvdzwan.lapp.protobuf.Lapp.Method getSource();
+    /**
+     * <code>.lapp.Method source = 1;</code>
+     */
+    nl.wvdzwan.lapp.protobuf.Lapp.MethodOrBuilder getSourceOrBuilder();
+
+    /**
+     * <code>.lapp.Method target = 2;</code>
+     */
+    boolean hasTarget();
+    /**
+     * <code>.lapp.Method target = 2;</code>
+     */
+    nl.wvdzwan.lapp.protobuf.Lapp.Method getTarget();
+    /**
+     * <code>.lapp.Method target = 2;</code>
+     */
+    nl.wvdzwan.lapp.protobuf.Lapp.MethodOrBuilder getTargetOrBuilder();
+  }
+  /**
+   * Protobuf type {@code lapp.ExpectedCall}
+   */
+  public  static final class ExpectedCall extends
+      com.google.protobuf.GeneratedMessageV3 implements
+      // @@protoc_insertion_point(message_implements:lapp.ExpectedCall)
+      ExpectedCallOrBuilder {
+  private static final long serialVersionUID = 0L;
+    // Use ExpectedCall.newBuilder() to construct.
+    private ExpectedCall(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+      super(builder);
+    }
+    private ExpectedCall() {
+    }
+
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+    getUnknownFields() {
+      return this.unknownFields;
+    }
+    private ExpectedCall(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      this();
+      if (extensionRegistry == null) {
+        throw new java.lang.NullPointerException();
+      }
+      int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            case 10: {
+              nl.wvdzwan.lapp.protobuf.Lapp.Method.Builder subBuilder = null;
+              if (source_ != null) {
+                subBuilder = source_.toBuilder();
+              }
+              source_ = input.readMessage(nl.wvdzwan.lapp.protobuf.Lapp.Method.parser(), extensionRegistry);
+              if (subBuilder != null) {
+                subBuilder.mergeFrom(source_);
+                source_ = subBuilder.buildPartial();
+              }
+
+              break;
+            }
+            case 18: {
+              nl.wvdzwan.lapp.protobuf.Lapp.Method.Builder subBuilder = null;
+              if (target_ != null) {
+                subBuilder = target_.toBuilder();
+              }
+              target_ = input.readMessage(nl.wvdzwan.lapp.protobuf.Lapp.Method.parser(), extensionRegistry);
+              if (subBuilder != null) {
+                subBuilder.mergeFrom(target_);
+                target_ = subBuilder.buildPartial();
+              }
+
+              break;
+            }
+            default: {
+              if (!parseUnknownField(
+                  input, unknownFields, extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return nl.wvdzwan.lapp.protobuf.Lapp.internal_static_lapp_ExpectedCall_descriptor;
+    }
+
+    @java.lang.Override
+    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return nl.wvdzwan.lapp.protobuf.Lapp.internal_static_lapp_ExpectedCall_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              nl.wvdzwan.lapp.protobuf.Lapp.ExpectedCall.class, nl.wvdzwan.lapp.protobuf.Lapp.ExpectedCall.Builder.class);
+    }
+
+    public static final int SOURCE_FIELD_NUMBER = 1;
+    private nl.wvdzwan.lapp.protobuf.Lapp.Method source_;
+    /**
+     * <code>.lapp.Method source = 1;</code>
+     */
+    public boolean hasSource() {
+      return source_ != null;
+    }
+    /**
+     * <code>.lapp.Method source = 1;</code>
+     */
+    public nl.wvdzwan.lapp.protobuf.Lapp.Method getSource() {
+      return source_ == null ? nl.wvdzwan.lapp.protobuf.Lapp.Method.getDefaultInstance() : source_;
+    }
+    /**
+     * <code>.lapp.Method source = 1;</code>
+     */
+    public nl.wvdzwan.lapp.protobuf.Lapp.MethodOrBuilder getSourceOrBuilder() {
+      return getSource();
+    }
+
+    public static final int TARGET_FIELD_NUMBER = 2;
+    private nl.wvdzwan.lapp.protobuf.Lapp.Method target_;
+    /**
+     * <code>.lapp.Method target = 2;</code>
+     */
+    public boolean hasTarget() {
+      return target_ != null;
+    }
+    /**
+     * <code>.lapp.Method target = 2;</code>
+     */
+    public nl.wvdzwan.lapp.protobuf.Lapp.Method getTarget() {
+      return target_ == null ? nl.wvdzwan.lapp.protobuf.Lapp.Method.getDefaultInstance() : target_;
+    }
+    /**
+     * <code>.lapp.Method target = 2;</code>
+     */
+    public nl.wvdzwan.lapp.protobuf.Lapp.MethodOrBuilder getTargetOrBuilder() {
+      return getTarget();
+    }
+
+    private byte memoizedIsInitialized = -1;
+    @java.lang.Override
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    @java.lang.Override
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      if (source_ != null) {
+        output.writeMessage(1, getSource());
+      }
+      if (target_ != null) {
+        output.writeMessage(2, getTarget());
+      }
+      unknownFields.writeTo(output);
+    }
+
+    @java.lang.Override
+    public int getSerializedSize() {
+      int size = memoizedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (source_ != null) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(1, getSource());
+      }
+      if (target_ != null) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(2, getTarget());
+      }
+      size += unknownFields.getSerializedSize();
+      memoizedSize = size;
+      return size;
+    }
+
+    @java.lang.Override
+    public boolean equals(final java.lang.Object obj) {
+      if (obj == this) {
+       return true;
+      }
+      if (!(obj instanceof nl.wvdzwan.lapp.protobuf.Lapp.ExpectedCall)) {
+        return super.equals(obj);
+      }
+      nl.wvdzwan.lapp.protobuf.Lapp.ExpectedCall other = (nl.wvdzwan.lapp.protobuf.Lapp.ExpectedCall) obj;
+
+      if (hasSource() != other.hasSource()) return false;
+      if (hasSource()) {
+        if (!getSource()
+            .equals(other.getSource())) return false;
+      }
+      if (hasTarget() != other.hasTarget()) return false;
+      if (hasTarget()) {
+        if (!getTarget()
+            .equals(other.getTarget())) return false;
+      }
+      if (!unknownFields.equals(other.unknownFields)) return false;
+      return true;
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+      if (memoizedHashCode != 0) {
+        return memoizedHashCode;
+      }
+      int hash = 41;
+      hash = (19 * hash) + getDescriptor().hashCode();
+      if (hasSource()) {
+        hash = (37 * hash) + SOURCE_FIELD_NUMBER;
+        hash = (53 * hash) + getSource().hashCode();
+      }
+      if (hasTarget()) {
+        hash = (37 * hash) + TARGET_FIELD_NUMBER;
+        hash = (53 * hash) + getTarget().hashCode();
+      }
+      hash = (29 * hash) + unknownFields.hashCode();
+      memoizedHashCode = hash;
+      return hash;
+    }
+
+    public static nl.wvdzwan.lapp.protobuf.Lapp.ExpectedCall parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static nl.wvdzwan.lapp.protobuf.Lapp.ExpectedCall parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static nl.wvdzwan.lapp.protobuf.Lapp.ExpectedCall parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static nl.wvdzwan.lapp.protobuf.Lapp.ExpectedCall parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static nl.wvdzwan.lapp.protobuf.Lapp.ExpectedCall parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static nl.wvdzwan.lapp.protobuf.Lapp.ExpectedCall parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static nl.wvdzwan.lapp.protobuf.Lapp.ExpectedCall parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static nl.wvdzwan.lapp.protobuf.Lapp.ExpectedCall parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static nl.wvdzwan.lapp.protobuf.Lapp.ExpectedCall parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input);
+    }
+    public static nl.wvdzwan.lapp.protobuf.Lapp.ExpectedCall parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static nl.wvdzwan.lapp.protobuf.Lapp.ExpectedCall parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static nl.wvdzwan.lapp.protobuf.Lapp.ExpectedCall parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    @java.lang.Override
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder() {
+      return DEFAULT_INSTANCE.toBuilder();
+    }
+    public static Builder newBuilder(nl.wvdzwan.lapp.protobuf.Lapp.ExpectedCall prototype) {
+      return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
+    }
+    @java.lang.Override
+    public Builder toBuilder() {
+      return this == DEFAULT_INSTANCE
+          ? new Builder() : new Builder().mergeFrom(this);
+    }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code lapp.ExpectedCall}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:lapp.ExpectedCall)
+        nl.wvdzwan.lapp.protobuf.Lapp.ExpectedCallOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return nl.wvdzwan.lapp.protobuf.Lapp.internal_static_lapp_ExpectedCall_descriptor;
+      }
+
+      @java.lang.Override
+      protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return nl.wvdzwan.lapp.protobuf.Lapp.internal_static_lapp_ExpectedCall_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                nl.wvdzwan.lapp.protobuf.Lapp.ExpectedCall.class, nl.wvdzwan.lapp.protobuf.Lapp.ExpectedCall.Builder.class);
+      }
+
+      // Construct using nl.wvdzwan.lapp.protobuf.Lapp.ExpectedCall.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessageV3
+                .alwaysUseFieldBuilders) {
+        }
+      }
+      @java.lang.Override
+      public Builder clear() {
+        super.clear();
+        if (sourceBuilder_ == null) {
+          source_ = null;
+        } else {
+          source_ = null;
+          sourceBuilder_ = null;
+        }
+        if (targetBuilder_ == null) {
+          target_ = null;
+        } else {
+          target_ = null;
+          targetBuilder_ = null;
+        }
+        return this;
+      }
+
+      @java.lang.Override
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return nl.wvdzwan.lapp.protobuf.Lapp.internal_static_lapp_ExpectedCall_descriptor;
+      }
+
+      @java.lang.Override
+      public nl.wvdzwan.lapp.protobuf.Lapp.ExpectedCall getDefaultInstanceForType() {
+        return nl.wvdzwan.lapp.protobuf.Lapp.ExpectedCall.getDefaultInstance();
+      }
+
+      @java.lang.Override
+      public nl.wvdzwan.lapp.protobuf.Lapp.ExpectedCall build() {
+        nl.wvdzwan.lapp.protobuf.Lapp.ExpectedCall result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      @java.lang.Override
+      public nl.wvdzwan.lapp.protobuf.Lapp.ExpectedCall buildPartial() {
+        nl.wvdzwan.lapp.protobuf.Lapp.ExpectedCall result = new nl.wvdzwan.lapp.protobuf.Lapp.ExpectedCall(this);
+        if (sourceBuilder_ == null) {
+          result.source_ = source_;
+        } else {
+          result.source_ = sourceBuilder_.build();
+        }
+        if (targetBuilder_ == null) {
+          result.target_ = target_;
+        } else {
+          result.target_ = targetBuilder_.build();
+        }
+        onBuilt();
+        return result;
+      }
+
+      @java.lang.Override
+      public Builder clone() {
+        return super.clone();
+      }
+      @java.lang.Override
+      public Builder setField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return super.setField(field, value);
+      }
+      @java.lang.Override
+      public Builder clearField(
+          com.google.protobuf.Descriptors.FieldDescriptor field) {
+        return super.clearField(field);
+      }
+      @java.lang.Override
+      public Builder clearOneof(
+          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
+        return super.clearOneof(oneof);
+      }
+      @java.lang.Override
+      public Builder setRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          int index, java.lang.Object value) {
+        return super.setRepeatedField(field, index, value);
+      }
+      @java.lang.Override
+      public Builder addRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return super.addRepeatedField(field, value);
+      }
+      @java.lang.Override
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof nl.wvdzwan.lapp.protobuf.Lapp.ExpectedCall) {
+          return mergeFrom((nl.wvdzwan.lapp.protobuf.Lapp.ExpectedCall)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(nl.wvdzwan.lapp.protobuf.Lapp.ExpectedCall other) {
+        if (other == nl.wvdzwan.lapp.protobuf.Lapp.ExpectedCall.getDefaultInstance()) return this;
+        if (other.hasSource()) {
+          mergeSource(other.getSource());
+        }
+        if (other.hasTarget()) {
+          mergeTarget(other.getTarget());
+        }
+        this.mergeUnknownFields(other.unknownFields);
+        onChanged();
+        return this;
+      }
+
+      @java.lang.Override
+      public final boolean isInitialized() {
+        return true;
+      }
+
+      @java.lang.Override
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        nl.wvdzwan.lapp.protobuf.Lapp.ExpectedCall parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (nl.wvdzwan.lapp.protobuf.Lapp.ExpectedCall) e.getUnfinishedMessage();
+          throw e.unwrapIOException();
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+
+      private nl.wvdzwan.lapp.protobuf.Lapp.Method source_;
+      private com.google.protobuf.SingleFieldBuilderV3<
+          nl.wvdzwan.lapp.protobuf.Lapp.Method, nl.wvdzwan.lapp.protobuf.Lapp.Method.Builder, nl.wvdzwan.lapp.protobuf.Lapp.MethodOrBuilder> sourceBuilder_;
+      /**
+       * <code>.lapp.Method source = 1;</code>
+       */
+      public boolean hasSource() {
+        return sourceBuilder_ != null || source_ != null;
+      }
+      /**
+       * <code>.lapp.Method source = 1;</code>
+       */
+      public nl.wvdzwan.lapp.protobuf.Lapp.Method getSource() {
+        if (sourceBuilder_ == null) {
+          return source_ == null ? nl.wvdzwan.lapp.protobuf.Lapp.Method.getDefaultInstance() : source_;
+        } else {
+          return sourceBuilder_.getMessage();
+        }
+      }
+      /**
+       * <code>.lapp.Method source = 1;</code>
+       */
+      public Builder setSource(nl.wvdzwan.lapp.protobuf.Lapp.Method value) {
+        if (sourceBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          source_ = value;
+          onChanged();
+        } else {
+          sourceBuilder_.setMessage(value);
+        }
+
+        return this;
+      }
+      /**
+       * <code>.lapp.Method source = 1;</code>
+       */
+      public Builder setSource(
+          nl.wvdzwan.lapp.protobuf.Lapp.Method.Builder builderForValue) {
+        if (sourceBuilder_ == null) {
+          source_ = builderForValue.build();
+          onChanged();
+        } else {
+          sourceBuilder_.setMessage(builderForValue.build());
+        }
+
+        return this;
+      }
+      /**
+       * <code>.lapp.Method source = 1;</code>
+       */
+      public Builder mergeSource(nl.wvdzwan.lapp.protobuf.Lapp.Method value) {
+        if (sourceBuilder_ == null) {
+          if (source_ != null) {
+            source_ =
+              nl.wvdzwan.lapp.protobuf.Lapp.Method.newBuilder(source_).mergeFrom(value).buildPartial();
+          } else {
+            source_ = value;
+          }
+          onChanged();
+        } else {
+          sourceBuilder_.mergeFrom(value);
+        }
+
+        return this;
+      }
+      /**
+       * <code>.lapp.Method source = 1;</code>
+       */
+      public Builder clearSource() {
+        if (sourceBuilder_ == null) {
+          source_ = null;
+          onChanged();
+        } else {
+          source_ = null;
+          sourceBuilder_ = null;
+        }
+
+        return this;
+      }
+      /**
+       * <code>.lapp.Method source = 1;</code>
+       */
+      public nl.wvdzwan.lapp.protobuf.Lapp.Method.Builder getSourceBuilder() {
+        
+        onChanged();
+        return getSourceFieldBuilder().getBuilder();
+      }
+      /**
+       * <code>.lapp.Method source = 1;</code>
+       */
+      public nl.wvdzwan.lapp.protobuf.Lapp.MethodOrBuilder getSourceOrBuilder() {
+        if (sourceBuilder_ != null) {
+          return sourceBuilder_.getMessageOrBuilder();
+        } else {
+          return source_ == null ?
+              nl.wvdzwan.lapp.protobuf.Lapp.Method.getDefaultInstance() : source_;
+        }
+      }
+      /**
+       * <code>.lapp.Method source = 1;</code>
+       */
+      private com.google.protobuf.SingleFieldBuilderV3<
+          nl.wvdzwan.lapp.protobuf.Lapp.Method, nl.wvdzwan.lapp.protobuf.Lapp.Method.Builder, nl.wvdzwan.lapp.protobuf.Lapp.MethodOrBuilder> 
+          getSourceFieldBuilder() {
+        if (sourceBuilder_ == null) {
+          sourceBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+              nl.wvdzwan.lapp.protobuf.Lapp.Method, nl.wvdzwan.lapp.protobuf.Lapp.Method.Builder, nl.wvdzwan.lapp.protobuf.Lapp.MethodOrBuilder>(
+                  getSource(),
+                  getParentForChildren(),
+                  isClean());
+          source_ = null;
+        }
+        return sourceBuilder_;
+      }
+
+      private nl.wvdzwan.lapp.protobuf.Lapp.Method target_;
+      private com.google.protobuf.SingleFieldBuilderV3<
+          nl.wvdzwan.lapp.protobuf.Lapp.Method, nl.wvdzwan.lapp.protobuf.Lapp.Method.Builder, nl.wvdzwan.lapp.protobuf.Lapp.MethodOrBuilder> targetBuilder_;
+      /**
+       * <code>.lapp.Method target = 2;</code>
+       */
+      public boolean hasTarget() {
+        return targetBuilder_ != null || target_ != null;
+      }
+      /**
+       * <code>.lapp.Method target = 2;</code>
+       */
+      public nl.wvdzwan.lapp.protobuf.Lapp.Method getTarget() {
+        if (targetBuilder_ == null) {
+          return target_ == null ? nl.wvdzwan.lapp.protobuf.Lapp.Method.getDefaultInstance() : target_;
+        } else {
+          return targetBuilder_.getMessage();
+        }
+      }
+      /**
+       * <code>.lapp.Method target = 2;</code>
+       */
+      public Builder setTarget(nl.wvdzwan.lapp.protobuf.Lapp.Method value) {
+        if (targetBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          target_ = value;
+          onChanged();
+        } else {
+          targetBuilder_.setMessage(value);
+        }
+
+        return this;
+      }
+      /**
+       * <code>.lapp.Method target = 2;</code>
+       */
+      public Builder setTarget(
+          nl.wvdzwan.lapp.protobuf.Lapp.Method.Builder builderForValue) {
+        if (targetBuilder_ == null) {
+          target_ = builderForValue.build();
+          onChanged();
+        } else {
+          targetBuilder_.setMessage(builderForValue.build());
+        }
+
+        return this;
+      }
+      /**
+       * <code>.lapp.Method target = 2;</code>
+       */
+      public Builder mergeTarget(nl.wvdzwan.lapp.protobuf.Lapp.Method value) {
+        if (targetBuilder_ == null) {
+          if (target_ != null) {
+            target_ =
+              nl.wvdzwan.lapp.protobuf.Lapp.Method.newBuilder(target_).mergeFrom(value).buildPartial();
+          } else {
+            target_ = value;
+          }
+          onChanged();
+        } else {
+          targetBuilder_.mergeFrom(value);
+        }
+
+        return this;
+      }
+      /**
+       * <code>.lapp.Method target = 2;</code>
+       */
+      public Builder clearTarget() {
+        if (targetBuilder_ == null) {
+          target_ = null;
+          onChanged();
+        } else {
+          target_ = null;
+          targetBuilder_ = null;
+        }
+
+        return this;
+      }
+      /**
+       * <code>.lapp.Method target = 2;</code>
+       */
+      public nl.wvdzwan.lapp.protobuf.Lapp.Method.Builder getTargetBuilder() {
+        
+        onChanged();
+        return getTargetFieldBuilder().getBuilder();
+      }
+      /**
+       * <code>.lapp.Method target = 2;</code>
+       */
+      public nl.wvdzwan.lapp.protobuf.Lapp.MethodOrBuilder getTargetOrBuilder() {
+        if (targetBuilder_ != null) {
+          return targetBuilder_.getMessageOrBuilder();
+        } else {
+          return target_ == null ?
+              nl.wvdzwan.lapp.protobuf.Lapp.Method.getDefaultInstance() : target_;
+        }
+      }
+      /**
+       * <code>.lapp.Method target = 2;</code>
+       */
+      private com.google.protobuf.SingleFieldBuilderV3<
+          nl.wvdzwan.lapp.protobuf.Lapp.Method, nl.wvdzwan.lapp.protobuf.Lapp.Method.Builder, nl.wvdzwan.lapp.protobuf.Lapp.MethodOrBuilder> 
+          getTargetFieldBuilder() {
+        if (targetBuilder_ == null) {
+          targetBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+              nl.wvdzwan.lapp.protobuf.Lapp.Method, nl.wvdzwan.lapp.protobuf.Lapp.Method.Builder, nl.wvdzwan.lapp.protobuf.Lapp.MethodOrBuilder>(
+                  getTarget(),
+                  getParentForChildren(),
+                  isClean());
+          target_ = null;
+        }
+        return targetBuilder_;
+      }
+      @java.lang.Override
+      public final Builder setUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.setUnknownFields(unknownFields);
+      }
+
+      @java.lang.Override
+      public final Builder mergeUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.mergeUnknownFields(unknownFields);
+      }
+
+
+      // @@protoc_insertion_point(builder_scope:lapp.ExpectedCall)
+    }
+
+    // @@protoc_insertion_point(class_scope:lapp.ExpectedCall)
+    private static final nl.wvdzwan.lapp.protobuf.Lapp.ExpectedCall DEFAULT_INSTANCE;
+    static {
+      DEFAULT_INSTANCE = new nl.wvdzwan.lapp.protobuf.Lapp.ExpectedCall();
+    }
+
+    public static nl.wvdzwan.lapp.protobuf.Lapp.ExpectedCall getDefaultInstance() {
+      return DEFAULT_INSTANCE;
+    }
+
+    private static final com.google.protobuf.Parser<ExpectedCall>
+        PARSER = new com.google.protobuf.AbstractParser<ExpectedCall>() {
+      @java.lang.Override
+      public ExpectedCall parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new ExpectedCall(input, extensionRegistry);
+      }
+    };
+
+    public static com.google.protobuf.Parser<ExpectedCall> parser() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<ExpectedCall> getParserForType() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public nl.wvdzwan.lapp.protobuf.Lapp.ExpectedCall getDefaultInstanceForType() {
       return DEFAULT_INSTANCE;
     }
 
@@ -3082,6 +3891,30 @@ public final class Lapp {
      * <code>bool abstract = 9;</code>
      */
     boolean getAbstract();
+
+    /**
+     * <code>repeated .lapp.ExpectedCall expectedCalls = 10;</code>
+     */
+    java.util.List<nl.wvdzwan.lapp.protobuf.Lapp.ExpectedCall> 
+        getExpectedCallsList();
+    /**
+     * <code>repeated .lapp.ExpectedCall expectedCalls = 10;</code>
+     */
+    nl.wvdzwan.lapp.protobuf.Lapp.ExpectedCall getExpectedCalls(int index);
+    /**
+     * <code>repeated .lapp.ExpectedCall expectedCalls = 10;</code>
+     */
+    int getExpectedCallsCount();
+    /**
+     * <code>repeated .lapp.ExpectedCall expectedCalls = 10;</code>
+     */
+    java.util.List<? extends nl.wvdzwan.lapp.protobuf.Lapp.ExpectedCallOrBuilder> 
+        getExpectedCallsOrBuilderList();
+    /**
+     * <code>repeated .lapp.ExpectedCall expectedCalls = 10;</code>
+     */
+    nl.wvdzwan.lapp.protobuf.Lapp.ExpectedCallOrBuilder getExpectedCallsOrBuilder(
+        int index);
   }
   /**
    * Protobuf type {@code lapp.ClassRecord}
@@ -3101,6 +3934,7 @@ public final class Lapp {
       superClass_ = "";
       interfaces_ = com.google.protobuf.LazyStringArrayList.EMPTY;
       methods_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+      expectedCalls_ = java.util.Collections.emptyList();
     }
 
     @java.lang.Override
@@ -3183,6 +4017,15 @@ public final class Lapp {
               abstract_ = input.readBool();
               break;
             }
+            case 82: {
+              if (!((mutable_bitField0_ & 0x00000200) != 0)) {
+                expectedCalls_ = new java.util.ArrayList<nl.wvdzwan.lapp.protobuf.Lapp.ExpectedCall>();
+                mutable_bitField0_ |= 0x00000200;
+              }
+              expectedCalls_.add(
+                  input.readMessage(nl.wvdzwan.lapp.protobuf.Lapp.ExpectedCall.parser(), extensionRegistry));
+              break;
+            }
             default: {
               if (!parseUnknownField(
                   input, unknownFields, extensionRegistry, tag)) {
@@ -3203,6 +4046,9 @@ public final class Lapp {
         }
         if (((mutable_bitField0_ & 0x00000010) != 0)) {
           methods_ = methods_.getUnmodifiableView();
+        }
+        if (((mutable_bitField0_ & 0x00000200) != 0)) {
+          expectedCalls_ = java.util.Collections.unmodifiableList(expectedCalls_);
         }
         this.unknownFields = unknownFields.build();
         makeExtensionsImmutable();
@@ -3418,6 +4264,41 @@ public final class Lapp {
       return abstract_;
     }
 
+    public static final int EXPECTEDCALLS_FIELD_NUMBER = 10;
+    private java.util.List<nl.wvdzwan.lapp.protobuf.Lapp.ExpectedCall> expectedCalls_;
+    /**
+     * <code>repeated .lapp.ExpectedCall expectedCalls = 10;</code>
+     */
+    public java.util.List<nl.wvdzwan.lapp.protobuf.Lapp.ExpectedCall> getExpectedCallsList() {
+      return expectedCalls_;
+    }
+    /**
+     * <code>repeated .lapp.ExpectedCall expectedCalls = 10;</code>
+     */
+    public java.util.List<? extends nl.wvdzwan.lapp.protobuf.Lapp.ExpectedCallOrBuilder> 
+        getExpectedCallsOrBuilderList() {
+      return expectedCalls_;
+    }
+    /**
+     * <code>repeated .lapp.ExpectedCall expectedCalls = 10;</code>
+     */
+    public int getExpectedCallsCount() {
+      return expectedCalls_.size();
+    }
+    /**
+     * <code>repeated .lapp.ExpectedCall expectedCalls = 10;</code>
+     */
+    public nl.wvdzwan.lapp.protobuf.Lapp.ExpectedCall getExpectedCalls(int index) {
+      return expectedCalls_.get(index);
+    }
+    /**
+     * <code>repeated .lapp.ExpectedCall expectedCalls = 10;</code>
+     */
+    public nl.wvdzwan.lapp.protobuf.Lapp.ExpectedCallOrBuilder getExpectedCallsOrBuilder(
+        int index) {
+      return expectedCalls_.get(index);
+    }
+
     private byte memoizedIsInitialized = -1;
     @java.lang.Override
     public final boolean isInitialized() {
@@ -3458,6 +4339,9 @@ public final class Lapp {
       }
       if (abstract_ != false) {
         output.writeBool(9, abstract_);
+      }
+      for (int i = 0; i < expectedCalls_.size(); i++) {
+        output.writeMessage(10, expectedCalls_.get(i));
       }
       unknownFields.writeTo(output);
     }
@@ -3509,6 +4393,10 @@ public final class Lapp {
         size += com.google.protobuf.CodedOutputStream
           .computeBoolSize(9, abstract_);
       }
+      for (int i = 0; i < expectedCalls_.size(); i++) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(10, expectedCalls_.get(i));
+      }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
       return size;
@@ -3542,6 +4430,8 @@ public final class Lapp {
           != other.getInterface()) return false;
       if (getAbstract()
           != other.getAbstract()) return false;
+      if (!getExpectedCallsList()
+          .equals(other.getExpectedCallsList())) return false;
       if (!unknownFields.equals(other.unknownFields)) return false;
       return true;
     }
@@ -3579,6 +4469,10 @@ public final class Lapp {
       hash = (37 * hash) + ABSTRACT_FIELD_NUMBER;
       hash = (53 * hash) + com.google.protobuf.Internal.hashBoolean(
           getAbstract());
+      if (getExpectedCallsCount() > 0) {
+        hash = (37 * hash) + EXPECTEDCALLS_FIELD_NUMBER;
+        hash = (53 * hash) + getExpectedCallsList().hashCode();
+      }
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
       return hash;
@@ -3707,6 +4601,7 @@ public final class Lapp {
       private void maybeForceBuilderInitialization() {
         if (com.google.protobuf.GeneratedMessageV3
                 .alwaysUseFieldBuilders) {
+          getExpectedCallsFieldBuilder();
         }
       }
       @java.lang.Override
@@ -3730,6 +4625,12 @@ public final class Lapp {
 
         abstract_ = false;
 
+        if (expectedCallsBuilder_ == null) {
+          expectedCalls_ = java.util.Collections.emptyList();
+          bitField0_ = (bitField0_ & ~0x00000200);
+        } else {
+          expectedCallsBuilder_.clear();
+        }
         return this;
       }
 
@@ -3775,6 +4676,15 @@ public final class Lapp {
         result.private_ = private_;
         result.interface_ = interface_;
         result.abstract_ = abstract_;
+        if (expectedCallsBuilder_ == null) {
+          if (((bitField0_ & 0x00000200) != 0)) {
+            expectedCalls_ = java.util.Collections.unmodifiableList(expectedCalls_);
+            bitField0_ = (bitField0_ & ~0x00000200);
+          }
+          result.expectedCalls_ = expectedCalls_;
+        } else {
+          result.expectedCalls_ = expectedCallsBuilder_.build();
+        }
         result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
@@ -3867,6 +4777,32 @@ public final class Lapp {
         }
         if (other.getAbstract() != false) {
           setAbstract(other.getAbstract());
+        }
+        if (expectedCallsBuilder_ == null) {
+          if (!other.expectedCalls_.isEmpty()) {
+            if (expectedCalls_.isEmpty()) {
+              expectedCalls_ = other.expectedCalls_;
+              bitField0_ = (bitField0_ & ~0x00000200);
+            } else {
+              ensureExpectedCallsIsMutable();
+              expectedCalls_.addAll(other.expectedCalls_);
+            }
+            onChanged();
+          }
+        } else {
+          if (!other.expectedCalls_.isEmpty()) {
+            if (expectedCallsBuilder_.isEmpty()) {
+              expectedCallsBuilder_.dispose();
+              expectedCallsBuilder_ = null;
+              expectedCalls_ = other.expectedCalls_;
+              bitField0_ = (bitField0_ & ~0x00000200);
+              expectedCallsBuilder_ = 
+                com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders ?
+                   getExpectedCallsFieldBuilder() : null;
+            } else {
+              expectedCallsBuilder_.addAllMessages(other.expectedCalls_);
+            }
+          }
         }
         this.mergeUnknownFields(other.unknownFields);
         onChanged();
@@ -4395,6 +5331,246 @@ public final class Lapp {
         abstract_ = false;
         onChanged();
         return this;
+      }
+
+      private java.util.List<nl.wvdzwan.lapp.protobuf.Lapp.ExpectedCall> expectedCalls_ =
+        java.util.Collections.emptyList();
+      private void ensureExpectedCallsIsMutable() {
+        if (!((bitField0_ & 0x00000200) != 0)) {
+          expectedCalls_ = new java.util.ArrayList<nl.wvdzwan.lapp.protobuf.Lapp.ExpectedCall>(expectedCalls_);
+          bitField0_ |= 0x00000200;
+         }
+      }
+
+      private com.google.protobuf.RepeatedFieldBuilderV3<
+          nl.wvdzwan.lapp.protobuf.Lapp.ExpectedCall, nl.wvdzwan.lapp.protobuf.Lapp.ExpectedCall.Builder, nl.wvdzwan.lapp.protobuf.Lapp.ExpectedCallOrBuilder> expectedCallsBuilder_;
+
+      /**
+       * <code>repeated .lapp.ExpectedCall expectedCalls = 10;</code>
+       */
+      public java.util.List<nl.wvdzwan.lapp.protobuf.Lapp.ExpectedCall> getExpectedCallsList() {
+        if (expectedCallsBuilder_ == null) {
+          return java.util.Collections.unmodifiableList(expectedCalls_);
+        } else {
+          return expectedCallsBuilder_.getMessageList();
+        }
+      }
+      /**
+       * <code>repeated .lapp.ExpectedCall expectedCalls = 10;</code>
+       */
+      public int getExpectedCallsCount() {
+        if (expectedCallsBuilder_ == null) {
+          return expectedCalls_.size();
+        } else {
+          return expectedCallsBuilder_.getCount();
+        }
+      }
+      /**
+       * <code>repeated .lapp.ExpectedCall expectedCalls = 10;</code>
+       */
+      public nl.wvdzwan.lapp.protobuf.Lapp.ExpectedCall getExpectedCalls(int index) {
+        if (expectedCallsBuilder_ == null) {
+          return expectedCalls_.get(index);
+        } else {
+          return expectedCallsBuilder_.getMessage(index);
+        }
+      }
+      /**
+       * <code>repeated .lapp.ExpectedCall expectedCalls = 10;</code>
+       */
+      public Builder setExpectedCalls(
+          int index, nl.wvdzwan.lapp.protobuf.Lapp.ExpectedCall value) {
+        if (expectedCallsBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureExpectedCallsIsMutable();
+          expectedCalls_.set(index, value);
+          onChanged();
+        } else {
+          expectedCallsBuilder_.setMessage(index, value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .lapp.ExpectedCall expectedCalls = 10;</code>
+       */
+      public Builder setExpectedCalls(
+          int index, nl.wvdzwan.lapp.protobuf.Lapp.ExpectedCall.Builder builderForValue) {
+        if (expectedCallsBuilder_ == null) {
+          ensureExpectedCallsIsMutable();
+          expectedCalls_.set(index, builderForValue.build());
+          onChanged();
+        } else {
+          expectedCallsBuilder_.setMessage(index, builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .lapp.ExpectedCall expectedCalls = 10;</code>
+       */
+      public Builder addExpectedCalls(nl.wvdzwan.lapp.protobuf.Lapp.ExpectedCall value) {
+        if (expectedCallsBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureExpectedCallsIsMutable();
+          expectedCalls_.add(value);
+          onChanged();
+        } else {
+          expectedCallsBuilder_.addMessage(value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .lapp.ExpectedCall expectedCalls = 10;</code>
+       */
+      public Builder addExpectedCalls(
+          int index, nl.wvdzwan.lapp.protobuf.Lapp.ExpectedCall value) {
+        if (expectedCallsBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureExpectedCallsIsMutable();
+          expectedCalls_.add(index, value);
+          onChanged();
+        } else {
+          expectedCallsBuilder_.addMessage(index, value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .lapp.ExpectedCall expectedCalls = 10;</code>
+       */
+      public Builder addExpectedCalls(
+          nl.wvdzwan.lapp.protobuf.Lapp.ExpectedCall.Builder builderForValue) {
+        if (expectedCallsBuilder_ == null) {
+          ensureExpectedCallsIsMutable();
+          expectedCalls_.add(builderForValue.build());
+          onChanged();
+        } else {
+          expectedCallsBuilder_.addMessage(builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .lapp.ExpectedCall expectedCalls = 10;</code>
+       */
+      public Builder addExpectedCalls(
+          int index, nl.wvdzwan.lapp.protobuf.Lapp.ExpectedCall.Builder builderForValue) {
+        if (expectedCallsBuilder_ == null) {
+          ensureExpectedCallsIsMutable();
+          expectedCalls_.add(index, builderForValue.build());
+          onChanged();
+        } else {
+          expectedCallsBuilder_.addMessage(index, builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .lapp.ExpectedCall expectedCalls = 10;</code>
+       */
+      public Builder addAllExpectedCalls(
+          java.lang.Iterable<? extends nl.wvdzwan.lapp.protobuf.Lapp.ExpectedCall> values) {
+        if (expectedCallsBuilder_ == null) {
+          ensureExpectedCallsIsMutable();
+          com.google.protobuf.AbstractMessageLite.Builder.addAll(
+              values, expectedCalls_);
+          onChanged();
+        } else {
+          expectedCallsBuilder_.addAllMessages(values);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .lapp.ExpectedCall expectedCalls = 10;</code>
+       */
+      public Builder clearExpectedCalls() {
+        if (expectedCallsBuilder_ == null) {
+          expectedCalls_ = java.util.Collections.emptyList();
+          bitField0_ = (bitField0_ & ~0x00000200);
+          onChanged();
+        } else {
+          expectedCallsBuilder_.clear();
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .lapp.ExpectedCall expectedCalls = 10;</code>
+       */
+      public Builder removeExpectedCalls(int index) {
+        if (expectedCallsBuilder_ == null) {
+          ensureExpectedCallsIsMutable();
+          expectedCalls_.remove(index);
+          onChanged();
+        } else {
+          expectedCallsBuilder_.remove(index);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .lapp.ExpectedCall expectedCalls = 10;</code>
+       */
+      public nl.wvdzwan.lapp.protobuf.Lapp.ExpectedCall.Builder getExpectedCallsBuilder(
+          int index) {
+        return getExpectedCallsFieldBuilder().getBuilder(index);
+      }
+      /**
+       * <code>repeated .lapp.ExpectedCall expectedCalls = 10;</code>
+       */
+      public nl.wvdzwan.lapp.protobuf.Lapp.ExpectedCallOrBuilder getExpectedCallsOrBuilder(
+          int index) {
+        if (expectedCallsBuilder_ == null) {
+          return expectedCalls_.get(index);  } else {
+          return expectedCallsBuilder_.getMessageOrBuilder(index);
+        }
+      }
+      /**
+       * <code>repeated .lapp.ExpectedCall expectedCalls = 10;</code>
+       */
+      public java.util.List<? extends nl.wvdzwan.lapp.protobuf.Lapp.ExpectedCallOrBuilder> 
+           getExpectedCallsOrBuilderList() {
+        if (expectedCallsBuilder_ != null) {
+          return expectedCallsBuilder_.getMessageOrBuilderList();
+        } else {
+          return java.util.Collections.unmodifiableList(expectedCalls_);
+        }
+      }
+      /**
+       * <code>repeated .lapp.ExpectedCall expectedCalls = 10;</code>
+       */
+      public nl.wvdzwan.lapp.protobuf.Lapp.ExpectedCall.Builder addExpectedCallsBuilder() {
+        return getExpectedCallsFieldBuilder().addBuilder(
+            nl.wvdzwan.lapp.protobuf.Lapp.ExpectedCall.getDefaultInstance());
+      }
+      /**
+       * <code>repeated .lapp.ExpectedCall expectedCalls = 10;</code>
+       */
+      public nl.wvdzwan.lapp.protobuf.Lapp.ExpectedCall.Builder addExpectedCallsBuilder(
+          int index) {
+        return getExpectedCallsFieldBuilder().addBuilder(
+            index, nl.wvdzwan.lapp.protobuf.Lapp.ExpectedCall.getDefaultInstance());
+      }
+      /**
+       * <code>repeated .lapp.ExpectedCall expectedCalls = 10;</code>
+       */
+      public java.util.List<nl.wvdzwan.lapp.protobuf.Lapp.ExpectedCall.Builder> 
+           getExpectedCallsBuilderList() {
+        return getExpectedCallsFieldBuilder().getBuilderList();
+      }
+      private com.google.protobuf.RepeatedFieldBuilderV3<
+          nl.wvdzwan.lapp.protobuf.Lapp.ExpectedCall, nl.wvdzwan.lapp.protobuf.Lapp.ExpectedCall.Builder, nl.wvdzwan.lapp.protobuf.Lapp.ExpectedCallOrBuilder> 
+          getExpectedCallsFieldBuilder() {
+        if (expectedCallsBuilder_ == null) {
+          expectedCallsBuilder_ = new com.google.protobuf.RepeatedFieldBuilderV3<
+              nl.wvdzwan.lapp.protobuf.Lapp.ExpectedCall, nl.wvdzwan.lapp.protobuf.Lapp.ExpectedCall.Builder, nl.wvdzwan.lapp.protobuf.Lapp.ExpectedCallOrBuilder>(
+                  expectedCalls_,
+                  ((bitField0_ & 0x00000200) != 0),
+                  getParentForChildren(),
+                  isClean());
+          expectedCalls_ = null;
+        }
+        return expectedCallsBuilder_;
       }
       @java.lang.Override
       public final Builder setUnknownFields(
@@ -6476,6 +7652,11 @@ public final class Lapp {
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internal_static_lapp_Call_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_lapp_ExpectedCall_descriptor;
+  private static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_lapp_ExpectedCall_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_lapp_Artifact_descriptor;
   private static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
@@ -6509,24 +7690,28 @@ public final class Lapp {
       "e\030\001 \001(\t\022\016\n\006symbol\030\002 \001(\t\022\020\n\010artifact\030\003 \001(" +
       "\t\022,\n\010metadata\030\004 \003(\0132\032.lapp.Method.Metada" +
       "taEntry\032/\n\rMetadataEntry\022\013\n\003key\030\001 \001(\t\022\r\n" +
-      "\005value\030\002 \001(\t:\0028\001\"\267\001\n\004Call\022\034\n\006source\030\001 \001(" +
+      "\005value\030\002 \001(\t:\0028\001\"\305\001\n\004Call\022\034\n\006source\030\001 \001(" +
       "\0132\014.lapp.Method\022\034\n\006target\030\002 \001(\0132\014.lapp.M" +
       "ethod\022%\n\010callType\030\003 \001(\0162\023.lapp.Call.Call" +
-      "Type\"L\n\010CallType\022\013\n\007UNKNOWN\020\000\022\r\n\tINTERFA" +
+      "Type\"Z\n\010CallType\022\013\n\007UNKNOWN\020\000\022\r\n\tINTERFA" +
       "CE\020\001\022\013\n\007VIRTUAL\020\002\022\013\n\007SPECIAL\020\003\022\n\n\006STATIC" +
-      "\020\004\"8\n\010Artifact\022\r\n\005group\030\001 \001(\t\022\014\n\004name\030\002 " +
-      "\001(\t\022\017\n\007version\030\003 \001(\t\"\253\001\n\013ClassRecord\022\014\n\004" +
-      "name\030\001 \001(\t\022\017\n\007package\030\002 \001(\t\022\022\n\nsuperClas" +
-      "s\030\003 \001(\t\022\022\n\ninterfaces\030\004 \003(\t\022\017\n\007methods\030\005" +
-      " \003(\t\022\016\n\006public\030\006 \001(\010\022\017\n\007private\030\007 \001(\010\022\021\n" +
-      "\tinterface\030\010 \001(\010\022\020\n\010abstract\030\t \001(\010\"\355\001\n\007P" +
-      "ackage\022\021\n\tartifacts\030\001 \003(\t\022\'\n\014classRecord" +
-      "s\030\006 \003(\0132\021.lapp.ClassRecord\022!\n\rresolvedCa" +
-      "lls\030\004 \003(\0132\n.lapp.Call\022#\n\017unresolvedCalls" +
-      "\030\005 \003(\0132\n.lapp.Call\022-\n\010metadata\030\010 \003(\0132\033.l" +
-      "app.Package.MetadataEntry\032/\n\rMetadataEnt" +
-      "ry\022\013\n\003key\030\001 \001(\t\022\r\n\005value\030\002 \001(\t:\0028\001B \n\030nl" +
-      ".wvdzwan.lapp.protobufB\004Lappb\006proto3"
+      "\020\004\022\014\n\010RESOLVED\020\005\"J\n\014ExpectedCall\022\034\n\006sour" +
+      "ce\030\001 \001(\0132\014.lapp.Method\022\034\n\006target\030\002 \001(\0132\014" +
+      ".lapp.Method\"8\n\010Artifact\022\r\n\005group\030\001 \001(\t\022" +
+      "\014\n\004name\030\002 \001(\t\022\017\n\007version\030\003 \001(\t\"\326\001\n\013Class" +
+      "Record\022\014\n\004name\030\001 \001(\t\022\017\n\007package\030\002 \001(\t\022\022\n" +
+      "\nsuperClass\030\003 \001(\t\022\022\n\ninterfaces\030\004 \003(\t\022\017\n" +
+      "\007methods\030\005 \003(\t\022\016\n\006public\030\006 \001(\010\022\017\n\007privat" +
+      "e\030\007 \001(\010\022\021\n\tinterface\030\010 \001(\010\022\020\n\010abstract\030\t" +
+      " \001(\010\022)\n\rexpectedCalls\030\n \003(\0132\022.lapp.Expec" +
+      "tedCall\"\355\001\n\007Package\022\021\n\tartifacts\030\001 \003(\t\022\'" +
+      "\n\014classRecords\030\006 \003(\0132\021.lapp.ClassRecord\022" +
+      "!\n\rresolvedCalls\030\004 \003(\0132\n.lapp.Call\022#\n\017un" +
+      "resolvedCalls\030\005 \003(\0132\n.lapp.Call\022-\n\010metad" +
+      "ata\030\010 \003(\0132\033.lapp.Package.MetadataEntry\032/" +
+      "\n\rMetadataEntry\022\013\n\003key\030\001 \001(\t\022\r\n\005value\030\002 " +
+      "\001(\t:\0028\001B \n\030nl.wvdzwan.lapp.protobufB\004Lap" +
+      "pb\006proto3"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -6558,20 +7743,26 @@ public final class Lapp {
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_lapp_Call_descriptor,
         new java.lang.String[] { "Source", "Target", "CallType", });
-    internal_static_lapp_Artifact_descriptor =
+    internal_static_lapp_ExpectedCall_descriptor =
       getDescriptor().getMessageTypes().get(2);
+    internal_static_lapp_ExpectedCall_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_lapp_ExpectedCall_descriptor,
+        new java.lang.String[] { "Source", "Target", });
+    internal_static_lapp_Artifact_descriptor =
+      getDescriptor().getMessageTypes().get(3);
     internal_static_lapp_Artifact_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_lapp_Artifact_descriptor,
         new java.lang.String[] { "Group", "Name", "Version", });
     internal_static_lapp_ClassRecord_descriptor =
-      getDescriptor().getMessageTypes().get(3);
+      getDescriptor().getMessageTypes().get(4);
     internal_static_lapp_ClassRecord_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_lapp_ClassRecord_descriptor,
-        new java.lang.String[] { "Name", "Package", "SuperClass", "Interfaces", "Methods", "Public", "Private", "Interface", "Abstract", });
+        new java.lang.String[] { "Name", "Package", "SuperClass", "Interfaces", "Methods", "Public", "Private", "Interface", "Abstract", "ExpectedCalls", });
     internal_static_lapp_Package_descriptor =
-      getDescriptor().getMessageTypes().get(4);
+      getDescriptor().getMessageTypes().get(5);
     internal_static_lapp_Package_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_lapp_Package_descriptor,

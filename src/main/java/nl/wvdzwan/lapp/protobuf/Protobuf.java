@@ -5,6 +5,7 @@ import java.util.stream.Collectors;
 import nl.wvdzwan.lapp.call.Call;
 import nl.wvdzwan.lapp.callgraph.ArtifactRecord;
 import nl.wvdzwan.lapp.core.ClassRecord;
+import nl.wvdzwan.lapp.core.ExpectedCall;
 import nl.wvdzwan.lapp.core.LappPackage;
 import nl.wvdzwan.lapp.core.Method;
 import nl.wvdzwan.lapp.core.ResolvedMethod;
@@ -60,11 +61,20 @@ public class Protobuf {
                 return Lapp.Call.CallType.SPECIAL;
             case STATIC:
                 return Lapp.Call.CallType.STATIC;
+            case RESOLVED_DISPATCH:
+                return Lapp.Call.CallType.RESOLVED;
             case UNKNOWN:
                 return Lapp.Call.CallType.UNKNOWN;
             default:
                 return Lapp.Call.CallType.UNRECOGNIZED;
         }
+    }
+
+    public static Lapp.ExpectedCall of(ExpectedCall e) {
+        return Lapp.ExpectedCall.newBuilder()
+                .setSource(of(e.source))
+                .setTarget(of(e.target))
+                .build();
     }
 
     public static Lapp.ClassRecord of(ClassRecord r) {
@@ -73,6 +83,7 @@ public class Protobuf {
                 .setName(r.name)
                 .addAllInterfaces(r.interfaces)
                 .addAllMethods(r.methods)
+                .addAllExpectedCalls(r.expectedCalls.stream().map(Protobuf::of).collect(Collectors.toList()))
                 .setPublic(r.isPublic)
                 .setPrivate(r.isPrivate)
                 .setInterface(r.isInterface)

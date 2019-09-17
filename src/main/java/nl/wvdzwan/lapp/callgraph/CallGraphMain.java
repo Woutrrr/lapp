@@ -2,8 +2,6 @@ package nl.wvdzwan.lapp.callgraph;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -18,8 +16,8 @@ import nl.wvdzwan.lapp.callgraph.FolderLayout.ArtifactFolderLayout;
 import nl.wvdzwan.lapp.callgraph.FolderLayout.SimpleNameLayout;
 import nl.wvdzwan.lapp.callgraph.wala.WalaAnalysisResult;
 import nl.wvdzwan.lapp.callgraph.wala.WalaAnalysisTransformer;
-import nl.wvdzwan.lapp.convert.outputs.ProtobufOutput;
 import nl.wvdzwan.lapp.core.LappPackage;
+import nl.wvdzwan.lapp.core.Util;
 import nl.wvdzwan.lapp.protobuf.Lapp;
 import nl.wvdzwan.lapp.protobuf.Protobuf;
 
@@ -86,21 +84,12 @@ public class CallGraphMain implements Callable<Void> {
         // Output
         logger.info("Generate output");
         Lapp.Package proto = Protobuf.of(lappPackage);
-        try {
-            if (!output.getAbsoluteFile().getParentFile().exists()) {
-                output.getAbsoluteFile().getParentFile().mkdirs();
-            }
-
-            OutputStream outputStream = new FileOutputStream(output);
-
-            ProtobufOutput protobufOutput = new ProtobufOutput();
-            protobufOutput.export(outputStream, proto);
-        } catch (FileNotFoundException e) {
-            logger.error("File not found: {}", e.getMessage());
-        }
+        Util.saveProtoToFile(proto, output);
 
         return null;
     }
+
+
 
     private boolean parseClassPathFile(String classpath) {
 

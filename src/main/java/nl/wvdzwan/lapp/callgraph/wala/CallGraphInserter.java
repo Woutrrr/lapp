@@ -69,11 +69,11 @@ public class CallGraphInserter {
     }
 
     private Predicate<CGNode> applicationClassLoaderFilter = node -> {
-        return !node.getMethod()
+        return node.getMethod()
                 .getDeclaringClass()
                 .getClassLoader()
                 .getReference()
-                .equals(ClassLoaderReference.Application);
+                .equals(ClassLoaderReference.Extension);
     };
 
     private Call.CallType getInvocationLabel(CallSiteReference callsite) {

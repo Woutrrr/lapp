@@ -23,8 +23,14 @@ message Call {
         VIRTUAL = 2;
         SPECIAL = 3;
         STATIC = 4;
+        RESOLVED = 5;
     }
     CallType callType = 3;
+}
+
+message ExpectedCall {
+    Method source = 1;
+    Method target = 2;
 }
 
 message Artifact {
@@ -44,6 +50,7 @@ message ClassRecord {
     bool private = 7;
     bool interface = 8;
     bool abstract = 9;
+    repeated ExpectedCall expectedCalls = 10;
 }
 
 message Package {

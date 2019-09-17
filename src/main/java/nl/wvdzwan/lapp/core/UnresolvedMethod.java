@@ -19,4 +19,12 @@ public class UnresolvedMethod extends Method {
     public static synchronized UnresolvedMethod findOrCreate(String namespace, String symbol) {
         return DEFAULT_CONTEXT.makeUnresolved(namespace, symbol);
     }
+
+    @Override
+    public String toString() {
+        return "UnresolvedMethod{" +
+                "namespace='" + namespace + '\'' +
+                ", symbol='" + symbol + '\'' +
+                '}';
+    }
 }

@@ -18,4 +18,6 @@ public abstract class Method {
     }
 
     public abstract String toID();
+
+    public abstract String toString();
 }
