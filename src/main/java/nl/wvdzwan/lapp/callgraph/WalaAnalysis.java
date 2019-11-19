@@ -136,14 +136,14 @@ public class WalaAnalysis {
 
         for (IClass klass : cha) {
             if (acceptClassForEntryPoints(klass)) {
-
-                Collection<Entrypoint> acceptedMethods = klass.getAllMethods().stream()
-                        .filter(WalaAnalysis::acceptMethodAsEntryPoint)
-                        .map(n -> new DefaultEntrypoint(n, cha))
-                        .collect(Collectors.toList());
-
-                entryPoints.addAll(acceptedMethods);
-
+                if (klass.getName().toString().equals("Ljava/lang/invoke/LambdaMetafactory")) {
+                    continue;
+                }
+                for (IMethod method : klass.getDeclaredMethods()) {
+                    if (acceptMethodAsEntryPoint(method)) {
+                        entryPoints.add(new DefaultEntrypoint(method, cha));
+                    }
+                }
             }
         }
 
@@ -152,19 +152,13 @@ public class WalaAnalysis {
 
 
     private static boolean acceptClassForEntryPoints(IClass klass) {
-        if (klass.getClassLoader().getReference().equals(ClassLoaderReference.Application)) {
-            return klass.getClassLoader().getReference().equals(ClassLoaderReference.Application)
-                    && !klass.isInterface()
-                    && !klass.isPrivate();
-        }
         return klass.getClassLoader().getReference().equals(ClassLoaderReference.Application)
                 && !klass.isInterface()
                 && !klass.isPrivate();
     }
 
     public static boolean acceptMethodAsEntryPoint(IMethod method) {
-        return method.getDeclaringClass().getClassLoader().getReference().equals(ClassLoaderReference.Application)
-                && !method.isPrivate()
+        return !method.isPrivate()
                 && !method.isAbstract();
     }
 }
