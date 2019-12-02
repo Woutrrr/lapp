@@ -97,7 +97,9 @@ public class ClassHierarchyInserter {
             return;
         }
 
+        // TODO : Possibly optimize by only using ClassReader if superclass is Object
         if (klass instanceof ShrikeClass) {
+
             ClassReader cr = ((ShrikeClass) klass).getReader();
             try {
 
