@@ -4,9 +4,7 @@ package nl.wvdzwan.lapp.callgraph;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Iterator;
-import java.util.stream.Collectors;
 
 import com.ibm.wala.classLoader.IClass;
 import com.ibm.wala.classLoader.IMethod;
@@ -19,7 +17,6 @@ import com.ibm.wala.ipa.cha.ClassHierarchyFactory;
 import com.ibm.wala.types.ClassLoaderReference;
 import com.ibm.wala.util.config.AnalysisScopeReader;
 import com.ibm.wala.util.config.SetOfClasses;
-import com.ibm.wala.util.io.FileProvider;
 import com.ibm.wala.util.warnings.Warning;
 import com.ibm.wala.util.warnings.Warnings;
 import org.apache.logging.log4j.LogManager;
@@ -41,7 +38,10 @@ public class WalaAnalysis {
 
     public WalaAnalysisResult run() throws IOException, ClassHierarchyException {
         try {
-            File exclusionsFile = (new FileProvider()).getFile(exclusionFile);
+            File exclusionsFile = null;
+            if (this.exclusionFile != null) {
+                exclusionsFile = new File(this.exclusionFile);
+            }
             AnalysisScope scope = AnalysisScopeReader.makePrimordialScope(exclusionsFile);
 
             for (String jar : jars) {
@@ -52,10 +52,10 @@ public class WalaAnalysis {
             logger.info("Class hierarchy built, {} classes", cha::getNumberOfClasses);
 
             for (Warning warning : filterExclusionsWarnings(scope.getExclusions())) {
-                if (warning.getMsg().startsWith("class com.ibm.wala.classLoader.BytecodeClass$ClassNotFoundWarning")) {
-                    // Missing classes is expected since the classpath only has main jar + primordial
-                    continue;
-                }
+//                if (warning.getMsg().startsWith("class com.ibm.wala.classLoader.BytecodeClass$ClassNotFoundWarning")) {
+//                    // Missing classes is expected since the classpath only has main jar + primordial
+//                    continue;
+//                }
                 logger.warn(warning);
             }
             Warnings.clear();
@@ -118,7 +118,7 @@ public class WalaAnalysis {
                 int index = msg.lastIndexOf("ClassNotFoundWarning");
                 String klass = msg.substring(index + 24);
 
-                if (exclusions.contains(klass)) {
+                if (exclusions == null || exclusions.contains(klass)) {
                     continue;
                 }
             }
