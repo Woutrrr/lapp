@@ -57,6 +57,7 @@ public class ConvertMain implements Callable<Void> {
         types.put("udot", UnifiedCallGraphExport.class);
         types.put("chadot", ClassHierarchyDotGraph.class);
         types.put("resolved", ResolvedDispatchCallGraphExport.class);
+        types.put("jcg", JcgOutput.class);
     }
 
     @Override
