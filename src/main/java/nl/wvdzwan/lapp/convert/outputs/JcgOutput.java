@@ -55,7 +55,8 @@ public class JcgOutput implements LappPackageOutput {
                     CallSite cs = new CallSite();
                     cs.type = call.callType.label;
                     cs.declaredTarget = declaredTarget;
-
+                    cs.line = call.lineNumber;
+                    cs.pc = call.programCounter;
 
                     cs.targets.add(Target.from(call.target));
 
@@ -76,6 +77,7 @@ public class JcgOutput implements LappPackageOutput {
                 });
 
         List<ReachableMethod> reachableMethodsList = new ArrayList<>(reachableMethods.values());
+        ReachableMethodWrapper wrapper = new ReachableMethodWrapper(reachableMethodsList);
 
         try {
             GsonBuilder gsonBuilder = new GsonBuilder();
@@ -84,13 +86,10 @@ public class JcgOutput implements LappPackageOutput {
 
             Gson gson = gsonBuilder.create();
 
-
             PrintWriter printer = new PrintWriter(outputStream);
             JsonWriter jsonWriter = gson.newJsonWriter(printer);
 
-
-
-            gson.toJson(reachableMethodsList, reachableMethodsList.getClass(), jsonWriter);
+            gson.toJson(wrapper, wrapper.getClass(), jsonWriter);
             printer.flush();
 
         } catch (IOException e) {
@@ -99,25 +98,26 @@ public class JcgOutput implements LappPackageOutput {
         return true;
     }
 
+    static class ReachableMethodWrapper {
+        List<ReachableMethod> reachableMethods;
+
+        ReachableMethodWrapper(List<ReachableMethod> methods) {
+            this.reachableMethods = methods;
+        }
+    }
+
     static class ReachableMethod {
         Target method;
         List<CallSite> callSites = new ArrayList<>();
-        Set<String> callSiteKeys = new HashSet<>();
+        transient Set<String> callSiteKeys = new HashSet<>();
     }
 
     static class CallSite {
         Target declaredTarget;
-        String type;
-        int line;
-        int pc;
+        transient String type;
+        int line = -1;
+        int pc = -1;
         List<Target> targets = new ArrayList<Target>();
-
-        static CallSite from(Call call) {
-            CallSite callSite = new CallSite();
-
-            callSite.declaredTarget = Target.from(call.source);
-            return callSite;
-        }
     }
 
     static class Target {
@@ -148,6 +148,9 @@ public class JcgOutput implements LappPackageOutput {
                 target.parameterTypes = new String[]{};
             } else {
                 target.parameterTypes = signature.substring(parenthesisOpen + 1, parenthesisClose).split(";");
+                for(int i=0; i < target.parameterTypes.length; i++) {
+                    target.parameterTypes[i] = target.parameterTypes[i] + ";";
+                }
             }
             target.returnType = signature.substring(parenthesisClose+1);
 

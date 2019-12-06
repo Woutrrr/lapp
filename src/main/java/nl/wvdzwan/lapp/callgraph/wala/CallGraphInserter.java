@@ -44,6 +44,9 @@ public class CallGraphInserter {
 
                 CallSiteReference callSite = callSites.next();
 
+                int programCounter = callSite.getProgramCounter();
+                int lineNumber = node.getMethod().getLineNumber(programCounter);
+
                 if (lappPackageBuilder.getPackageCount() > 1) {
                     // More than 1 package, thus should be able to use call site context
                     Set<CGNode> possibleTargets = cg.getPossibleTargets(node, callSite);
@@ -51,7 +54,7 @@ public class CallGraphInserter {
                         MethodReference targetWithCorrectClassLoader = correctClassLoader(possibleTarget.getMethod().getReference());
 
                         Method targetMethodNode = lappPackageBuilder.addMethod(targetWithCorrectClassLoader);
-                        lappPackageBuilder.addCall(methodNode, targetMethodNode, getInvocationLabel(callSite));
+                        lappPackageBuilder.addCall(methodNode, targetMethodNode, getInvocationLabel(callSite), lineNumber, programCounter);
                     }
                 } else {
 
@@ -61,7 +64,7 @@ public class CallGraphInserter {
                     MethodReference targetWithCorrectClassLoader = correctClassLoader(callSite.getDeclaredTarget());
 
                     Method targetMethodNode = lappPackageBuilder.addMethod(targetWithCorrectClassLoader);
-                    lappPackageBuilder.addCall(methodNode, targetMethodNode, getInvocationLabel(callSite));
+                    lappPackageBuilder.addCall(methodNode, targetMethodNode, getInvocationLabel(callSite), lineNumber, programCounter);
                 }
             }
 

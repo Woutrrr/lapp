@@ -101,9 +101,9 @@ public class LappPackageBuilder {
         }
     }
 
-    public boolean addCall(Method source, Method target, Call.CallType type) {
+    public boolean addCall(Method source, Method target, Call.CallType type, int lineNumber, int programCounter) {
 
-        return lappPackage.addCall(source, target, type);
+        return lappPackage.addCall(source, target, type, lineNumber, programCounter);
 
     }
 

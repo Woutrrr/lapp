@@ -26,6 +26,8 @@ message Call {
         RESOLVED = 5;
     }
     CallType callType = 3;
+    int32 lineNumber = 4;
+    int32 programCounter = 5;
 }
 
 message ExpectedCall {

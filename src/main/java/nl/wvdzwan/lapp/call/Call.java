@@ -24,10 +24,14 @@ public class Call extends Edge {
 
     }
     public final CallType callType;
+    public final int lineNumber;
+    public final int programCounter;
 
-    public Call(Method source, Method callee, CallType callType) {
+    public Call(Method source, Method callee, CallType callType, int lineNumber, int programCounter) {
         super(source, callee);
         this.callType = callType;
+        this.lineNumber = lineNumber;
+        this.programCounter = programCounter;
     }
 
     @Override

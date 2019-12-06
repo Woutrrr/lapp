@@ -47,6 +47,8 @@ public class Protobuf {
                 .setSource(of(c.source))
                 .setTarget(of(c.target))
                 .setCallType(of(c.callType))
+                .setLineNumber(c.lineNumber)
+                .setProgramCounter(c.programCounter)
                 .build();
 
     }

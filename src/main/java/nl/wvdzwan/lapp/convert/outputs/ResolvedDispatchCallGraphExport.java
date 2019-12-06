@@ -41,7 +41,7 @@ public class ResolvedDispatchCallGraphExport extends HumanReadableDotGraph {
                         continue;
                     }
                     graph.addVertex(dynamic_target);
-                    graph.addEdge(c.source, dynamic_target, new Call(c.target, dynamic_target, RESOLVED_DISPATCH));
+                    graph.addEdge(c.source, dynamic_target, new Call(c.target, dynamic_target, RESOLVED_DISPATCH, c.lineNumber, c.programCounter));
                 }
             }
         }

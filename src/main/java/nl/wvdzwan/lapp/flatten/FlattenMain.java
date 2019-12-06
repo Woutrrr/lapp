@@ -85,7 +85,7 @@ public class FlattenMain implements Callable<Void> {
                             if (c.source.toID().equals(dynamic_target.toID())) {
                                 continue;
                             }
-                            newCalls.add(new Call(c.source, dynamic_target, RESOLVED_DISPATCH));
+                            newCalls.add(new Call(c.source, dynamic_target, RESOLVED_DISPATCH, c.lineNumber, c.programCounter));
                         }
                     }
                     return newCalls.stream();

@@ -57,8 +57,10 @@ public class LappPackageReader {
                 .map(c -> new Call(
                         fromMethod(c.getSource()),
                         fromMethod(c.getTarget()),
-                        fromCallType(c.getCallType()
-                        )))
+                        fromCallType(c.getCallType()),
+                        c.getLineNumber(),
+                        c.getProgramCounter()
+                        ))
                 .collect(Collectors.toSet());
     }
 

@@ -1187,6 +1187,16 @@ public final class Lapp {
      * <code>.lapp.Call.CallType callType = 3;</code>
      */
     nl.wvdzwan.lapp.protobuf.Lapp.Call.CallType getCallType();
+
+    /**
+     * <code>int32 lineNumber = 4;</code>
+     */
+    int getLineNumber();
+
+    /**
+     * <code>int32 programCounter = 5;</code>
+     */
+    int getProgramCounter();
   }
   /**
    * Protobuf type {@code lapp.Call}
@@ -1258,6 +1268,16 @@ public final class Lapp {
               int rawValue = input.readEnum();
 
               callType_ = rawValue;
+              break;
+            }
+            case 32: {
+
+              lineNumber_ = input.readInt32();
+              break;
+            }
+            case 40: {
+
+              programCounter_ = input.readInt32();
               break;
             }
             default: {
@@ -1485,6 +1505,24 @@ public final class Lapp {
       return result == null ? nl.wvdzwan.lapp.protobuf.Lapp.Call.CallType.UNRECOGNIZED : result;
     }
 
+    public static final int LINENUMBER_FIELD_NUMBER = 4;
+    private int lineNumber_;
+    /**
+     * <code>int32 lineNumber = 4;</code>
+     */
+    public int getLineNumber() {
+      return lineNumber_;
+    }
+
+    public static final int PROGRAMCOUNTER_FIELD_NUMBER = 5;
+    private int programCounter_;
+    /**
+     * <code>int32 programCounter = 5;</code>
+     */
+    public int getProgramCounter() {
+      return programCounter_;
+    }
+
     private byte memoizedIsInitialized = -1;
     @java.lang.Override
     public final boolean isInitialized() {
@@ -1508,6 +1546,12 @@ public final class Lapp {
       if (callType_ != nl.wvdzwan.lapp.protobuf.Lapp.Call.CallType.UNKNOWN.getNumber()) {
         output.writeEnum(3, callType_);
       }
+      if (lineNumber_ != 0) {
+        output.writeInt32(4, lineNumber_);
+      }
+      if (programCounter_ != 0) {
+        output.writeInt32(5, programCounter_);
+      }
       unknownFields.writeTo(output);
     }
 
@@ -1528,6 +1572,14 @@ public final class Lapp {
       if (callType_ != nl.wvdzwan.lapp.protobuf.Lapp.Call.CallType.UNKNOWN.getNumber()) {
         size += com.google.protobuf.CodedOutputStream
           .computeEnumSize(3, callType_);
+      }
+      if (lineNumber_ != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(4, lineNumber_);
+      }
+      if (programCounter_ != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(5, programCounter_);
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -1555,6 +1607,10 @@ public final class Lapp {
             .equals(other.getTarget())) return false;
       }
       if (callType_ != other.callType_) return false;
+      if (getLineNumber()
+          != other.getLineNumber()) return false;
+      if (getProgramCounter()
+          != other.getProgramCounter()) return false;
       if (!unknownFields.equals(other.unknownFields)) return false;
       return true;
     }
@@ -1576,6 +1632,10 @@ public final class Lapp {
       }
       hash = (37 * hash) + CALLTYPE_FIELD_NUMBER;
       hash = (53 * hash) + callType_;
+      hash = (37 * hash) + LINENUMBER_FIELD_NUMBER;
+      hash = (53 * hash) + getLineNumber();
+      hash = (37 * hash) + PROGRAMCOUNTER_FIELD_NUMBER;
+      hash = (53 * hash) + getProgramCounter();
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
       return hash;
@@ -1723,6 +1783,10 @@ public final class Lapp {
         }
         callType_ = 0;
 
+        lineNumber_ = 0;
+
+        programCounter_ = 0;
+
         return this;
       }
 
@@ -1760,6 +1824,8 @@ public final class Lapp {
           result.target_ = targetBuilder_.build();
         }
         result.callType_ = callType_;
+        result.lineNumber_ = lineNumber_;
+        result.programCounter_ = programCounter_;
         onBuilt();
         return result;
       }
@@ -1816,6 +1882,12 @@ public final class Lapp {
         }
         if (other.callType_ != 0) {
           setCallTypeValue(other.getCallTypeValue());
+        }
+        if (other.getLineNumber() != 0) {
+          setLineNumber(other.getLineNumber());
+        }
+        if (other.getProgramCounter() != 0) {
+          setProgramCounter(other.getProgramCounter());
         }
         this.mergeUnknownFields(other.unknownFields);
         onChanged();
@@ -2121,6 +2193,58 @@ public final class Lapp {
       public Builder clearCallType() {
         
         callType_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private int lineNumber_ ;
+      /**
+       * <code>int32 lineNumber = 4;</code>
+       */
+      public int getLineNumber() {
+        return lineNumber_;
+      }
+      /**
+       * <code>int32 lineNumber = 4;</code>
+       */
+      public Builder setLineNumber(int value) {
+        
+        lineNumber_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>int32 lineNumber = 4;</code>
+       */
+      public Builder clearLineNumber() {
+        
+        lineNumber_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private int programCounter_ ;
+      /**
+       * <code>int32 programCounter = 5;</code>
+       */
+      public int getProgramCounter() {
+        return programCounter_;
+      }
+      /**
+       * <code>int32 programCounter = 5;</code>
+       */
+      public Builder setProgramCounter(int value) {
+        
+        programCounter_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>int32 programCounter = 5;</code>
+       */
+      public Builder clearProgramCounter() {
+        
+        programCounter_ = 0;
         onChanged();
         return this;
       }
@@ -7690,28 +7814,29 @@ public final class Lapp {
       "e\030\001 \001(\t\022\016\n\006symbol\030\002 \001(\t\022\020\n\010artifact\030\003 \001(" +
       "\t\022,\n\010metadata\030\004 \003(\0132\032.lapp.Method.Metada" +
       "taEntry\032/\n\rMetadataEntry\022\013\n\003key\030\001 \001(\t\022\r\n" +
-      "\005value\030\002 \001(\t:\0028\001\"\305\001\n\004Call\022\034\n\006source\030\001 \001(" +
+      "\005value\030\002 \001(\t:\0028\001\"\361\001\n\004Call\022\034\n\006source\030\001 \001(" +
       "\0132\014.lapp.Method\022\034\n\006target\030\002 \001(\0132\014.lapp.M" +
       "ethod\022%\n\010callType\030\003 \001(\0162\023.lapp.Call.Call" +
-      "Type\"Z\n\010CallType\022\013\n\007UNKNOWN\020\000\022\r\n\tINTERFA" +
-      "CE\020\001\022\013\n\007VIRTUAL\020\002\022\013\n\007SPECIAL\020\003\022\n\n\006STATIC" +
-      "\020\004\022\014\n\010RESOLVED\020\005\"J\n\014ExpectedCall\022\034\n\006sour" +
-      "ce\030\001 \001(\0132\014.lapp.Method\022\034\n\006target\030\002 \001(\0132\014" +
-      ".lapp.Method\"8\n\010Artifact\022\r\n\005group\030\001 \001(\t\022" +
-      "\014\n\004name\030\002 \001(\t\022\017\n\007version\030\003 \001(\t\"\326\001\n\013Class" +
-      "Record\022\014\n\004name\030\001 \001(\t\022\017\n\007package\030\002 \001(\t\022\022\n" +
-      "\nsuperClass\030\003 \001(\t\022\022\n\ninterfaces\030\004 \003(\t\022\017\n" +
-      "\007methods\030\005 \003(\t\022\016\n\006public\030\006 \001(\010\022\017\n\007privat" +
-      "e\030\007 \001(\010\022\021\n\tinterface\030\010 \001(\010\022\020\n\010abstract\030\t" +
-      " \001(\010\022)\n\rexpectedCalls\030\n \003(\0132\022.lapp.Expec" +
-      "tedCall\"\355\001\n\007Package\022\021\n\tartifacts\030\001 \003(\t\022\'" +
-      "\n\014classRecords\030\006 \003(\0132\021.lapp.ClassRecord\022" +
-      "!\n\rresolvedCalls\030\004 \003(\0132\n.lapp.Call\022#\n\017un" +
-      "resolvedCalls\030\005 \003(\0132\n.lapp.Call\022-\n\010metad" +
-      "ata\030\010 \003(\0132\033.lapp.Package.MetadataEntry\032/" +
-      "\n\rMetadataEntry\022\013\n\003key\030\001 \001(\t\022\r\n\005value\030\002 " +
-      "\001(\t:\0028\001B \n\030nl.wvdzwan.lapp.protobufB\004Lap" +
-      "pb\006proto3"
+      "Type\022\022\n\nlineNumber\030\004 \001(\005\022\026\n\016programCount" +
+      "er\030\005 \001(\005\"Z\n\010CallType\022\013\n\007UNKNOWN\020\000\022\r\n\tINT" +
+      "ERFACE\020\001\022\013\n\007VIRTUAL\020\002\022\013\n\007SPECIAL\020\003\022\n\n\006ST" +
+      "ATIC\020\004\022\014\n\010RESOLVED\020\005\"J\n\014ExpectedCall\022\034\n\006" +
+      "source\030\001 \001(\0132\014.lapp.Method\022\034\n\006target\030\002 \001" +
+      "(\0132\014.lapp.Method\"8\n\010Artifact\022\r\n\005group\030\001 " +
+      "\001(\t\022\014\n\004name\030\002 \001(\t\022\017\n\007version\030\003 \001(\t\"\326\001\n\013C" +
+      "lassRecord\022\014\n\004name\030\001 \001(\t\022\017\n\007package\030\002 \001(" +
+      "\t\022\022\n\nsuperClass\030\003 \001(\t\022\022\n\ninterfaces\030\004 \003(" +
+      "\t\022\017\n\007methods\030\005 \003(\t\022\016\n\006public\030\006 \001(\010\022\017\n\007pr" +
+      "ivate\030\007 \001(\010\022\021\n\tinterface\030\010 \001(\010\022\020\n\010abstra" +
+      "ct\030\t \001(\010\022)\n\rexpectedCalls\030\n \003(\0132\022.lapp.E" +
+      "xpectedCall\"\355\001\n\007Package\022\021\n\tartifacts\030\001 \003" +
+      "(\t\022\'\n\014classRecords\030\006 \003(\0132\021.lapp.ClassRec" +
+      "ord\022!\n\rresolvedCalls\030\004 \003(\0132\n.lapp.Call\022#" +
+      "\n\017unresolvedCalls\030\005 \003(\0132\n.lapp.Call\022-\n\010m" +
+      "etadata\030\010 \003(\0132\033.lapp.Package.MetadataEnt" +
+      "ry\032/\n\rMetadataEntry\022\013\n\003key\030\001 \001(\t\022\r\n\005valu" +
+      "e\030\002 \001(\t:\0028\001B \n\030nl.wvdzwan.lapp.protobufB" +
+      "\004Lappb\006proto3"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -7742,7 +7867,7 @@ public final class Lapp {
     internal_static_lapp_Call_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_lapp_Call_descriptor,
-        new java.lang.String[] { "Source", "Target", "CallType", });
+        new java.lang.String[] { "Source", "Target", "CallType", "LineNumber", "ProgramCounter", });
     internal_static_lapp_ExpectedCall_descriptor =
       getDescriptor().getMessageTypes().get(2);
     internal_static_lapp_ExpectedCall_fieldAccessorTable = new

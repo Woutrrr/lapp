@@ -16,24 +16,24 @@ public class LappPackage {
     public final Set<ClassRecord> classRecords = new HashSet<>();
     public final Map<String, String> metadata = new HashMap<>();
 
-    public boolean addCall(Method source, Method target, Call.CallType type) {
+    public boolean addCall(Method source, Method target, Call.CallType type, int lineNumber, int programCounter) {
 
         if (target instanceof ResolvedMethod
                 && source instanceof ResolvedMethod) {
-            return addResolvedCall((ResolvedMethod) source, (ResolvedMethod) target, type);
+            return addResolvedCall((ResolvedMethod) source, (ResolvedMethod) target, type, lineNumber, programCounter);
         }
 
-        return addUnresolvedCall(source, target, type);
+        return addUnresolvedCall(source, target, type, lineNumber, programCounter);
     }
 
-    private boolean addUnresolvedCall(Method source, Method target, Call.CallType type) {
-        Call call = new Call(source, target, type);
+    private boolean addUnresolvedCall(Method source, Method target, Call.CallType type, int lineNumber, int programCounter) {
+        Call call = new Call(source, target, type, lineNumber, programCounter);
 
         return unresolvedCalls.add(call);
     }
 
-    private boolean addResolvedCall(ResolvedMethod source, ResolvedMethod target, Call.CallType type) {
-        Call call = new Call(source, target, type);
+    private boolean addResolvedCall(ResolvedMethod source, ResolvedMethod target, Call.CallType type, int lineNumber, int programCounter) {
+        Call call = new Call(source, target, type, lineNumber, programCounter);
 
         return resolvedCalls.add(call);
     }
