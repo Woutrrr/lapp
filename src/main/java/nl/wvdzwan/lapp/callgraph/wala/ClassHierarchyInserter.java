@@ -62,13 +62,17 @@ public class ClassHierarchyInserter {
         for (IMethod method : klass.getDeclaredMethods()) {
             classRecord.addMethod(method.getSelector().toString());
 
-            if (method.getAnnotations().size() > 0) {
+            if (false && method.getAnnotations().size() > 0) {
                 String namespace = Util.typeReferenceToNamespace(klass.getReference());
                 String symbol = method.getSelector().toString();
                 UnresolvedMethod source = UnresolvedMethod.findOrCreate(namespace, symbol);
 
                 for (Annotation annotation : method.getAnnotations()) {
                     Map<String, AnnotationsReader.ElementValue> namedArguments = annotation.getNamedArguments();
+
+                    if (!namedArguments.containsKey("name")) {
+                        continue;
+                    }
 
                     String targetName = namedArguments.get("name").toString();
                     String params = Optional.ofNullable(namedArguments.get("parameterTypes"))
@@ -117,7 +121,7 @@ public class ClassHierarchyInserter {
                 e.printStackTrace();
             }
 
-            if (klass.getAnnotations().size() > 0) {
+            if (false && klass.getAnnotations().size() > 0) {
                 for (Annotation annotation : klass.getAnnotations()) {
                     System.out.print(annotation.toString());
 
