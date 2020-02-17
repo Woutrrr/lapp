@@ -1,20 +1,15 @@
 package nl.wvdzwan.lapp.convert;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
-import java.util.function.Function;
-import java.util.stream.Collectors;
-
+import nl.wvdzwan.lapp.call.ChaEdge;
+import nl.wvdzwan.lapp.core.ClassRecord;
+import nl.wvdzwan.lapp.core.LappPackage;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jgrapht.graph.DefaultDirectedGraph;
 
-import nl.wvdzwan.lapp.call.ChaEdge;
-import nl.wvdzwan.lapp.core.ClassRecord;
-import nl.wvdzwan.lapp.core.LappPackage;
+import java.util.*;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 public class LappClassHierarchy {
     protected static final Logger logger = LogManager.getLogger();
@@ -40,17 +35,43 @@ public class LappClassHierarchy {
         return implementors;
     }
 
-    public void getImplementingClasses(ClassRecord classRecord, String method, Set<ClassRecord> implementors) {
+    public boolean getImplementingClasses(ClassRecord classRecord, String method, Set<ClassRecord> implementors) {
+        boolean hasDirectImplementation = false;
 
         if (classRecord.methods.contains(method)) {
             implementors.add(classRecord);
+            hasDirectImplementation = true;
         }
 
+        // Check classes that implement/extend this interface/class
         for (ChaEdge edge : this.graph.incomingEdgesOf(classRecord)) {
-            getImplementingClasses(edge.src, method, implementors);
+            boolean childHasDirectImplementation = getImplementingClasses(edge.src, method, implementors);
+
+            // If the classRecord is an interface then the implementing classes' superclasses also need to be checked for the implementation if the implementing class doesn't have an implementation
+            if (classRecord.isInterface && !childHasDirectImplementation) {
+                getSuperClassesProvidingImplementation(edge.src, method, implementors);
+            }
         }
+
+        return hasDirectImplementation;
     }
 
+    public void getSuperClassesProvidingImplementation(ClassRecord subClass, String method, Set<ClassRecord> implementors) {
+        ClassRecord superClass = typeRepository.get(subClass.superClass);
+
+        if (superClass == null) {
+            if (!subClass.superClass.equals("")) { // Filter out superclass of Object
+                logger.warn("SuperClass Type not found in class hierarchy {}", () -> subClass.superClass);
+            }
+            return;
+        }
+
+        if (superClass.methods.contains(method)) {
+            implementors.add(superClass);
+        }
+
+        getSuperClassesProvidingImplementation(superClass, method, implementors);
+    }
 
     public static LappClassHierarchy make(LappPackage lapp) {
 
