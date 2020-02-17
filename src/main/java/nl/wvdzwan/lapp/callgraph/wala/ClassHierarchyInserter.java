@@ -42,6 +42,9 @@ public class ClassHierarchyInserter {
         for (Iterator<IClass> it = this.classLoader.iterateAllClasses(); it.hasNext(); ) {
 
             IClass klass = it.next();
+            if (klass.getName().toString().equals("Lcom/ibm/wala/FakeRootClass")) {
+                continue;
+            }
             processClass(klass);
         }
     }
