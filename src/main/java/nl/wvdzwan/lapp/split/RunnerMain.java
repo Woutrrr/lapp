@@ -1,5 +1,6 @@
 package nl.wvdzwan.lapp.split;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -16,9 +17,9 @@ public class RunnerMain {
         long after = 0;
         try {
             Map<String, List<String>> entryGroups = SplitMain.split(target);
-System.out.println(target);
-System.out.println(output);
-System.out.println(entryGroups);
+            System.out.println(target);
+            System.out.println(output);
+            System.out.println(entryGroups);
             for (Map.Entry<String, List<String>> entry : entryGroups.entrySet()) {
 
                 List<String> args = new ArrayList<>(Arrays.asList(
@@ -32,9 +33,14 @@ System.out.println(entryGroups);
 
             }
 
-
-
             List<String> ir_buffers = entryGroups.keySet().stream().map(s -> s + ".buf").collect(Collectors.toList());
+
+            File primodialBuffer = new File("primodial.buf");
+            System.out.println(primodialBuffer.getAbsoluteFile().toString());
+
+            if (primodialBuffer.exists()) {
+                ir_buffers.add(primodialBuffer.getAbsoluteFile().toString());
+            }
 
             List<String> args_merge = new ArrayList<>(Arrays.asList(
                     "merge",

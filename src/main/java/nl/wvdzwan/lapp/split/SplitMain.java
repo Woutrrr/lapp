@@ -53,7 +53,7 @@ public class SplitMain {
                 return s.substring(0, s.indexOf("$"));
             }
 
-            return s.substring(0, s.indexOf("."));
+            return s.substring(0, s.indexOf(".", jarFile.toString().length()+1));
         }, Collectors.toList()));
 
         return entryGroups;

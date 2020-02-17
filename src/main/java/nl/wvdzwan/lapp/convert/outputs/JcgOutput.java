@@ -1,19 +1,8 @@
 package nl.wvdzwan.lapp.convert.outputs;
 
-import java.io.IOException;
-import java.io.OutputStream;
-import java.io.PrintWriter;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.stream.JsonWriter;
-
 import nl.wvdzwan.lapp.call.Call;
 import nl.wvdzwan.lapp.convert.LappClassHierarchy;
 import nl.wvdzwan.lapp.core.ClassRecord;
@@ -21,6 +10,11 @@ import nl.wvdzwan.lapp.core.LappPackage;
 import nl.wvdzwan.lapp.core.Method;
 import nl.wvdzwan.lapp.protobuf.Lapp;
 import nl.wvdzwan.lapp.protobuf.LappPackageReader;
+
+import java.io.IOException;
+import java.io.OutputStream;
+import java.io.PrintWriter;
+import java.util.*;
 
 public class JcgOutput implements LappPackageOutput {
     @Override
@@ -50,15 +44,12 @@ public class JcgOutput implements LappPackageOutput {
                 .forEach(call -> {
                     String key = call.source.namespace + "." + call.source.symbol;
                     ReachableMethod reachableMethod = reachableMethods.get(key);
+                    if (reachableMethod == null) {
+                        return;
+                    }
 
                     Target declaredTarget = Target.from(call.target);
-                    CallSite cs = new CallSite();
-                    cs.type = call.callType.label;
-                    cs.declaredTarget = declaredTarget;
-                    cs.line = call.lineNumber;
-                    cs.pc = call.programCounter;
-
-                    cs.targets.add(Target.from(call.target));
+                    CallSite cs = new CallSite(call, declaredTarget);
 
                     // Resolve other possible implementations
                     Set<ClassRecord> implementors = cha.getImplementingClasses(call.target.namespace, call.target.symbol);
@@ -118,6 +109,15 @@ public class JcgOutput implements LappPackageOutput {
         int line = -1;
         int pc = -1;
         List<Target> targets = new ArrayList<Target>();
+
+        public CallSite(Call call, Target declaredTarget) {
+            this.type = call.callType.label;
+            this.declaredTarget = declaredTarget;
+            this.line = call.lineNumber;
+            this.pc = call.programCounter;
+
+            targets.add(declaredTarget);
+        }
     }
 
     static class Target {
