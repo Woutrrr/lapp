@@ -3,6 +3,7 @@ package nl.wvdzwan.lapp.callgraph.wala;
 import java.util.List;
 
 import com.ibm.wala.classLoader.IClass;
+import com.ibm.wala.classLoader.IClassLoader;
 import com.ibm.wala.classLoader.JarFileModule;
 import com.ibm.wala.classLoader.Module;
 import com.ibm.wala.ipa.callgraph.CallGraph;
@@ -15,24 +16,29 @@ import org.apache.logging.log4j.Logger;
 import nl.wvdzwan.lapp.call.Call;
 import nl.wvdzwan.lapp.callgraph.ClassToArtifactResolver;
 import nl.wvdzwan.lapp.callgraph.FolderLayout.ArtifactFolderLayout;
-import nl.wvdzwan.lapp.core.*;
+import nl.wvdzwan.lapp.core.ClassRecord;
+import nl.wvdzwan.lapp.core.LappPackage;
+import nl.wvdzwan.lapp.core.Method;
+import nl.wvdzwan.lapp.core.ResolvedMethod;
+import nl.wvdzwan.lapp.core.UnresolvedMethod;
+import nl.wvdzwan.lapp.core.Util;
 
 public class LappPackageBuilder {
 
     private static final Logger logger = LogManager.getLogger();
     private final LappPackage lappPackage;
     private ArtifactFolderLayout folderLayout;
-
+    private IClassLoader classLoader;
     private ClassToArtifactResolver artifactResolver;
 
     enum MethodType {
         INTERFACE, ABSTRACT, IMPLEMENTATION
     }
 
-    public LappPackageBuilder(ClassToArtifactResolver artifactResolver, ArtifactFolderLayout folderLayout) {
+    public LappPackageBuilder(ClassToArtifactResolver artifactResolver, ArtifactFolderLayout folderLayout, IClassLoader classLoader) {
         this.artifactResolver = artifactResolver;
         this.folderLayout = folderLayout;
-
+        this.classLoader = classLoader;
         this.lappPackage = new LappPackage();
     }
 
@@ -57,7 +63,7 @@ public class LappPackageBuilder {
     }
 
     public LappPackageBuilder insertCha(IClassHierarchy cha) {
-        ClassHierarchyInserter chaInserter = new ClassHierarchyInserter(cha, this);
+        ClassHierarchyInserter chaInserter = new ClassHierarchyInserter(cha, this, this.classLoader);
         chaInserter.insertCHA();
 
         return this;
@@ -68,7 +74,7 @@ public class LappPackageBuilder {
             // Package probably didn't contain entry points
             return this;
         }
-        CallGraphInserter cgInserter = new CallGraphInserter(callGraph, callGraph.getClassHierarchy(), this);
+        CallGraphInserter cgInserter = new CallGraphInserter(callGraph, callGraph.getClassHierarchy(), this, this.classLoader);
         cgInserter.insertCallGraph();
 
         return this;

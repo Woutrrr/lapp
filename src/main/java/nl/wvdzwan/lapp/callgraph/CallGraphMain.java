@@ -54,6 +54,7 @@ public class CallGraphMain implements Callable<Void> {
     )
     private ArrayList<String> jars = new ArrayList<>();
 
+    private boolean analyseStdLib = false;
 
     @Override
     public Void call() throws Exception {
@@ -67,18 +68,23 @@ public class CallGraphMain implements Callable<Void> {
             }
         }
 
+        if (jars.get(0).equals("stdlib")) {
+            jars.remove(0);
+            this.analyseStdLib = true;
+        }
+
         verifyJarsExist();
 
         // Analysis
         logger.info("Starting analysis for {}", jars);
-        WalaAnalysis analysis = new WalaAnalysis(jars, exclusionFile);
+        WalaAnalysis analysis = new WalaAnalysis(jars, exclusionFile, this.analyseStdLib);
         WalaAnalysisResult analysisResult = analysis.run();
 
         // Build Lapp Package
         logger.info("Build LappPackage for {}", jars);
         ArtifactFolderLayout layoutTransformer = new SimpleNameLayout();
 
-        LappPackage lappPackage = WalaAnalysisTransformer.toPackage(analysisResult, layoutTransformer);
+        LappPackage lappPackage = WalaAnalysisTransformer.toPackage(analysisResult, layoutTransformer, this.analyseStdLib);
 
 
         // Output

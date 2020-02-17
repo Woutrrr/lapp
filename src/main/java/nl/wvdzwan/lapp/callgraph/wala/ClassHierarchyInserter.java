@@ -1,11 +1,5 @@
 package nl.wvdzwan.lapp.callgraph.wala;
 
-import java.util.Arrays;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Optional;
-import java.util.stream.Collectors;
-
 import com.ibm.wala.classLoader.IClass;
 import com.ibm.wala.classLoader.IClassLoader;
 import com.ibm.wala.classLoader.IMethod;
@@ -14,15 +8,19 @@ import com.ibm.wala.ipa.cha.IClassHierarchy;
 import com.ibm.wala.shrikeCT.AnnotationsReader;
 import com.ibm.wala.shrikeCT.ClassReader;
 import com.ibm.wala.shrikeCT.InvalidClassFileException;
-import com.ibm.wala.types.ClassLoaderReference;
 import com.ibm.wala.types.annotations.Annotation;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 import nl.wvdzwan.lapp.core.ClassRecord;
 import nl.wvdzwan.lapp.core.ExpectedCall;
 import nl.wvdzwan.lapp.core.UnresolvedMethod;
 import nl.wvdzwan.lapp.core.Util;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import java.util.Arrays;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 public class ClassHierarchyInserter {
     protected static final Logger logger = LogManager.getLogger();
@@ -30,17 +28,18 @@ public class ClassHierarchyInserter {
 
     private final IClassHierarchy cha;
     private final LappPackageBuilder lappBuilder;
+    private final IClassLoader classLoader;
 
-    public ClassHierarchyInserter(IClassHierarchy cha, LappPackageBuilder builder) {
+    public ClassHierarchyInserter(IClassHierarchy cha, LappPackageBuilder builder, IClassLoader classLoader) {
         this.cha = cha;
         this.lappBuilder = builder;
+        this.classLoader = classLoader;
     }
 
     public void insertCHA() {
-        IClassLoader classLoader = cha.getLoader(ClassLoaderReference.Application);
 
         // Iterate all classes in Application scope
-        for (Iterator<IClass> it = classLoader.iterateAllClasses(); it.hasNext(); ) {
+        for (Iterator<IClass> it = this.classLoader.iterateAllClasses(); it.hasNext(); ) {
 
             IClass klass = it.next();
             processClass(klass);

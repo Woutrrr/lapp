@@ -2,10 +2,10 @@ package nl.wvdzwan.lapp.callgraph.wala;
 
 import java.util.Iterator;
 import java.util.Set;
-import java.util.function.Predicate;
 
 import com.ibm.wala.classLoader.CallSiteReference;
 import com.ibm.wala.classLoader.IClass;
+import com.ibm.wala.classLoader.IClassLoader;
 import com.ibm.wala.ipa.callgraph.CGNode;
 import com.ibm.wala.ipa.callgraph.CallGraph;
 import com.ibm.wala.ipa.cha.IClassHierarchy;
@@ -22,11 +22,13 @@ public class CallGraphInserter {
     private final CallGraph cg;
     private final IClassHierarchy cha;
     private final LappPackageBuilder lappPackageBuilder;
+    private final IClassLoader classLoader;
 
-    public CallGraphInserter(CallGraph cg, IClassHierarchy cha, LappPackageBuilder lappPackageBuilder) {
+    public CallGraphInserter(CallGraph cg, IClassHierarchy cha, LappPackageBuilder lappPackageBuilder, IClassLoader classLoader) {
         this.cg = cg;
         this.cha = cha;
         this.lappPackageBuilder = lappPackageBuilder;
+        this.classLoader = classLoader;
     }
 
 
@@ -34,8 +36,8 @@ public class CallGraphInserter {
         for (CGNode node : this.cg) {
             MethodReference nodeReference = node.getMethod().getReference();
 
-            if (applicationClassLoaderFilter.test(node)) {
-                // Ignore everything not in the application classloader
+            if (classLoaderFilter(node) || nodeReference.getDeclaringClass().getName().toString().equals("Lcom/ibm/wala/FakeRootClass")) {
+                // Ignore everything not in the provided classloader
                 continue;
             }
             Method methodNode = lappPackageBuilder.addMethod(nodeReference, LappPackageBuilder.MethodType.IMPLEMENTATION);
@@ -71,12 +73,12 @@ public class CallGraphInserter {
         }
     }
 
-    private Predicate<CGNode> applicationClassLoaderFilter = node -> {
+    private boolean classLoaderFilter(CGNode node)  {
         return !node.getMethod()
                 .getDeclaringClass()
                 .getClassLoader()
                 .getReference()
-                .equals(ClassLoaderReference.Application) ;
+                .equals(this.classLoader.getReference()) ;
     };
 
     private Call.CallType getInvocationLabel(CallSiteReference callsite) {

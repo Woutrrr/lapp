@@ -1,11 +1,6 @@
 
 package nl.wvdzwan.lapp.callgraph;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Iterator;
-
 import com.ibm.wala.classLoader.IClass;
 import com.ibm.wala.classLoader.IMethod;
 import com.ibm.wala.ipa.callgraph.*;
@@ -19,21 +14,32 @@ import com.ibm.wala.util.config.AnalysisScopeReader;
 import com.ibm.wala.util.config.SetOfClasses;
 import com.ibm.wala.util.warnings.Warning;
 import com.ibm.wala.util.warnings.Warnings;
+import nl.wvdzwan.lapp.callgraph.wala.WalaAnalysisResult;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import nl.wvdzwan.lapp.callgraph.wala.WalaAnalysisResult;
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Iterator;
 
 public class WalaAnalysis {
     private static Logger logger = LogManager.getLogger();
+    private final ClassLoaderReference classLoaderReference;
 
     private ArrayList<String> jars;
     private String exclusionFile;
 
 
-    public WalaAnalysis(ArrayList<String> jars, String exclusionFile) {
+    public WalaAnalysis(ArrayList<String> jars, String exclusionFile, boolean analyseStdLib) {
         this.jars = jars;
         this.exclusionFile = exclusionFile;
+
+        if (analyseStdLib) {
+            this.classLoaderReference = ClassLoaderReference.Primordial;
+        } else {
+            this.classLoaderReference = ClassLoaderReference.Application;
+        }
     }
 
     public WalaAnalysisResult run() throws IOException, ClassHierarchyException {
@@ -151,8 +157,8 @@ public class WalaAnalysis {
     }
 
 
-    private static boolean acceptClassForEntryPoints(IClass klass) {
-        return klass.getClassLoader().getReference().equals(ClassLoaderReference.Application)
+    private boolean acceptClassForEntryPoints(IClass klass) {
+        return klass.getClassLoader().getReference().equals(this.classLoaderReference)
                 && !klass.isInterface()
                 && !klass.isPrivate();
     }

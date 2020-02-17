@@ -1,34 +1,31 @@
 package nl.wvdzwan.lapp.callgraph;
 
+import com.ibm.wala.classLoader.*;
+import com.ibm.wala.ipa.cha.IClassHierarchy;
+import com.ibm.wala.types.MethodReference;
+import com.ibm.wala.types.TypeReference;
+import nl.wvdzwan.lapp.callgraph.FolderLayout.ArtifactFolderLayout;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Objects;
 import java.util.jar.JarFile;
 
-import com.ibm.wala.classLoader.ArrayClass;
-import com.ibm.wala.classLoader.IClass;
-import com.ibm.wala.classLoader.JarFileEntry;
-import com.ibm.wala.classLoader.ShrikeClass;
-import com.ibm.wala.ipa.cha.IClassHierarchy;
-import com.ibm.wala.types.ClassLoaderReference;
-import com.ibm.wala.types.MethodReference;
-import com.ibm.wala.types.TypeReference;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
-import nl.wvdzwan.lapp.callgraph.FolderLayout.ArtifactFolderLayout;
-
 public class ClassToArtifactResolver implements ClassArtifactResolver {
     protected static final Logger logger = LogManager.getLogger();
 
     private final ArtifactFolderLayout transformer;
+    private final IClassLoader classLoader;
     private IClassHierarchy cha;
 
     private HashMap<IClass, String> classArtifactRecordCache = new HashMap<>();
 
-    public ClassToArtifactResolver(IClassHierarchy cha, ArtifactFolderLayout transformer) {
+    public ClassToArtifactResolver(IClassHierarchy cha, ArtifactFolderLayout transformer, IClassLoader classLoader) {
         this.cha = cha;
         this.transformer = transformer;
+        this.classLoader = classLoader;
     }
 
     @Override
@@ -37,7 +34,7 @@ public class ClassToArtifactResolver implements ClassArtifactResolver {
 
         if (klass == null) {
             // Try harder
-            TypeReference t = TypeReference.findOrCreate(cha.getLoader(ClassLoaderReference.Application).getReference(), n.getDeclaringClass().getName());
+            TypeReference t = TypeReference.findOrCreate(this.classLoader.getReference(), n.getDeclaringClass().getName());
             klass = cha.lookupClass(t);
         }
 
